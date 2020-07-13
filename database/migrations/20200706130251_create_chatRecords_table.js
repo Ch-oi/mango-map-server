@@ -4,11 +4,9 @@ exports.up = function (knex) {
         table.increments();
         table.text('body').notNullable()
         table.text('images');
-        table.integer('chatroom_id').unsigned()
-        table.foreign('chatroom_id').references('chatrooms.id')
-        table.integer('user_id').unsigned()
-        table.foreign('user_id').references('users.id')
-        table.timestamp(true, true)        
+        table.integer('chatroomUser_id').unsigned()
+        table.foreign('chatroomUser_id').references('chatrooms-users.id')
+        table.timestamps(true, true)        
     })
 };
 

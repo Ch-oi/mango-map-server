@@ -1,8 +1,12 @@
 {
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "fs": "^0.0.1-security",
     "knex": "^0.21.1",
+    "passport": "^0.4.1",
     "pg": "^8.2.1",
     "pgsql": "^1.0.0"
   }
