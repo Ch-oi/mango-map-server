@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('chatrooms-users',(table)=>{
-      table.increments();
+      table.increments().primary()
       table.integer('chatroom_id').unsigned()
       table.foreign('chatroom_id').references('chatrooms.id')
       table.integer('user_id').unsigned()

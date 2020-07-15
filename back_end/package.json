@@ -5,6 +5,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "fs": "^0.0.1-security",
+    "jest": "^26.1.0",
     "knex": "^0.21.1",
     "passport": "^0.4.1",
     "pg": "^8.2.1",

@@ -1,8 +1,9 @@
-import knex from '../database/index'
+
+const knex = require('../database/config')
 
 class BlogService {
     constructor() {
-        this.blog = []
+        this.blogs = []
         this.images = []
         this.categories = []
     }
@@ -13,57 +14,83 @@ class BlogService {
                 .select('*')
                 .catch(err => console.log(err))
 
+        let blogs = await this.compileImgCatCmt(results)
+        this.blogs = blogs
+        return this.blogs
+    }
+
+    async getBlog(blog_id) {
+        let results =
+            await knex('blogs')
+                .select('*')
+                .where('id',blog_id)
+                .catch(err => console.log(err))
+
+        let blogs = await this.compileImgCatCmt(results)
+        this.blogs = blogs
+        return this.blogs
+    }
+
+    async getBlogImages(blog_id) {
+        let results =
+            await knex('blogs-images')
+                .select('url')
+                .where('blog_id', blog_id)
+                .catch(err => console.log(err))
+
         return results
     }
 
-    async listBlogImages(blog_id) {
-        let results =
-            await knex('blogs-images')
-                .select('*')
+    async getBlogCategories(blog_id) {
+        let cates =
+        await knex('categories-blogs')
+            .select('category')
+            .innerJoin('categories', 'categories.id', 'categories-blogs.category_id')
+            .where('blog_id', blog_id)
+            .catch(err => console.log(err))
+
+        return cates
+    }
+
+    async getBlogComments(blog_id) {
+        let comments =
+            await knex('comments')
+                .select('body', 'ref_comment_id')
                 .where('blog_id', blog_id)
                 .catch(err => console.log(err))
 
-        this.images = results
-
-        return this.images
+        return comments
     }
 
-    async listBlogCategories(blog_id) {
-        let results =
-            await knex('categories-blogs')
-                .select('category_id')
-                .where('blog_id', blog_id)
+    async getComment(comment_id) {
+        let comment =
+            await knex('comments')
+                .select('body', 'ref_comment_id')
+                .where('id', comment_id)
                 .catch(err => console.log(err))
+        return comment
 
-        for (let cateId of results) {
-            let blogCate = await knex('categories')
-                .select('*')
-                .where('id', cateId)
-                .catch(err => console.log(err))
-
-            this.categories.push(blogCate)
-        }
-        return this.categories
     }
 
-    async compileImgCate(blogs){
-        this.blog =[]
+    async compileImgCatCmt(blogs) {
+        let blogsDetailed = []
 
-        for (let blog of blogs){
+        for (let blog of blogs) {
 
-        let images = await this.listBlogImages(blog.id)
-        let categories = await this.listBlogCategories(blog.id)
-
-        blog.images = images
-        blog.categories = categories
-
+            let images = await this.getBlogImages(blog.id)
+            let categories = await this.getBlogCategories(blog.id)
+            let comments = await this.getBlogComments(blog.id)
+            blog.images = images
+            blog.categories = categories
+            blog.comments = comments
+            blogsDetailed.push(blog)
         }
-        this.blog.push(blogs)
-
-        return this.blog
+        return blogsDetailed
     }
 
-    async addBlogs(blog) {
+    async addBlog(blog) {
+        await knex.raw('SELECT setval(\'"blogs_id_seq"\', (SELECT MAX(id) from "blogs"));')
+
         let results =
             await knex('blogs')
                 .insert(blog)
@@ -72,10 +99,102 @@ class BlogService {
 
         return results[0]
     }
-    async deleteBlogs(id) {
+
+    //comment={body:"",ref_comment_id:"",user_id:,blog_id:}
+    async addBlogComment(comment) {
+        await knex.raw('SELECT setval(\'comments_id_seq\', (SELECT MAX(id) from comments));')
+
+        let results =
+            await knex('comments')
+                .insert(comment)
+                .returning('*')
+                .catch(err => console.log(err))
+
+        return results[0]
 
     }
 
+    //urls=[url,url]
+    async addBlogImages(urls,blog_id) {
+        await knex.raw('SELECT setval(\'"blogs-images_id_seq"\', (SELECT MAX(id) from "blogs-images"));')
+        let imgs = []
 
+        for (let url of urls) {
+            let img =
+                await knex('blogs-images')
+                    .insert({url:url,blog_id})
+                    .returning('*')
+                    .catch(err => console.log(err))
+
+            imgs.push(img[0])
+        }
+        return imgs
+
+    }
+// categories = ["",""]
+    async addCategories(categories) {
+        await knex.raw('SELECT setval(\'categories_id_seq\', (SELECT MAX(id) from categories));')
+
+        let cates = []
+        for (let category of categories) {
+            let cate =
+                await knex('categories')
+                    .insert({category:category})
+                    .returning('*')
+                    .catch(err => console.log(err))
+            cates.push(cate[0])
+        }
+        return cates
+    }
+
+    async addCategoriesBlogs(categories_id, blog_id) {
+        await knex.raw('SELECT setval(\'"categories-blogs_id_seq"\', (SELECT MAX(id) from "categories-blogs"));')
+
+        let cates = []
+
+        for (let cate_id of categories_id) {
+            let cate =
+                await knex('categories-blogs')
+                    .insert({ category_id: cate_id, blog_id: blog_id })
+                    .returning('*')
+                    .catch(err => console.log(err))
+            cates.push(cate[0])
+        }
+        return cates
+    }
+
+    async deleteBlogs(blog_id) {
+        await knex('categories-blogs')
+            .del()
+            .where('blog_id', blog_id)
+            .returning('*')
+            .catch((err) => console.log(err))
+
+        await knex('blogs-images')
+            .del()
+            .where('blog_id', blog_id)
+            .returning('*')
+            .catch((err) => console.log(err))
+
+        await knex('comments')
+            .del()
+            .where('blog_id', blog_id)
+            .returning('*')
+            .catch((err) => console.log(err))
+
+        await knex('users-favBlogs')
+            .del()
+            .where('blog_id', blog_id)
+            .returning('*')
+            .catch((err) => console.log(err))
+
+        await knex('blogs')
+            .del()
+            .where('id', blog_id)
+            .returning('*')
+            .catch((err) => console.log(err))
+    }
 
 }
+
+module.exports = BlogService
