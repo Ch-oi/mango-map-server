@@ -18,6 +18,8 @@ describe('testing chatroom services', () => {
         descriptions: 'sdf'
 
     }
+
+
     beforeEach(async () => {
         await knex.migrate.rollback([{ directory: '../database/migrations' }])
         await knex.migrate.latest([{ directory: '../database/migrations' }])
