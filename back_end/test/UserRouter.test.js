@@ -30,7 +30,8 @@ describe('UserRouter testing with userService', () => {
         req = {
             params:{
                 id:1
-            }
+            },
+            body:""
         } 
     })
     test('userRouter should call listUsers in response to a GET request', () => {
@@ -87,23 +88,32 @@ describe('UserRouter testing with userService', () => {
             })
     })
 
-    test('userRouter should call getUserChatroomRecords in response to a GET request', () => {
+    test('userRouter should call addUser in response to a POST request', () => {
 
-         userRouter.getUserChatroomRecords(req, res)
+         userRouter.addUser(req, res)
             .then(() => {
-                expect(userRouter.getUserChatroomRecords).toHaveBeenCalledWith(req.params.id,req.params.id)
+                expect(userRouter.addUser).toHaveBeenCalledWith(req.body)
                 expect(res.send).toHaveBeenCalled()
             })
     })
+    test('userRouter should call addUserFavBlog in response to a POST request', () => {
 
-    test('userRouter should call getUserChatroomRecords in response to a GET request', () => {
-
-         userRouter.getUserChatroomRecords(req, res)
+         userRouter.addUserFavBlog(req, res)
             .then(() => {
-                expect(userRouter.getUserChatroomRecords).toHaveBeenCalledWith(req.params.id,req.params.id)
+                expect(userRouter.addUserFavBlog).toHaveBeenCalledWith(req.body)
+                expect(res.send).toHaveBeenCalled()
+            })
+    })
+    test('userRouter should call addUserDistrict in response to a POST request', () => {
+
+         userRouter.addUserDistrict(req, res)
+            .then(() => {
+                expect(userRouter.addUserDistrict).toHaveBeenCalledWith(req.body)
                 expect(res.send).toHaveBeenCalled()
             })
     })
 
     
+
+
 })

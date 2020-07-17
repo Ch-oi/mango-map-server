@@ -29,6 +29,7 @@ class UserService {
         return userDetailed
     }
 
+    
 
     //all location that a user marked
     async getUserDistricts(user_id) {
