@@ -65,6 +65,8 @@ describe('BlogService testing with blogservice', () => {
         await knex.migrate.rollback([{directory: '../database/migrations'}])
         await knex.migrate.latest([{directory: '../database/migrations'}])
         await knex.seed.run([{directory: '../database/seeds'}])
+        await knex.destroy()    
+
     })
 
     test('list all Blogs ', () => {
@@ -75,6 +77,15 @@ describe('BlogService testing with blogservice', () => {
                 expect(typeof results[0].images).toEqual('object')
                 expect(typeof results[0].categories).toEqual('object')
                 expect(typeof results[0].comments).toEqual('object')
+
+            })
+    })
+    test('list all Categories ', () => {
+        return blogService.listCategories()
+            .then((results) => {
+                expect(results.length).toBe(3)
+                expect(results[0].category).toBe('apply')
+              
 
             })
     })
@@ -142,7 +153,7 @@ describe('BlogService testing with blogservice', () => {
     })
 
     test('add new blog categories', () => {
-        return blogService.addCategoriesBlogs(categories_id,blog_id)
+        return blogService.addBlogCategories(categories_id,blog_id)
             .then(res => {
                 expect(res.length).toBe(2);
                 expect(res[0].category_id).toBe(1)

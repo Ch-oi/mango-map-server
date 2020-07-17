@@ -6,24 +6,29 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 const knex = require('./database/config')
 
-app.get('/', async (req, res) => {
-    let new_charRecord={
-        body:"i love my pepe",
-        images:"https://picsum.photos/200/300"
-    }
-    let chatroomUser = await knex('chatrooms-users')
-            .select('*')
-            .where('chatroom_id', 1)
-            .andWhere('user_id', 1)
-            .catch(err => console.log(err))
-            await knex.raw('SELECT setval(\'"chatRecords_id_seq"\', (SELECT MAX(id) from "chatRecords"));')
-        let newChatRecord =
-            await knex('chatRecords')
-                .insert({ ...new_charRecord, chatroomUser_id: chatroomUser[0].id })
-                .returning('*')
-                .catch(err => console.log(err))
-    res.send(newChatRecord)
+const UserRouter = require('./router/UserRouter')
+const BlogRouter = require('./router/BlogRouter')
+const ChatroomRouter = require('./router/ChatroomRouter')
+const MapRouter = require('./router/MapRouter')
 
+const UserService = require('./services/UserService')
+const BlogService = require('./services/BlogService')
+const ChatroomService = require('./services/ChatroomService')
+const MapService = require('./services/MapService')
+
+const userService = new UserService()
+const blogService = new BlogService()
+const chatroomService = new ChatroomService()
+const mapService = new MapService()
+
+// app.use('/user', new UserRouter(userService ).route());
+// app.use('/chatroom', new ChatroomRouter(chatroomService ).route());
+// app.use('/blog', new BlogRouter(blogService ).route());
+// app.use('/map', new MapRouter(mapService ).route());
+
+
+app.get('/', async (req, res) => {
+    res.send()
 })
 
 app.listen(port, function () {

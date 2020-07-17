@@ -23,13 +23,15 @@ describe('test user services',()=>{
         await knex.migrate.latest([{ directory: '../database/migrations' }])
         await knex.seed.run([{ directory: '../database/seeds' }])
 
-        userService = new UserService()
+        return userService = new UserService()
     })
 
     afterAll(async () => {
         await knex.migrate.rollback([{directory: '../database/migrations'}])
         await knex.migrate.latest([{directory: '../database/migrations'}])
         await knex.seed.run([{directory: '../database/seeds'}])
+        return await knex.destroy()    
+
     })
 
     test('list all users',()=>{
@@ -52,10 +54,10 @@ describe('test user services',()=>{
             expect(typeof res[0].favBlogs).toBe('object')
         })
     })
-    test('get one user\'s districts',()=>{
+    test('get one user\'s districts & blogs',()=>{
         return userService.getUserDistricts(user_id)
         .then(res=>{
-            console.log(res)
+            expect(res[0].userBlogs[0].title).toBe('title1')
             expect(res[0].id).toBe(1)
             expect(res[0].name).toBe('central')
         })
@@ -63,7 +65,6 @@ describe('test user services',()=>{
     test('get user\'s fav blogs',()=>{
         return userService.getUserFavBlogs(user_id)
         .then(res=>{
-            console.log(res)
             expect(res.length).toBe(3)
             expect(res[1].title).toBe('title2')
         })
@@ -71,7 +72,6 @@ describe('test user services',()=>{
     test('get user\'s Chatrooms',()=>{
         return userService.getUserChatrooms(user_id)
         .then(res=>{
-            console.log(res)
             expect(res[0].chatroom_id).toBe(1)
             expect(res[0].name).toBe('chat1')
         })
@@ -79,7 +79,6 @@ describe('test user services',()=>{
     test('get user\'s ChatRecords in one room',()=>{
         return userService.getUserChatRecords(chatroom_id,user_id)
         .then(res=>{
-            console.log(res)
             expect(res[0].chatroom_id).toBe(1)
             expect(res[0].user_id).toBe(1)
             expect(res[0].chatRecords[0].body).toBe('body1')
@@ -89,7 +88,6 @@ describe('test user services',()=>{
     test('add new user',()=>{
         return userService.addUser(new_user)
         .then(res=>{
-            console.log(res)
            expect(res[0].id).toBe(4)
            expect(res[0].security_question).toBe('demo q')
         })
@@ -98,7 +96,6 @@ describe('test user services',()=>{
     test('add user new district',()=>{
         return userService.addUserDistrict(user_id,district_id)
         .then(res=>{
-            console.log(res)
            expect(res[0].id).toBe(4)
            expect(res[0].district_id).toBe(1)
         })
@@ -107,7 +104,6 @@ describe('test user services',()=>{
     test('add user new favBlog',()=>{
         return userService.addUserFavBlog(user_id,blog_id)
         .then(res=>{
-            console.log(res)
            expect(res[0].id).toBe(4)
            expect(res[0].blog_id).toBe(1)
         })

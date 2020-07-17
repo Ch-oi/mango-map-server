@@ -147,7 +147,7 @@ class BlogService {
         return cates
     }
 
-    async addCategoriesBlogs(categories_id, blog_id) {
+    async addBlogCategories(categories_id, blog_id) {
         await knex.raw('SELECT setval(\'"categories-blogs_id_seq"\', (SELECT MAX(id) from "categories-blogs"));')
 
         let cates = []
@@ -161,6 +161,16 @@ class BlogService {
             cates.push(cate[0])
         }
         return cates
+    }
+
+    async listCategories(){
+
+        let results =
+        await knex('categories')
+        .select('*')
+        .catch(err => console.log(err))
+        
+        return results
     }
 
     async deleteBlogs(blog_id) {

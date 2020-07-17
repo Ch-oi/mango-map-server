@@ -32,6 +32,8 @@ describe('testing chatroom services', () => {
         await knex.migrate.rollback([{ directory: '../database/migrations' }])
         await knex.migrate.latest([{ directory: '../database/migrations' }])
         await knex.seed.run([{ directory: '../database/seeds' }])
+        await knex.destroy()    
+
     })
 
     test('list all chatrooms', () => {
