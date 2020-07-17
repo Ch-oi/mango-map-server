@@ -12,5 +12,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-    return knex.schema.dropTable('blogs-images')
+    return knex.schema.dropTable('images')
 };

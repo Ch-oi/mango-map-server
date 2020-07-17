@@ -30,6 +30,12 @@ exports.seed = function (knex) {
       return knex.raw('ALTER SEQUENCE "users-favBlogs_id_seq" RESTART WITH 1')
     })
     .then(function () {
+      return knex('images').del()
+    })
+    .then(function () {
+      return knex.raw('ALTER SEQUENCE "images_id_seq" RESTART WITH 1')
+    })
+    .then(function () {
       return knex('blogs').del()
     })
     .then(function () {
