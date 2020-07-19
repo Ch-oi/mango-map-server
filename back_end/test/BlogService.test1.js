@@ -104,7 +104,6 @@ describe('BlogService testing with blogservice', () => {
     test('get one particular BlogImages ', () => {
         return blogService.getBlogImages(1)
             .then((results) => {
-                expect(results.length).toBe(3)
                 expect(typeof results[0].url).toBe('string')
             })
     })
@@ -139,6 +138,7 @@ describe('BlogService testing with blogservice', () => {
     test('add new blogImages', () => {
         return blogService.addBlogImages(new_urls, 1)
             .then(res => {
+                console.log(res)
                 expect(res.length).toBe(2);
                 expect(typeof res[0].url).toBe('string')
             })

@@ -4,12 +4,12 @@ const UserService = require('../services/UserService')
 
 const knex = require('../database/config')
 
-let userService, userRouter, req, res, query
+let userService, userRouter, req, res
 describe('UserRouter testing with userService', () => {
 
-    beforeAll( async() => {
+    beforeAll(() => {
         res = {
-            send: jest.fn().mockResolvedValue(true)
+            send: jest.fn().mockReturnValue(true)
         }
         userService = {
             listUsers: jest.fn().mockResolvedValue(true),
@@ -25,95 +25,102 @@ describe('UserRouter testing with userService', () => {
             addUserFavBlog: jest.fn().mockResolvedValue(true),
             deleteUser: jest.fn().mockResolvedValue(true)
         }
-        userRouter = new UserRouter(userService)
 
         req = {
-            params:{
-                id:1
+            params: {
+                id: 1,
+                uid:1,
+                cid:1,
+                bid:1,
+                did:1
             },
-            body:""
-        } 
-    })
-    test('userRouter should call listUsers in response to a GET request', () => {
+            body: {
+                user_name:'1',
+            }
+        }
+        userRouter = new UserRouter(userService)
 
-          userRouter.listUsers(req, res)
+    })
+    it('userRouter should call listUsers in response to a GET request', () => {
+
+        userRouter.listUsers(req, res)
             .then(() => {
-                expect(userRouter.listUsers).toHaveBeenCalled()
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.listUsers).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
-    test('userRouter should call getUser in response to a GET request', () => {
+    it('userRouter should call getUser in response to a GET request', () => {
 
 
-         userRouter.getUser(req, res)
+        userRouter.getUser(req, res)
             .then(() => {
-                expect(userRouter.getUser).toHaveBeenCalledWith(req.params.id)
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.getUser).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
-    test('userRouter should call getUserDistricts in response to a GET request', () => {
+    it('userRouter should call getUserDistricts in response to a GET request', () => {
 
 
-         userRouter.getUserDistricts(req, res)
+        userRouter.getUserDistricts(req, res)
             .then(() => {
-                expect(userRouter.getUserDistricts).toHaveBeenCalledWith(req.params.id)
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.getUserDistricts).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
-    test('userRouter should call getUserFavBlogs in response to a GET request', () => {
+    it('userRouter should call getUserFavBlogs in response to a GET request', () => {
 
 
-         userRouter.getUserFavBlogs(req, res)
+        userRouter.getUserFavBlogs(req, res)
             .then(() => {
-                expect(userRouter.getUserFavBlogs).toHaveBeenCalledWith(req.params.id)
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.getUserFavBlogs).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
-    test('userRouter should call getUserChatrooms in response to a GET request', () => {
+    it('userRouter should call getUserChatrooms in response to a GET request', () => {
 
 
-         userRouter.getUserChatrooms(req, res)
+        userRouter.getUserChatrooms(req, res)
             .then(() => {
-                expect(userRouter.getUserChatrooms).toHaveBeenCalledWith(req.params.id)
-                expect(res.send).toHaveBeenCalled()
-            })
-    })
-
-    test('userRouter should call getUserChatroomRecords in response to a GET request', () => {
-
-         userRouter.getUserChatroomRecords(req, res)
-            .then(() => {
-                expect(userRouter.getUserChatroomRecords).toHaveBeenCalledWith(req.params.id,req.params.id)
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.getUserChatrooms).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
 
-    test('userRouter should call addUser in response to a POST request', () => {
+    it('userRouter should call getUserChatroomRecords in response to a GET request', () => {
 
-         userRouter.addUser(req, res)
+        userRouter.getUserChatroomRecords(req, res)
             .then(() => {
-                expect(userRouter.addUser).toHaveBeenCalledWith(req.body)
-                expect(res.send).toHaveBeenCalled()
-            })
-    })
-    test('userRouter should call addUserFavBlog in response to a POST request', () => {
-
-         userRouter.addUserFavBlog(req, res)
-            .then(() => {
-                expect(userRouter.addUserFavBlog).toHaveBeenCalledWith(req.body)
-                expect(res.send).toHaveBeenCalled()
-            })
-    })
-    test('userRouter should call addUserDistrict in response to a POST request', () => {
-
-         userRouter.addUserDistrict(req, res)
-            .then(() => {
-                expect(userRouter.addUserDistrict).toHaveBeenCalledWith(req.body)
-                expect(res.send).toHaveBeenCalled()
+                expect(userRouter.getUserChatroomRecords).toBeCalled()
+                expect(res.send).toBeCalled()
             })
     })
 
-    
+    it('userRouter should call addUser in response to a POST request', () => {
+
+        userRouter.addUser(req, res)
+            .then(() => {
+                expect(userRouter.addUser).toBeCalled()
+                expect(res.send).toBeCalled()
+            })
+    })
+    it('userRouter should call addUserFavBlog in response to a POST request', () => {
+
+        userRouter.addUserFavBlog(req, res)
+            .then(() => {
+                expect(userRouter.addUserFavBlog).toBeCalled()
+                expect(res.send).toBeCalled()
+            })
+    })
+    it('userRouter should call addUserDistrict in response to a POST request', () => {
+
+        userRouter.addUserDistrict(req, res)
+            .then(() => {
+                expect(userRouter.addUserDistrict).toBeCalled()
+                expect(res.send).toBeCalled()
+            })
+    })
+
+
 
 
 })

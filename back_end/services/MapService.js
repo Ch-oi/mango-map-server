@@ -24,7 +24,7 @@ class MapService {
         let districts =
             await knex('districts')
                 .select('*')
-                .where('area_id',area_id)
+                .where('area_id', area_id)
                 .catch(err => console.log(err))
 
         return districts
@@ -39,6 +39,7 @@ class MapService {
 
         return districtUsers
     }
+
 
     //work with above result
     async getDistrictUserBlogs(districtUsers) {
@@ -57,6 +58,15 @@ class MapService {
         return districtUsersBlogs
     }
 
+    async getDistrictImages(district_id) {
+        let results =
+            await knex('images')
+                .select('*')
+                .where('district_id', district_id)
+                .catch(err => console.log(err))
+
+        return results
+    }
     async addDistrict(district) {
         await knex.raw('SELECT setval(\'districts_id_seq\', (SELECT MAX(id) from districts));')
         let newDistrict =
@@ -68,6 +78,22 @@ class MapService {
         return newDistrict
     }
 
+    async addDistrictImages(urls, district_id) {
+        await knex.raw('SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));')
+        let imgs = []
+
+        for (let url of urls) {
+            let img =
+                await knex('images')
+                    .insert({ url: url, district_id: district_id })
+                    .returning('*')
+                    .catch(err => console.log(err))
+
+            imgs.push(img[0])
+        }
+        return imgs
+
+    }
 
 
 }

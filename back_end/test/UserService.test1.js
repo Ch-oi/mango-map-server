@@ -5,9 +5,13 @@ const knex = require('../database/config')
 describe('test user services',()=>{
     let userService
     let user_id = 1
+    let user2_id = 2
     let chatroom_id = 1
+    let userChat_id = 1
+    let publisher_id = 1 
     let district_id = 1 
     let blog_id = 1 
+    let new_chatBody = ' hello'
     let new_user ={
         user_name:'demo',
         email:'d@d',
@@ -77,11 +81,12 @@ describe('test user services',()=>{
         })
     })
     test('get user\'s ChatRecords in one room',()=>{
-        return userService.getUserChatRecords(chatroom_id,user_id)
+        return userService.getUserChatroomRecords(chatroom_id,user_id)
         .then(res=>{
+            console.log(res[0])
             expect(res[0].chatroom_id).toBe(1)
             expect(res[0].user_id).toBe(1)
-            expect(res[0].chatRecords[0].body).toBe('body1')
+            expect(res[0].body).toBe('body1')
         })
     })
 
@@ -106,6 +111,22 @@ describe('test user services',()=>{
         .then(res=>{
            expect(res[0].id).toBe(4)
            expect(res[0].blog_id).toBe(1)
+        })
+    })
+    test('add user to user  chatroom',()=>{
+        return userService.addUserToUserChatroom(user_id,user2_id)
+        .then(res=>{
+            console.log(res)
+            expect(res[0]).toStrictEqual({ "id": 4, "user1_id": 1, "user2_id": 2 })
+
+        })
+    })
+    test('add user to user chat record',()=>{
+        return userService.addUserToUserchatRecord(new_chatBody, userChat_id, publisher_id)
+        .then(res=>{
+            console.log(res)
+            expect(res[0].id).toBe(4)
+            expect(res[0].publisher).toBe(1)
         })
     })
 

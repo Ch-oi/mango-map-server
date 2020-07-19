@@ -63,9 +63,9 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex('users-chatRecords').insert([
-        { id: 1, userChat_id: 1, body: 'how are you' },
-        { id: 2, userChat_id: 1, body: 'what the hell,man' },
-        { id: 3, userChat_id: 1, body: 'sorry to bother you' }
+        { id: 1, userChat_id: 1, body: 'how are you', publisher:1 },
+        { id: 2, userChat_id: 1, body: 'what the hell,man',publisher:2 },
+        { id: 3, userChat_id: 1, body: 'sorry to bother you',publisher:1 }
       ]);
     });
 };

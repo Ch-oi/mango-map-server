@@ -23,7 +23,7 @@ class BlogService {
         let results =
             await knex('blogs')
                 .select('*')
-                .where('id',blog_id)
+                .where('id', blog_id)
                 .catch(err => console.log(err))
 
         let blogs = await this.compileImgCatCmt(results)
@@ -33,7 +33,7 @@ class BlogService {
 
     async getBlogImages(blog_id) {
         let results =
-            await knex('blogs-images')
+            await knex('images')
                 .select('url')
                 .where('blog_id', blog_id)
                 .catch(err => console.log(err))
@@ -41,13 +41,15 @@ class BlogService {
         return results
     }
 
+
+
     async getBlogCategories(blog_id) {
         let cates =
-        await knex('categories-blogs')
-            .select('category')
-            .innerJoin('categories', 'categories.id', 'categories-blogs.category_id')
-            .where('blog_id', blog_id)
-            .catch(err => console.log(err))
+            await knex('categories-blogs')
+                .select('category')
+                .innerJoin('categories', 'categories.id', 'categories-blogs.category_id')
+                .where('blog_id', blog_id)
+                .catch(err => console.log(err))
 
         return cates
     }
@@ -115,14 +117,23 @@ class BlogService {
     }
 
     //urls=[url,url]
-    async addBlogImages(urls,blog_id) {
-        await knex.raw('SELECT setval(\'"blogs-images_id_seq"\', (SELECT MAX(id) from "blogs-images"));')
+    async addBlogImages(urls, blog_id) {
+
+        let results =
+            await knex('blogs')
+            .innerJoin('users-districts','userDistrict_id','users-districts.id')
+            .select('district_id')
+            .where('blogs.id',blog_id)
+            .catch(err => console.log(err))
+
+        let district_id = results[0].district_id
+        await knex.raw('SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));')
         let imgs = []
 
         for (let url of urls) {
             let img =
-                await knex('blogs-images')
-                    .insert({url:url,blog_id})
+                await knex('images')
+                    .insert({ url: url, blog_id: blog_id,district_id:district_id })
                     .returning('*')
                     .catch(err => console.log(err))
 
@@ -131,7 +142,8 @@ class BlogService {
         return imgs
 
     }
-// categories = ["",""]
+
+    // categories = ["",""]
     async addCategories(categories) {
         await knex.raw('SELECT setval(\'categories_id_seq\', (SELECT MAX(id) from categories));')
 
@@ -139,7 +151,7 @@ class BlogService {
         for (let category of categories) {
             let cate =
                 await knex('categories')
-                    .insert({category:category})
+                    .insert({ category: category })
                     .returning('*')
                     .catch(err => console.log(err))
             cates.push(cate[0])
@@ -163,13 +175,13 @@ class BlogService {
         return cates
     }
 
-    async listCategories(){
+    async listCategories() {
 
         let results =
-        await knex('categories')
-        .select('*')
-        .catch(err => console.log(err))
-        
+            await knex('categories')
+                .select('*')
+                .catch(err => console.log(err))
+
         return results
     }
 
@@ -180,7 +192,7 @@ class BlogService {
             .returning('*')
             .catch((err) => console.log(err))
 
-        await knex('blogs-images')
+        await knex('images')
             .del()
             .where('blog_id', blog_id)
             .returning('*')
