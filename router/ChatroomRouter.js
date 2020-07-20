@@ -3,7 +3,7 @@ const router = require('express').Router();
 class ChatroomRouter {
   constructor(chatroomService) {
     this.chatroomService = chatroomService;
-    this.router = router();
+    this.router = router;
   }
   route() {
     this.router.get('/all', this.listChatrooms.bind(this));
