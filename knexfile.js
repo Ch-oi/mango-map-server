@@ -10,10 +10,10 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD
     },
     migrations:{
-      directory:`${__dirname}/migrations`
+      directory:`${__dirname}/database/migrations`
     },
     seeds:{
-      directory:`${__dirname}/seeds`
+      directory:`${__dirname}/database/seeds`
     }
   },
 

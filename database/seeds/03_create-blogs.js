@@ -35,10 +35,10 @@ exports.seed = function (knex) {
     })
     .then(function () {
       // Inserts seed entries
-      return knex('blogs-images').insert([
-        { id: 1, blog_id: 1, url: 'https://picsum.photos/200/300' },
-        { id: 2, blog_id: 1, url: 'https://picsum.photos/200/300' },
-        { id: 3, blog_id: 1, url: 'https://picsum.photos/200/300' }
+      return knex('images').insert([
+        { id: 1, blog_id: 1, url: 'https://picsum.photos/200/300',district_id:1 },
+        { id: 2, url: 'https://picsum.photos/200/300',district_id:2 },
+        { id: 3,  url: 'https://picsum.photos/200/300',district_id:3 }
       ]);
     });
 };

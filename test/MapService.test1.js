@@ -60,7 +60,7 @@ describe('test user services', () => {
     })
 
     test('list all districts in an area', () => {
-        return mapService.getDistricts(area_id)
+        return mapService.getAreaDistricts(area_id)
             .then(res => {
                 expect(res.length).toBe(4)
                 expect(res[3].name).toBe('north-point')
@@ -79,6 +79,13 @@ describe('test user services', () => {
             .then(res => {
                 console.log(res[0].userBlogs)
                 expect(res[0].userBlogs[0].title).toBe('title1')
+            })
+    })
+    test('get all images at one district', () => {
+        return mapService.getDistrictImages(district_id)
+            .then(res => {
+                console.log(res)
+                expect(typeof res[0].url).toBe('string')
             })
     })
     test('add new district', () => {

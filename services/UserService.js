@@ -30,6 +30,7 @@ class UserService {
     }
 
 
+
     //all location that a user marked
     async getUserDistricts(user_id) {
         let userDistricts =
@@ -40,7 +41,7 @@ class UserService {
                 .catch(err => console.log(err))
 
         let userDistrictsBlogs = await this.getUserDistrictsBlog(userDistricts)
-        
+
         return userDistrictsBlogs
     }
 
@@ -87,7 +88,7 @@ class UserService {
     async getUserChatroomRecords(chatroom_id, user_id) {
         let chatRecords = await knex('chatrooms-users')
             .select('*')
-            .innerJoin('chatRecords','chatroomUser_id','chatrooms-users.id')
+            .innerJoin('chatRecords', 'chatroomUser_id', 'chatrooms-users.id')
             .where('chatroom_id', chatroom_id)
             .andWhere('user_id', user_id)
             .catch(err => console.log(err))
@@ -147,6 +148,33 @@ class UserService {
 
         return results
     }
+
+    async addUserToUserChatroom(user1_id, user2_id) {
+        await knex.raw('SELECT setval(\'"users-chats_id_seq"\', (SELECT MAX(id) from "users-chats"));')
+        let results =
+            await knex('users-chats')
+                .insert({ user1_id: user1_id, user2_id: user2_id })
+                .returning('*')
+                .catch(err => console.log(err))
+
+        return results
+    }
+
+    async addUserToUserchatRecord(body, userChat_id, publisher_id) {
+        await knex.raw('SELECT setval(\'"users-chatRecords_id_seq"\', (SELECT MAX(id) from "users-chatRecords"));')
+
+        let results =
+            await knex('users-chatRecords')
+                .insert({ body: body, userChat_id: userChat_id, publisher: publisher_id })
+                .returning('*')
+                .catch(err => console.log(err))
+
+        return results
+
+    }
+
+    
+
     async deleteUser() {
         let results =
             await knex('users')

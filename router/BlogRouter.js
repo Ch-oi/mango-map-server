@@ -5,6 +5,7 @@ class BlogRouter {
     this.blogService = blogService;
     this.router = router;
   }
+
   route() {
     this.router.get('/all', this.listBlogs.bind(this));
     this.router.get('/:id', this.getBlog.bind(this));
@@ -15,6 +16,8 @@ class BlogRouter {
 
     this.router.get('/categories', this.listCategories.bind(this));
     this.router.post('/categories', this.addCategories.bind(this));
+
+    return this.router;
   }
 
   listBlogs(req, res) {
@@ -27,6 +30,7 @@ class BlogRouter {
         console.log(err);
       });
   }
+
   getBlog(req, res) {
     let blog_id = req.params.id;
     return this.blogService
@@ -38,6 +42,7 @@ class BlogRouter {
         console.log(err);
       });
   }
+
   addBlog(req, res) {
     let new_blog = { ...req.body };
     return this.blogService

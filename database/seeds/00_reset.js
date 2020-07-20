@@ -12,10 +12,10 @@ exports.seed = function (knex) {
       return knex.raw('ALTER SEQUENCE categories_id_seq RESTART WITH 1')
     })
     .then(function () {
-      return knex('blogs-images').del()
+      return knex('images').del()
     })
     .then(function () {
-      return knex.raw('ALTER SEQUENCE "blogs-images_id_seq" RESTART WITH 1')
+      return knex.raw('ALTER SEQUENCE "images_id_seq" RESTART WITH 1')
     })
     .then(function () {
       return knex('comments').del()
@@ -28,6 +28,12 @@ exports.seed = function (knex) {
     })
     .then(function () {
       return knex.raw('ALTER SEQUENCE "users-favBlogs_id_seq" RESTART WITH 1')
+    })
+    .then(function () {
+      return knex('images').del()
+    })
+    .then(function () {
+      return knex.raw('ALTER SEQUENCE "images_id_seq" RESTART WITH 1')
     })
     .then(function () {
       return knex('blogs').del()
@@ -70,6 +76,18 @@ exports.seed = function (knex) {
     })
     .then(function () {
       return knex.raw('ALTER SEQUENCE chatrooms_id_seq RESTART WITH 1')
+    })
+    .then(function () {
+      return knex('users-chatRecords').del()
+    })
+    .then(function () {
+      return knex.raw('ALTER SEQUENCE "users-chatRecords_id_seq" RESTART WITH 1')
+    })
+    .then(function () {
+      return knex('users-chats').del()
+    })
+    .then(function () {
+      return knex.raw('ALTER SEQUENCE "users-chats_id_seq" RESTART WITH 1')
     })
     .then(function () {
       return knex('users').del()
