@@ -28,6 +28,18 @@ class BlogService {
     return this.blogs;
   }
 
+  async getBlogUserDistrict(userDistrict_id) {
+    let results = await knex('users-districts')
+      .innerJoin('users', 'user_id', 'users.id')
+      .innerJoin('districts', 'districts.id', 'district_id')
+      .select('user_name', 'en')
+      .where('users-districts.id', userDistrict_id)
+      .catch((err) => console.log(err));
+
+    return results
+  }
+
+
   async getBlogImages(blog_id) {
     let results = await knex('images')
       .select('url')
@@ -71,9 +83,12 @@ class BlogService {
       let images = await this.getBlogImages(blog.id);
       let categories = await this.getBlogCategories(blog.id);
       let comments = await this.getBlogComments(blog.id);
+      let userDistrict = await this.getBlogUserDistrict(blog.userDistrict_id)
       blog.images = images;
       blog.categories = categories;
       blog.comments = comments;
+      blog.userName = userDistrict[0].user_name
+      blog.districtName = userDistrict[0].en
       blogsDetailed.push(blog);
     }
     return blogsDetailed;
