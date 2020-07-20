@@ -1,9 +1,9 @@
-const express = require('express');
+const router = require('express').Router();
 
 class MapRouter {
   constructor(mapService) {
     this.mapService = mapService;
-    this.router = express.Router();
+    this.router = router;
   }
 
   route() {
