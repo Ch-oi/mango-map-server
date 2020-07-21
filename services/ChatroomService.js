@@ -14,10 +14,10 @@ class ChatroomService {
                 .select('*')
                 .catch(err => console.log(err))
 
-        for (let chatroom of chatrooms) {
-            let chatroomUsers = await this.getRoomAllChatRecords(chatroom.id)
-            chatroom.chatroomUser = chatroomUsers
-        }
+        // for (let chatroom of chatrooms) {
+        //     let chatroomUsers = await this.getRoomAllChatRecords(chatroom.id)
+        //     chatroom.chatroomUser = chatroomUsers
+        // }
         this.chatrooms=chatrooms
         return this.chatrooms
     }
@@ -59,6 +59,8 @@ class ChatroomService {
 
         return newChatroomDetailed
     }
+
+    
 
     //add a new chat record 
     //charRecord={body:"",images:""}
@@ -132,15 +134,15 @@ class ChatroomService {
         return chatroomUsers
     }
 
-    // async getChatroomUserRecords(chatroomUser) {
-    //     let chatRecords =
-    //         await knex('chatRecords')
-    //             .select('*')
-    //             .where('chatroomUser_id', chatroomUser.id)
-    //             .catch((err) => console.log(err))
+    async getChatroomUserRecords(chatroomUser) {
+        let chatRecords =
+            await knex('chatRecords')
+                .select('*')
+                .where('chatroomUser_id', chatroomUser.id)
+                .catch((err) => console.log(err))
 
-    //     return chatRecords
-    // }
+        return chatRecords
+    }
 }
 
 
