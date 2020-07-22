@@ -1,15 +1,15 @@
-const express = require('express');
+const router = require('express').Router();
 
 class MapRouter {
   constructor(mapService) {
     this.mapService = mapService;
-    this.router = express.Router();
+    this.router = router;
   }
 
   route() {
     this.router.get('/area', this.listAreas.bind(this));
     this.router.get('/districts', this.listDistricts.bind(this));
-    this.router.get('/districts/:id', this.getAreaDistricts.bind(this));
+    this.router.get('/district/:id', this.getAreaDistricts.bind(this));
     this.router.get('/districtUsers/:id', this.getDistrictUsers.bind(this));
     this.router.post('/district', this.addDistrict.bind(this));
 

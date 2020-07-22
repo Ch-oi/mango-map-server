@@ -11,23 +11,13 @@ class UserRouter {
     this.router.get('/one/:id/districts', this.getUserDistricts.bind(this));
     this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
 
-    this.router.get(
-      '/authorized/:id/chatrooms',
-      this.getUserChatrooms.bind(this)
-    );
-    this.router.get(
-      '/authorized/:uid/chatroom/:cid',
-      this.getUserChatroomRecords.bind(this)
-    );
+    this.router.get('/authorized/:id/chatrooms',this.getUserChatrooms.bind(this));
+    this.router.get('/authorized/:uid/chatroom/:cid',this.getUserChatroomRecords.bind(this));
     this.router.post('/', this.addUser.bind(this));
-    this.router.post(
-      '/authorized/:uid/blog/:bid',
-      this.addUserFavBlog.bind(this)
-    );
-    this.router.post(
-      '/authorized/:uid/district/:did',
-      this.addUserDistrict.bind(this)
-    );
+    this.router.post('/authorized/:uid/blog/:bid',this.addUserFavBlog.bind(this));
+    this.router.post('/authorized/:uid/district/:did',this.addUserDistrict.bind(this));
+    this.router.post('/authorized/:uid1/userchat/:uid2',this.addUserToUserChatroom.bind(this));
+    this.router.post('/authorized/:pid/userchatRecord/:ucid2',this.addUserToUserChatroom.bind(this));
 
     return this.router;
   }
@@ -138,6 +128,34 @@ class UserRouter {
         console.log(err);
       });
   }
+  addUserToUserChatroom(req, res) {
+    let user_id1 = req.params.uid1;
+    let user_id2 = req.params.uid2;
+    return this.userService
+      .addUserToUserChatroom(user_id1, user_id2)
+      .then((results) => {
+        res.send(results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  addUserToUserchatRecord(req, res) {
+    let publisher_id = req.params.pid;
+    let userChat_id = req.params.ucid;
+    let chatRecord = req.body.chatRecord
+    return this.userService
+      .addUserToUserchatRecord(chatRecord,userChat_id, publisher_id)
+      .then((results) => {
+        res.send(results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  
 }
 
 module.exports = UserRouter;

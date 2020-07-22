@@ -8,13 +8,13 @@ class BlogRouter {
 
   route() {
     this.router.get('/all', this.listBlogs.bind(this));
+    this.router.get('/categories', this.listCategories.bind(this));
     this.router.get('/:id', this.getBlog.bind(this));
-    this.router.post('/', this.addBlog.bind(this));
     this.router.post('/images/:id', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
     this.router.post('/comment/:id', this.addBlogComment.bind(this));
+    this.router.post('/', this.addBlog.bind(this));
 
-    this.router.get('/categories', this.listCategories.bind(this));
     this.router.post('/categories', this.addCategories.bind(this));
 
     return this.router;

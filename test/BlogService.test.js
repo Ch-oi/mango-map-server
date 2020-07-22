@@ -87,6 +87,12 @@ describe('BlogService testing with blogservice', () => {
       expect(typeof results[0].comments).toEqual('object');
     });
   });
+
+  test('get one Blog user & district name ', () => {
+    return blogService.getBlogUserDistrict(1).then((results) => {
+      console.log(results)
+    });
+  });
   test('get one particular BlogImages ', () => {
     return blogService.getBlogImages(1).then((results) => {
       expect(typeof results[0].url).toBe('string');

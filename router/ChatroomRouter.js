@@ -3,7 +3,7 @@ const router = require('express').Router();
 class ChatroomRouter {
   constructor(chatroomService) {
     this.chatroomService = chatroomService;
-    this.router = router();
+    this.router = router;
   }
 
   route() {
@@ -33,8 +33,8 @@ class ChatroomRouter {
   }
 
   addChatroom(req, res) {
-    let chatroom = { ...req.body };
-    let user_id = req.user.id;
+    let chatroom = { ...req.body.chatroom };
+    let user_id = req.body.user_id;
     return this.chatroomService
       .getChatroom(chatroom, user_id)
       .then((chatroom) => res.send(chatroom))
@@ -52,7 +52,7 @@ class ChatroomRouter {
   addChatRecord(req, res) {
     let user_id = req.user.id;
     let chatroom_id = req.params.id;
-    let new_chatRecord = { ...req.body };
+    let new_chatRecord = { ...req.body.chatRecord };
     return this.chatroomService
       .addChatRecord(new_chatRecord, chatroom_id, user_id)
       .then((chatRecord) => res.send(chatRecord))

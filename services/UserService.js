@@ -12,9 +12,9 @@ class UserService {
                 .select('*')
                 .catch(err => console.log(err))
 
-        let userDetailed = await this.compileUserDistsFavBlogsChatRooms(users)
+        // let userDetailed = await this.compileUserDistsFavBlogsChatRooms(users)
 
-        return userDetailed
+        return users
     }
 
     async getUser(user_id) {
@@ -36,7 +36,7 @@ class UserService {
         let userDistricts =
             await knex('users-districts')
                 .innerJoin('districts', 'users-districts.district_id', 'districts.id')
-                .select('name', 'users-districts.id')
+                .select('en','cn', 'users-districts.id')
                 .where('user_id', user_id)
                 .catch(err => console.log(err))
 
@@ -72,6 +72,17 @@ class UserService {
         return favBlogs
     }
 
+    async getUserChat(user1_id) {
+        let userChat =
+            await knex('users-chats')
+                .innerJoin('users', 'users.id', 'users-chats.user2_id')
+                .select('users-chats.id','user2_id','user_name' )
+                .where('user1_id', user1_id)
+                .catch(err => console.log(err))
+
+        return userChat
+    }
+
     async getUserChatrooms(user_id) {
         let chatrooms =
             await knex('chatrooms-users')
@@ -103,9 +114,11 @@ class UserService {
             let districts = await this.getUserDistricts(user.id)
             let chatrooms = await this.getUserChatrooms(user.id)
             let favBlogs = await this.getUserFavBlogs(user.id)
+            let userChat = await this.getUserChat(user.id)
             user.districts = districts
             user.chatrooms = chatrooms
             user.favBlogs = favBlogs
+            user.userChat = userChat
             usersDetailed.push(user)
         }
 
