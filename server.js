@@ -45,12 +45,13 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('user-connected', name);
   });
 
-  socket.on('send-chat-message', (message) => {
+  socket.on('send-chat-message', (message, cb) => {
     console.log(message);
     socket.broadcast.emit('chat-message', {
       message,
       // TODO This should return the username as well
     });
+    cb();
   });
 
   socket.on('disconnect', () => {
@@ -61,7 +62,7 @@ io.on('connection', (socket) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('This is an secure server');
+  res.send('This is a secure server');
 });
 
 server.listen(8000, () => {
