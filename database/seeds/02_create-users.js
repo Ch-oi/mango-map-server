@@ -3,12 +3,13 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
 
   // Inserts seed entries
+  //password is 12345 in plain text
   return knex('users').insert([
     {
       id: 1,
       user_name: 'Edwin',
       email: 'e@e.com',
-      password: '',
+      password: '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
       description: '',
       profile_picture_URL: '',
       security_question: '',
@@ -21,7 +22,7 @@ exports.seed = function (knex) {
       id: 2,
       user_name: 'Pulips',
       email: 'p@p.com',
-      password: '',
+      password: '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
       description: '',
       profile_picture_URL: '',
       security_question: '',
@@ -34,7 +35,7 @@ exports.seed = function (knex) {
       id: 3,
       user_name: 'Jacky',
       email: 'j@j.com',
-      password: '',
+      password: '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
       description: '',
       profile_picture_URL: '',
       security_question: '',
@@ -63,9 +64,9 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex('users-chatRecords').insert([
-        { id: 1, userChat_id: 1, body: 'how are you', publisher:1 },
-        { id: 2, userChat_id: 1, body: 'what the hell,man',publisher:2 },
-        { id: 3, userChat_id: 1, body: 'sorry to bother you',publisher:1 }
+        { id: 1, userChat_id: 1, body: 'how are you', publisher: 1 },
+        { id: 2, userChat_id: 1, body: 'what the hell,man', publisher: 2 },
+        { id: 3, userChat_id: 1, body: 'sorry to bother you', publisher: 1 }
       ]);
     });
 };

@@ -107,6 +107,17 @@ class BlogService {
     return results[0];
   }
 
+  async updateBlog(blog,blog_id) {
+
+    let results = await knex('blogs')
+      .update(blog)
+      .where('id',blog_id)
+      .returning('*')
+      .catch((err) => console.log(err));
+
+    return results[0];
+  }
+
   //comment={body:"",ref_comment_id:"",user_id:,blog_id:}
   async addBlogComment(comment) {
     await knex.raw(
