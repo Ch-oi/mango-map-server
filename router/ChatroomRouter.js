@@ -5,6 +5,7 @@ class ChatroomRouter {
     this.chatroomService = chatroomService;
     this.router = router;
   }
+
   route() {
     this.router.get('/all', this.listChatrooms.bind(this));
     this.router.get('/:id', this.getChatroom.bind(this));
@@ -22,6 +23,7 @@ class ChatroomRouter {
       .then((chatrooms) => res.send(chatrooms))
       .catch((err) => console.log(err));
   }
+
   getChatroom(req, res) {
     let chatroom_id = req.params.id;
     return this.chatroomService
@@ -29,6 +31,7 @@ class ChatroomRouter {
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }
+
   addChatroom(req, res) {
     let chatroom = { ...req.body.chatroom };
     let user_id = req.body.user_id;
@@ -37,6 +40,7 @@ class ChatroomRouter {
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }
+
   getChatroomUsers(req, res) {
     let chatroom_id = req.params.id;
     return this.chatroomService
@@ -44,6 +48,7 @@ class ChatroomRouter {
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }
+
   addChatRecord(req, res) {
     let user_id = req.user.id;
     let chatroom_id = req.params.id;

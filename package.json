@@ -13,7 +13,8 @@
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "pgsql": "^1.0.0",
-    "private": "true"
+    "private": "true",
+    "socket.io": "^2.3.0"
   },
   "scripts": {
     "test": "jest"
