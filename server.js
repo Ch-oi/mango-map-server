@@ -31,10 +31,7 @@ const blogService = new BlogService();
 // const chatroomService = new ChatroomService();
 const mapService = new MapService();
 
-<<<<<<< HEAD
-=======
 app.use('/chatroom', new ChatroomRouter(chatroomService).route());
->>>>>>> 7417c9788d216a7f1873e5c219a301e0972a79df
 app.use('/user', new UserRouter(userService).route());
 app.use('/blog', new BlogRouter(blogService).route());
 // app.use('/chatroom', new ChatroomRouter(chatroomService).route());
