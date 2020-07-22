@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "base64url": "^3.0.1",
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -8,6 +9,8 @@
     "jest": "^26.1.0",
     "knex": "^0.21.1",
     "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "pgsql": "^1.0.0",
     "private": "true",

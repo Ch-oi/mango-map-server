@@ -1,5 +1,5 @@
 
-const  knex =require('../database/config')
+const knex = require('../database/config')
 
 class ChatroomService {
     constructor() {
@@ -18,7 +18,7 @@ class ChatroomService {
         //     let chatroomUsers = await this.getRoomAllChatRecords(chatroom.id)
         //     chatroom.chatroomUser = chatroomUsers
         // }
-        this.chatrooms=chatrooms
+        this.chatrooms = chatrooms
         return this.chatrooms
     }
 
@@ -60,7 +60,32 @@ class ChatroomService {
         return newChatroomDetailed
     }
 
-    
+    async updateChatroom(chatroom, chatroom_id, users_id) {
+
+        let updateChatRoom =
+            await knex('chatrooms')
+                .update(chatroom)
+                .where('id', chatroom_id)
+                .returning('*')
+                .catch(err => console.log(err))
+
+
+        await knex('chatrooms-users').del().where('chatroom_id',updateChatRoom[0].id).catch(err => console.log(err))
+
+        await knex.raw('SELECT setval(\'"chatrooms-users_id_seq"\', (SELECT MAX(id) from "chatrooms-users"));')
+
+        const fieldToInsert = users_id.map(user_id =>
+            ({ chatroom_id: updateChatRoom[0].id, user_id: user_id }))
+
+        let newChatroomDetailed = await knex('chatrooms-users')
+            .insert(fieldToInsert)
+            .returning('*')
+            .catch(err => console.log(err))
+
+        return newChatroomDetailed
+    }
+
+
 
     //add a new chat record 
     //charRecord={body:"",images:""}

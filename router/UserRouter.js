@@ -13,7 +13,7 @@ class UserRouter {
 
     this.router.get('/authorized/:id/chatrooms',this.getUserChatrooms.bind(this));
     this.router.get('/authorized/:uid/chatroom/:cid',this.getUserChatroomRecords.bind(this));
-    this.router.post('/', this.addUser.bind(this));
+    this.router.post('/signup', this.addUser.bind(this));
     this.router.post('/authorized/:uid/blog/:bid',this.addUserFavBlog.bind(this));
     this.router.post('/authorized/:uid/district/:did',this.addUserDistrict.bind(this));
     this.router.post('/authorized/:uid1/userchat/:uid2',this.addUserToUserChatroom.bind(this));

@@ -1,5 +1,5 @@
-
 const knex = require('../database/config')
+const bcrypt = require('bcrypt')
 
 class UserService {
     constructor() {
@@ -126,10 +126,13 @@ class UserService {
     }
 
     async addUser(user) {
+        console.log(user)
+
+        let hashedPwd = await bcrypt.hash(user.password.toString(),10)
         await knex.raw('SELECT setval(\'"users_id_seq"\', (SELECT MAX(id) from "users"));')
         let results =
             await knex('users')
-                .insert(user)
+                .insert({...user,password:hashedPwd})
                 .returning('*')
                 .catch(err => console.log(err))
 
