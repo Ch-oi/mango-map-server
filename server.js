@@ -31,7 +31,7 @@ const blogService = new BlogService();
 // const chatroomService = new ChatroomService();
 const mapService = new MapService();
 
-app.use('/chatroom', new ChatroomRouter(chatroomService).route());
+// app.use('/chatroom', new ChatroomRouter(chatroomService).route());
 app.use('/user', new UserRouter(userService).route());
 app.use('/blog', new BlogRouter(blogService).route());
 // app.use('/chatroom', new ChatroomRouter(chatroomService).route());
