@@ -5,8 +5,9 @@ exports.up = function (knex) {
         table.text('url').notNullable()
         table.integer('blog_id').unsigned()
         table.foreign('blog_id').references('blogs.id')
-        table.integer('district_id').unsigned().notNullable()
-        table.foreign('district_id').references('districts.id')
+        table.integer('userDistrict_id').unsigned().notNullable()
+        table.foreign('userDistrict_id').references('users-districts.id')
+        table.boolean('private').defaultTo(false)
         table.timestamps(true, false)
     })
 };

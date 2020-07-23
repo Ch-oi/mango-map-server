@@ -53,20 +53,5 @@ exports.seed = function (knex) {
         { id: 3, user_id: 3, district_id: 3 }
       ]);
     })
-    .then(function () {
-      // Inserts seed entries
-      return knex('users-chats').insert([
-        { id: 1, user1_id: 1, user2_id: 2 },
-        { id: 2, user1_id: 2, user2_id: 3 },
-        { id: 3, user1_id: 3, user2_id: 1 }
-      ]);
-    })
-    .then(function () {
-      // Inserts seed entries
-      return knex('users-chatRecords').insert([
-        { id: 1, userChat_id: 1, body: 'how are you', publisher: 1 },
-        { id: 2, userChat_id: 1, body: 'what the hell,man', publisher: 2 },
-        { id: 3, userChat_id: 1, body: 'sorry to bother you', publisher: 1 }
-      ]);
-    });
+   
 };
