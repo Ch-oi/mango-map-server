@@ -7,9 +7,9 @@ const express = require('express');
 const session = require('express-session');
 const port = process.env.PORT || 8000;
 const app = express();
+
 const initializeLocal = require('./passport/localStrategy')
-
-
+const initializeJwt = require('./passport/jwtStrategy')
 const key = fs.readFileSync('./key.pem');
 const cert = fs.readFileSync('./cert.pem');
 
@@ -31,10 +31,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
+
 initializeLocal(passport)
-
-
-const knex = require('./database/config')
+initializeJwt(passport)
 
 const UserRouter = require('./router/UserRouter');
 const BlogRouter = require('./router/BlogRouter');
@@ -83,15 +84,18 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.send('This is a secure server');
-});
+app.get('/',
+  passport.authenticate('token',
+    { session: false }), (req, res) => {
+      res.json({
+        message: 'You made it to the secure route',
+        user: req.user
+      })
+    
+    });
 
-app.get('/auth/local-login', async (req, res) => {
-  console.log(req.session)
-  res.send();
-});
 
 app.listen(port, function () {
   console.log('listening on port' + port);
 });
+

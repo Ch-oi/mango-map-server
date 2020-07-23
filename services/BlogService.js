@@ -1,4 +1,4 @@
-const knex = require('../database/config');
+const knex = require('../database/config').knex;
 
 class BlogService {
   constructor() {
