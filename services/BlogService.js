@@ -1,4 +1,4 @@
-const knex = require('../database/config');
+const knex = require('../database/config').knex;
 
 class BlogService {
   constructor() {
@@ -107,11 +107,11 @@ class BlogService {
     return results[0];
   }
 
-  async updateBlog(blog,blog_id) {
+  async updateBlog(blog, blog_id) {
 
     let results = await knex('blogs')
       .update(blog)
-      .where('id',blog_id)
+      .where('id', blog_id)
       .returning('*')
       .catch((err) => console.log(err));
 
@@ -190,6 +190,8 @@ class BlogService {
     }
     return cates;
   }
+
+
 
   async listCategories() {
     let results = await knex('categories')

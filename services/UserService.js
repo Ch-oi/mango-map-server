@@ -1,4 +1,4 @@
-const knex = require('../database/config')
+const knex = require('../database/config').knex
 const bcrypt = require('bcrypt')
 
 class UserService {
@@ -36,7 +36,7 @@ class UserService {
         let userDistricts =
             await knex('users-districts')
                 .innerJoin('districts', 'users-districts.district_id', 'districts.id')
-                .select('en','cn', 'users-districts.id')
+                .select('en', 'cn', 'users-districts.id')
                 .where('user_id', user_id)
                 .catch(err => console.log(err))
 
@@ -76,7 +76,7 @@ class UserService {
         let userChat =
             await knex('users-chats')
                 .innerJoin('users', 'users.id', 'users-chats.user2_id')
-                .select('users-chats.id','user2_id','user_name' )
+                .select('users-chats.id', 'user2_id', 'user_name')
                 .where('user1_id', user1_id)
                 .catch(err => console.log(err))
 
@@ -128,11 +128,11 @@ class UserService {
     async addUser(user) {
         console.log(user)
 
-        let hashedPwd = await bcrypt.hash(user.password.toString(),10)
+        let hashedPwd = await bcrypt.hash(user.password.toString(), 10)
         await knex.raw('SELECT setval(\'"users_id_seq"\', (SELECT MAX(id) from "users"));')
         let results =
             await knex('users')
-                .insert({...user,password:hashedPwd})
+                .insert({ ...user, password: hashedPwd })
                 .returning('*')
                 .catch(err => console.log(err))
 
@@ -165,31 +165,6 @@ class UserService {
         return results
     }
 
-    async addUserToUserChatroom(user1_id, user2_id) {
-        await knex.raw('SELECT setval(\'"users-chats_id_seq"\', (SELECT MAX(id) from "users-chats"));')
-        let results =
-            await knex('users-chats')
-                .insert({ user1_id: user1_id, user2_id: user2_id })
-                .returning('*')
-                .catch(err => console.log(err))
-
-        return results
-    }
-
-    async addUserToUserchatRecord(body, userChat_id, publisher_id) {
-        await knex.raw('SELECT setval(\'"users-chatRecords_id_seq"\', (SELECT MAX(id) from "users-chatRecords"));')
-
-        let results =
-            await knex('users-chatRecords')
-                .insert({ body: body, userChat_id: userChat_id, publisher: publisher_id })
-                .returning('*')
-                .catch(err => console.log(err))
-
-        return results
-
-    }
-
-    
 
     async deleteUser() {
         let results =

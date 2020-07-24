@@ -78,18 +78,6 @@ exports.seed = function (knex) {
       return knex.raw('ALTER SEQUENCE chatrooms_id_seq RESTART WITH 1')
     })
     .then(function () {
-      return knex('users-chatRecords').del()
-    })
-    .then(function () {
-      return knex.raw('ALTER SEQUENCE "users-chatRecords_id_seq" RESTART WITH 1')
-    })
-    .then(function () {
-      return knex('users-chats').del()
-    })
-    .then(function () {
-      return knex.raw('ALTER SEQUENCE "users-chats_id_seq" RESTART WITH 1')
-    })
-    .then(function () {
       return knex('users').del()
     })
     .then(function () {
