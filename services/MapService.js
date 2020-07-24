@@ -61,7 +61,7 @@ class MapService {
     async getDistrictImages(district_id) {
         let results =
             await knex('images')
-                .select('*')
+                .innerJoin('users-districts', 'userDistrict_id', 'users-districts.id')
                 .where('district_id', district_id)
                 .catch(err => console.log(err))
 
@@ -78,14 +78,15 @@ class MapService {
         return newDistrict
     }
 
-    async addDistrictImages(urls, district_id) {
+    async addDistrictImages(imageObject) {
         await knex.raw('SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));')
         let imgs = []
 
-        for (let url of urls) {
+        for (let url of imageObject.urls) {
             let img =
                 await knex('images')
-                    .insert({ url: url, district_id: district_id })
+                    .innerJoin('users-districts', 'userDistrict_id', 'users-districts.id')
+                    .insert({ ...imageObject,url:url})
                     .returning('*')
                     .catch(err => console.log(err))
 
