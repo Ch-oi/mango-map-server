@@ -1,34 +1,28 @@
 const router = require('express').Router();
 
 class ImageRouter {
-    constructor(imageService) {
-        this.imageService = imageService;
-        this.router = router;
-    }
+  constructor(imageRouter) {
+    this.imageRouter = imageRouter;
+    this.router = router;
+  }
 
-    route() {
-        this.router.get('/all', this.listImages.bind(this));
-        this.router.get('/:id', this.getImage.bind(this));
+  // All images are connected to a particular user
+  route() {
+    // Images that associate with chatroom id
+    // Not public to outsiders
+    this.router.get('/image/private', this.addDistrict.bind(this));
+    this.router.post('/image/private', this.addDistrict.bind(this));
 
+    // Images that associate with a distrcit
+    // Could be in a blog or just the location
+    this.router.get('/image/public', this.addDistrict.bind(this));
+    this.router.post('/image/public', this.addDistrict.bind(this));
 
-        return this.router;
-    }
+    // Remove a particular image
+    this.router.delete('/image/private', this.addDistrict.bind(this));
 
-    listImages(req, res) {
-        return this.imageService.listImages()
-            .then(images => res.send(images))
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-    getImage(req,res){
-        let image_id = req.params.id
-        return this.imageService.getImage(image_id)
-            .then(image => res.send(image))
-            .catch((err) => {
-                console.log(err);
-            });
-    }
+    return this.router;
+  }
+
+  uploadToChatroom(req, res) {}
 }
-
-module.exports = ImageRouter

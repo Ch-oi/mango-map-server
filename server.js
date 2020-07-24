@@ -1,17 +1,21 @@
 var fs = require('fs');
 var https = require('https');
-require('dotenv').config()
+require('dotenv').config();
 
-const passport = require('passport')
+const passport = require('passport');
 const express = require('express');
 // const session = require('express-session');
 const port = process.env.PORT || 8000;
 const app = express();
+<<<<<<< HEAD
+const initializeLocal = require('./passport/localStrategy');
+=======
 
 const initializeLocal = require('./passport/localStrategy')
 const initializeJwt = require('./passport/jwtStrategy')
 const initializeGoogle = require('./passport/googleStrategy')
 const initializeFacebook = require('./passport/facebookSrategy')
+>>>>>>> 1b2d73642076f93a1ebd67333859bdbec566fa93
 
 const key = fs.readFileSync('./key.pem');
 const cert = fs.readFileSync('./cert.pem');
@@ -20,9 +24,20 @@ const server = https.createServer({ key: key, cert: cert }, app);
 const socketio = require('socket.io');
 const io = socketio(server);
 
+const axios = require('axios');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+<<<<<<< HEAD
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+=======
 
 // app.use(session({
 //   secret: process.env.SESSION_SECRET,
@@ -30,10 +45,17 @@ app.use(express.urlencoded({ extended: false }));
 //   saveUninitialized: false
 // }
 // ));
+>>>>>>> 1b2d73642076f93a1ebd67333859bdbec566fa93
 
 app.use(passport.initialize());
 // app.use(passport.session());
 
+<<<<<<< HEAD
+initializeLocal(passport);
+
+const knex = require('./database/config');
+
+=======
 
 initializeLocal(passport)
 initializeGoogle(passport)
@@ -41,6 +63,7 @@ initializeFacebook(passport)
 initializeJwt(passport)
 
 const ImageRouter = require('./router/ImageRouter');
+>>>>>>> 1b2d73642076f93a1ebd67333859bdbec566fa93
 const UserRouter = require('./router/UserRouter');
 const BlogRouter = require('./router/BlogRouter');
 const ChatroomRouter = require('./router/ChatroomRouter');
@@ -102,7 +125,7 @@ app.get('/',
     });
 
 
-app.listen(port, function () {
+server.listen(port, function () {
   console.log('listening on port' + port);
 });
 
