@@ -49,7 +49,6 @@ function initializeLocal(passport) {
     },
         async (email, password, done) => {
             try {
-
                 let user = await knex('users').where({ email: email })
                 if (user.length == 0) {
                     return done(null, false, { message: 'Incorrect email' })
@@ -58,7 +57,7 @@ function initializeLocal(passport) {
                 let result = await bcrypt.compare(password, user[0].password)
                 console.log(result)
                 if (result) {
-                    return done(null, user)
+                    return done(null, user[0])
                 }
                 else {
                     return done(null, false, { message: 'Incorrect password' })
@@ -69,17 +68,17 @@ function initializeLocal(passport) {
             }
         }
     ))
-    passport.serializeUser((user, done) => {
-        done(null, user.id)
-    })
-    passport.deserializeUser(async (id, done) => {
-        let users = await knex('users').where({ id: id });
-        if (users.length == 0) {
-            return done(new Error(`Wrong user id ${id}`));
-        }
-        let user = users[0];
-        return done(null, user);
-    });
+    // passport.serializeUser((user, done) => {
+    //     done(null, user.id)
+    // })
+    // passport.deserializeUser(async (id, done) => {
+    //     let users = await knex('users').where({ id: id });
+    //     if (users.length == 0) {
+    //         return done(new Error(`Wrong user id ${id}`));
+    //     }
+    //     let user = users[0];
+    //     return done(null, user);
+    // });
 }
 
 module.exports = initializeLocal

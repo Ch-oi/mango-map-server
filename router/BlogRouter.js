@@ -16,9 +16,11 @@ class BlogRouter {
     this.router.post('/', this.addBlog.bind(this));
 
     this.router.post('/categories', this.addCategories.bind(this));
-
+    
     return this.router;
   }
+
+  
 
   listBlogs(req, res) {
     return this.blogService

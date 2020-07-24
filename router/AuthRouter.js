@@ -11,15 +11,7 @@ class AuthRouter {
     route() {
         this.router.post('/local-login', passport.authenticate('local-login', {
             session: false
-        }), async (req, res) => {
-            try {
-
-                const token = jwt.sign({ id: req.user[0].id }, process.env.SECRET_KEY);
-                return res.json({ token });
-            } catch (error) {
-                return res.send(error);
-            }
-        })
+        }), this.jwtSigning)
 
         this.router.post('/local-signup', passport.authenticate('local-signup', {
             session: false
@@ -29,10 +21,42 @@ class AuthRouter {
                 user: req.user
             });
         })
+
+        this.router.get('/google-login', passport.authenticate('google', {
+            scope: ['profile', 'email']
+        }))
+        this.router.get('/google/redirect', passport.authenticate('google', {
+            successRedirect: '/',
+            failureRedirect: '/'
+        }))
+
+        this.router.get('/facebook-login', passport.authenticate('facebook', {
+            scope: ['profile', 'email']
+        }))
+        this.router.get('/facebook/redirect', passport.authenticate('facebook', {
+            successRedirect: '/',
+            failureRedirect: '/'
+        }))
+        this.router.get('/logout', this.logout.bind(this));
+
         return this.router
 
     }
+    async jwtSigning(req, res) {
+        try {
+            console.log(req.user)
+            const token = jwt.sign({ id: req.user.id }, process.env.SECRET_KEY);
+            return res.json({ token });
+        } catch (error) {
+            return res.send(error);
+        }
+    }
 
+    logout(req, res) {
+        req.logout();
+        console.log('Logged out')
+        res.redirect("/");
+    }
 }
 
 module.exports = AuthRouter

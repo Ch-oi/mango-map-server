@@ -14,9 +14,7 @@ exports.seed = function (knex) {
       profile_picture_URL: '',
       security_question: '',
       security_answer: '',
-      number_reviews: 0,
-      number_blogs: 0,
-      number_comments: 0
+
     },
     {
       id: 2,
@@ -27,9 +25,7 @@ exports.seed = function (knex) {
       profile_picture_URL: '',
       security_question: '',
       security_answer: '',
-      number_reviews: 0,
-      number_blogs: 0,
-      number_comments: 0
+
     },
     {
       id: 3,
@@ -40,9 +36,7 @@ exports.seed = function (knex) {
       profile_picture_URL: '',
       security_question: '',
       security_answer: '',
-      number_reviews: 0,
-      number_blogs: 0,
-      number_comments: 0
+
     }
   ])
     .then(function () {

@@ -4,12 +4,15 @@ require('dotenv').config()
 
 const passport = require('passport')
 const express = require('express');
-const session = require('express-session');
+// const session = require('express-session');
 const port = process.env.PORT || 8000;
 const app = express();
 
 const initializeLocal = require('./passport/localStrategy')
 const initializeJwt = require('./passport/jwtStrategy')
+const initializeGoogle = require('./passport/googleStrategy')
+const initializeFacebook = require('./passport/facebookSrategy')
+
 const key = fs.readFileSync('./key.pem');
 const cert = fs.readFileSync('./cert.pem');
 
@@ -21,20 +24,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}
-));
+// app.use(session({
+//   secret: process.env.SESSION_SECRET,
+//   resave: false,
+//   saveUninitialized: false
+// }
+// ));
 
 app.use(passport.initialize());
-app.use(passport.session());
-
-
+// app.use(passport.session());
 
 
 initializeLocal(passport)
+initializeGoogle(passport)
+initializeFacebook(passport)
 initializeJwt(passport)
 
 const ImageRouter = require('./router/ImageRouter');

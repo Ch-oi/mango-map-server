@@ -18,6 +18,7 @@ function initializeJwt(passport) {
         options,
         async (payload, done) => {
             try {
+                console.log(payload)
                 const user = await knex('users').where('id', payload.id)
                 return done(null, user)
 
@@ -25,8 +26,7 @@ function initializeJwt(passport) {
             catch (error) {
                 return done(error);
             }
-            // let res = await User.forge({ id: payload.id }).fetch()
-            // next(null, res);
+
         }))
 }
 
