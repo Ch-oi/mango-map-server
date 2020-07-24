@@ -1,14 +1,13 @@
 var fs = require('fs');
 var https = require('https');
-require('dotenv').config()
+require('dotenv').config();
 
-const passport = require('passport')
+const passport = require('passport');
 const express = require('express');
 const session = require('express-session');
 const port = process.env.PORT || 8000;
 const app = express();
-const initializeLocal = require('./passport/localStrategy')
-
+const initializeLocal = require('./passport/localStrategy');
 
 const key = fs.readFileSync('./key.pem');
 const cert = fs.readFileSync('./cert.pem');
@@ -17,24 +16,25 @@ const server = https.createServer({ key: key, cert: cert }, app);
 const socketio = require('socket.io');
 const io = socketio(server);
 
+const axios = require('axios');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}
-));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-initializeLocal(passport)
+initializeLocal(passport);
 
-
-const knex = require('./database/config')
+const knex = require('./database/config');
 
 const UserRouter = require('./router/UserRouter');
 const BlogRouter = require('./router/BlogRouter');
@@ -52,11 +52,7 @@ const blogService = new BlogService();
 const chatroomService = new ChatroomService();
 const mapService = new MapService();
 
-<<<<<<< HEAD
 // app.use('/chatroom', new ChatroomRouter(chatroomService).route());
-=======
-app.use('/chatroom', new ChatroomRouter(chatroomService).route());
->>>>>>> fcb92bbbfcaf40f98036e959c46dcccdca686db7
 app.use('/user', new UserRouter(userService).route());
 app.use('/blog', new BlogRouter(blogService).route());
 app.use('/map', new MapRouter(mapService).route());
@@ -92,10 +88,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/auth/local-login', async (req, res) => {
-  console.log(req.session)
+  console.log(req.session);
   res.send();
 });
 
-app.listen(port, function () {
+server.listen(port, function () {
   console.log('listening on port' + port);
 });
