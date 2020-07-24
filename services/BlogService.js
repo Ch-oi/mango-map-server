@@ -36,9 +36,8 @@ class BlogService {
       .where('users-districts.id', userDistrict_id)
       .catch((err) => console.log(err));
 
-    return results
+    return results;
   }
-
 
   async getBlogImages(blog_id) {
     let results = await knex('images')
@@ -83,12 +82,12 @@ class BlogService {
       let images = await this.getBlogImages(blog.id);
       let categories = await this.getBlogCategories(blog.id);
       let comments = await this.getBlogComments(blog.id);
-      let userDistrict = await this.getBlogUserDistrict(blog.userDistrict_id)
+      let userDistrict = await this.getBlogUserDistrict(blog.userDistrict_id);
       blog.images = images;
       blog.categories = categories;
       blog.comments = comments;
-      blog.userName = userDistrict[0].user_name
-      blog.districtName = userDistrict[0].en
+      blog.userName = userDistrict[0].user_name;
+      blog.districtName = userDistrict[0].en;
       blogsDetailed.push(blog);
     }
     return blogsDetailed;
@@ -108,7 +107,6 @@ class BlogService {
   }
 
   async updateBlog(blog, blog_id) {
-
     let results = await knex('blogs')
       .update(blog)
       .where('id', blog_id)
@@ -190,8 +188,6 @@ class BlogService {
     }
     return cates;
   }
-
-
 
   async listCategories() {
     let results = await knex('categories')
