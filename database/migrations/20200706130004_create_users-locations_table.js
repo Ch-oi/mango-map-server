@@ -1,14 +1,14 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('users-districts', (table) => {
+  return knex.schema.createTable('users-locations', (table) => {
     table.increments('id').primary();
     table.integer('user_id').unsigned();
     table.foreign('user_id').references('users.id');
-    table.integer('districts_id').unsigned();
-    table.foreign('districts_id').references('districts.id');
+    table.integer('location_id').unsigned();
+    table.foreign('location_id').references('locations.id');
     table.timestamps(true, true);
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('users-districts');
+  return knex.schema.dropTable('users-locations');
 };

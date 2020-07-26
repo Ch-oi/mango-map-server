@@ -19,9 +19,9 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex('chatRecords').insert([
-        { id: 1, body: 'body1', image_id: 1, chatroomUser_id:1 },
-        { id: 2, body: 'body2', image_id: 2, chatroomUser_id:2 },
-        { id: 3, body: 'body3', image_id: 3, chatroomUser_id:3 }
+        { id: 1, body: 'body1',  chatroomUser_id:1 },
+        { id: 2, body: 'body2',  chatroomUser_id:2 },
+        { id: 3, body: 'body3',  chatroomUser_id:3 }
       ]);
     });
 };

@@ -7,8 +7,8 @@ exports.up = function (knex) {
     table.text('main_picture_URL');
     table.boolean('modified');
     table.timestamps(true, true);
-    table.integer('userDistrict_id').notNullable().unsigned();
-    table.foreign('userDistrict_id').references('users-districts.id');
+    table.integer('userLocation_id').notNullable().unsigned();
+    table.foreign('userLocation_id').references('users-locations.id');
   });
 };
 
