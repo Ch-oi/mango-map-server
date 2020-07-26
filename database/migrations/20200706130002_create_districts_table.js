@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('area', (table) => {
+  return knex.schema.createTable('districts', (table) => {
     table.increments();
     table.string('name').notNullable();
     table.timestamps(true, false);
@@ -7,5 +7,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('area');
+  return knex.schema.dropTable('districts');
 };

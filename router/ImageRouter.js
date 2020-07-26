@@ -1,3 +1,5 @@
+const { read } = require('fs/promises');
+
 const router = require('express').Router();
 
 class ImageRouter {
@@ -13,10 +15,10 @@ class ImageRouter {
     this.router.post('/private', this.uploadToChatroom.bind(this));
     this.router.get('/private', this.loadChatroomImages.bind(this));
 
-    // // Images that associate with a distrcit
+    // // Images that associate with a district
     // // Could be in a blog or just the location
-    this.router.post('/public', this.uploadToDistrict.bind(this));
-    this.router.get('/public', this.loadDistrictImages.bind(this));
+    this.router.post('/public', this.uploadToLocation.bind(this));
+    this.router.get('/public/:id', this.loadLocationImages.bind(this));
 
     // // Remove a particular image
     this.router.post('/', this.removeImage.bind(this));
@@ -25,28 +27,33 @@ class ImageRouter {
   }
 
   uploadToChatroom(req, res) {
-    return this.imageService.uploadToChatroom('hi', 1, 1).then((data) => {
-      res.send('uploadToChatroom working');
-      console.log(data);
-    });
+    const { img, userId, roomId } = req.body;
+    console.log('ImageRoute is invoked');
+    return this.imageService
+      .uploadToChatroom(img, userId, roomId)
+      .then((data) => {
+        res.send('uploadToChatroom working');
+        console.log(data);
+      });
   }
 
   loadChatroomImages(req, res) {
+    console.log('File is uploaded');
     return this.imageService.loadChatroomImages(1).then((data) => {
-      res.send('data');
+      res.send(data);
     });
   }
 
-  uploadToDistrict(req, res) {
-    return this.imageService.uploadToDistrict('hi', 1, 1).then((data) => {
-      res.send('uploadToChatroom working');
-      console.log(data);
+  uploadToLocation(req, res) {
+    return this.imageService.uploadToLocation('hi', 1, 1).then((data) => {
+      res.send(data);
     });
   }
 
-  loadDistrictImages(req, res) {
-    return this.imageService.loadDistrictImages(1).then((data) => {
-      res.send('data');
+  loadLocationImages(req, res) {
+    return this.imageService.loadLocationImages(req.params.id).then((data) => {
+      console.log('Location images');
+      res.send(data);
     });
   }
 
