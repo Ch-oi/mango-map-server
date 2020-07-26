@@ -63,8 +63,10 @@ class AuthRouter {
   async jwtSigning(req, res) {
     try {
       console.log(req.user);
+      const user=req.user
       const token = jwt.sign({ id: req.user.id }, process.env.SECRET_KEY);
-      return res.json({ token });
+      user.token = token
+      return res.json({ user });
     } catch (error) {
       return res.send(error);
     }

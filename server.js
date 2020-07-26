@@ -8,7 +8,9 @@ const express = require('express');
 const port = process.env.PORT || 8000;
 
 const app = express();
+const cors = require('cors')
 
+<<<<<<< HEAD
 const cors = require('cors');
 app.use(cors());
 
@@ -16,6 +18,12 @@ const initializeLocal = require('./passport/localStrategy');
 const initializeJwt = require('./passport/jwtStrategy');
 const initializeGoogle = require('./passport/googleStrategy');
 const initializeFacebook = require('./passport/facebookSrategy');
+=======
+const initializeLocal = require('./passport/localStrategy')
+const initializeJwt = require('./passport/jwtStrategy')
+const initializeGoogle = require('./passport/googleStrategy')
+const initializeFacebook = require('./passport/facebookSrategy')
+>>>>>>> 3a38805f2cdad49bf6b313fc1e5452024305a4c9
 
 const key = fs.readFileSync('./key.pem');
 const cert = fs.readFileSync('./cert.pem');
@@ -24,8 +32,8 @@ const server = https.createServer({ key: key, cert: cert }, app);
 const socketio = require('socket.io');
 const io = socketio(server);
 
-const axios = require('axios');
-
+// const axios = require('axios');
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -39,10 +47,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
 // app.use(passport.session());
 
+<<<<<<< HEAD
 initializeLocal(passport);
 initializeGoogle(passport);
 initializeFacebook(passport);
 initializeJwt(passport);
+=======
+
+initializeLocal(passport)
+initializeGoogle(passport)
+initializeFacebook(passport)
+initializeJwt(passport)
+>>>>>>> 3a38805f2cdad49bf6b313fc1e5452024305a4c9
 
 const ImageRouter = require('./router/ImageRouter');
 const UserRouter = require('./router/UserRouter');
@@ -96,13 +112,19 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/', passport.authenticate('token', { session: false }), (req, res) => {
+app.get('/', (req, res) => {
+  res.json({
+    message: 'e',
+  });
+});
+
+app.get('/a', passport.authenticate('token', { session: false }), (req, res) => {
   res.json({
     message: 'You made it to the secure route',
     user: req.user,
   });
 });
 
-server.listen(port, function () {
-  console.log('listening on port' + port);
+app.listen(port, function () {
+  console.log('listening on port ' + port);
 });
