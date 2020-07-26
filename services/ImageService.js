@@ -30,6 +30,7 @@ class ImageService {
         url: imgurURL,
         chatroom_id: chatroomId,
       })
+      .innerJoin('chatrooms-users','chatrooms-users.id','chatroomUser_id')
       .then((data) => {
         console.log('Insertion is finished');
       })
@@ -42,7 +43,9 @@ class ImageService {
 
   // Loading images according to room id
   loadChatroomImages(chatroomId) {
-    let query = knex('images').select().where({ chatroom_id: chatroomId });
+    let query = knex('images')
+    .innerJoin('chatrooms-users','chatrooms-users.id','chatroomUser_id')
+    .where({ chatroom_id: chatroomId });
 
     return query.then((data) => data).catch((err) => console.log(err));
   }
@@ -68,6 +71,7 @@ class ImageService {
         url: imgurURL,
         chatroom_id: chatroomId,
       })
+      .innerJoin('chatrooms-users','chatrooms-users.id','chatroomUser_id')
       // TODO: handle the error
       .catch((err) => console.log(err));
 
@@ -77,7 +81,7 @@ class ImageService {
 
   // Loading images from a location
   loadLocationImages(locationId) {
-    let query = knex('images').select().where({ locations_id: locationId });
+    let query = knex('images').innerJoin('users-locations','users-locations.id','userLocation_id').select().where({ location_id: locationId });
     return query.then((data) => data).catch((err) => console.log(err));
   }
 

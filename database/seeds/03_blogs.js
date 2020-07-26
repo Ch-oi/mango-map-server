@@ -10,7 +10,7 @@ exports.seed = function (knex) {
         body: 'body1',
         main_picture_URL: 'https://picsum.photos/200/300',
         modified: false,
-        userDistrict_id: 1,
+        userLocation_id: 1,
       },
       {
         id: 2,
@@ -18,7 +18,7 @@ exports.seed = function (knex) {
         body: 'body2',
         main_picture_URL: 'https://picsum.photos/200/300',
         modified: false,
-        userDistrict_id: 2,
+        userLocation_id: 2,
       },
       {
         id: 3,
@@ -26,7 +26,7 @@ exports.seed = function (knex) {
         body: 'body3',
         main_picture_URL: 'https://picsum.photos/200/300',
         modified: false,
-        userDistrict_id: 3,
+        userLocation_id: 3,
       },
     ])
     .then(function () {
@@ -60,10 +60,10 @@ exports.seed = function (knex) {
   //       id: 1,
   //       blog_id: 1,
   //       url: 'https://picsum.photos/200/300',
-  //       userDistrict_id: 1,
+  //       userLocation_id: 1,
   //     },
-  //     { id: 2, url: 'https://picsum.photos/200/300', userDistrict_id: 2 },
-  //     { id: 3, url: 'https://picsum.photos/200/300', userDistrict_id: 3 },
+  //     { id: 2, url: 'https://picsum.photos/200/300', userLocation_id: 2 },
+  //     { id: 3, url: 'https://picsum.photos/200/300', userLocation_id: 3 },
   //   ]);
   // });
 };

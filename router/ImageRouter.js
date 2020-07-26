@@ -1,4 +1,4 @@
-const { read } = require('fs/promises');
+// const { read } = require('fs/promises');
 
 const router = require('express').Router();
 
@@ -13,7 +13,7 @@ class ImageRouter {
     // Images that associate with chatroom id
     // Not public to outsiders
     this.router.post('/private', this.uploadToChatroom.bind(this));
-    this.router.get('/private', this.loadChatroomImages.bind(this));
+    this.router.get('/private/:id', this.loadChatroomImages.bind(this));
 
     // // Images that associate with a district
     // // Could be in a blog or just the location
