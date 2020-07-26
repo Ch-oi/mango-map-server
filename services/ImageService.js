@@ -42,7 +42,7 @@ class ImageService {
 
   // Loading images according to room id
   loadChatroomImages(chatroomId) {
-    let query = knex('images').select().where({ chatroom_id: 1 });
+    let query = knex('images').select().where({ chatroom_id: chatroomId });
 
     return query.then((data) => data).catch((err) => console.log(err));
   }

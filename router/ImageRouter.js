@@ -38,8 +38,7 @@ class ImageRouter {
   }
 
   loadChatroomImages(req, res) {
-    console.log('File is uploaded');
-    return this.imageService.loadChatroomImages(1).then((data) => {
+    return this.imageService.loadChatroomImages(req.params.id).then((data) => {
       res.send(data);
     });
   }
@@ -52,7 +51,6 @@ class ImageRouter {
 
   loadLocationImages(req, res) {
     return this.imageService.loadLocationImages(req.params.id).then((data) => {
-      console.log('Location images');
       res.send(data);
     });
   }
