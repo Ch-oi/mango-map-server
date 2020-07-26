@@ -12,6 +12,7 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
+        gender:'male',
         profile_picture_URL: '',
       },
       {
@@ -21,6 +22,7 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
+        gender:'female',
         profile_picture_URL: '',
       },
       {
@@ -30,6 +32,7 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
+        gender:'male',
         profile_picture_URL: '',
       },
     ])
