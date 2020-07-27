@@ -11,48 +11,47 @@ class UserService {
       .select('*')
       .catch((err) => console.log(err));
 
-    // let userDetailed = await this.compileUserDistsFavBlogsChatRooms(users)
+    // let userDetailed = await this.compileUserLocsFavBlogsChatRooms(users)
 
     return users;
   }
 
   async getUser(user_id) {
     let user = await knex('users')
-      .select('*')
       .where('id', user_id)
       .catch((err) => console.log(err));
 
-    let userDetailed = await this.compileUserDistsFavBlogsChatRooms(user);
+    let userDetailed = await this.compileUserLocsFavBlogsChatRooms(user[0]);
 
     return userDetailed;
   }
 
   //all location that a user marked
-  async getUserDistricts(user_id) {
-    let userDistricts = await knex('users-districts')
-      .innerJoin('districts', 'users-districts.district_id', 'districts.id')
-      .select('en', 'cn', 'users-districts.id')
+  async getUserLocations(user_id) {
+    let userLocations = await knex('users-locations')
+      .innerJoin('locations', 'users-locations.location_id', 'locations.id')
+      .select('en', 'cn', 'users-locations.id','users-locations.created_at')
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
-    let userDistrictsBlogs = await this.getUserDistrictsBlog(userDistricts);
+    let userLocationsBlogs = await this.getUserLocationsBlog(userLocations);
 
-    return userDistrictsBlogs;
+    return userLocationsBlogs;
   }
 
-  async getUserDistrictsBlog(userDistricts) {
-    let userDistrictsBlogs = [];
+  async getUserLocationsBlog(userLocations) {
+    let userLocationsBlogs = [];
 
-    for (let userDistrict of userDistricts) {
+    for (let userLocation of userLocations) {
       let userBlogs = await knex('blogs')
-        .select('id', 'title', 'main_picture_URL')
-        .where('userDistrict_id', userDistrict.id)
+        .select('id', 'title', 'main_picture_URL','blogs.created_at')
+        .where('userLocation_id', userLocation.id)
         .catch((err) => console.log(err));
 
-      userDistrict.userBlogs = userBlogs;
-      userDistrictsBlogs.push(userDistrict);
+      userLocation.userBlogs = userBlogs;
+      userLocationsBlogs.push(userLocation);
     }
-    return userDistrictsBlogs;
+    return userLocationsBlogs;
   }
 
   async getUserFavBlogs(user_id) {
@@ -65,20 +64,10 @@ class UserService {
     return favBlogs;
   }
 
-  async getUserChat(user1_id) {
-    let userChat = await knex('users-chats')
-      .innerJoin('users', 'users.id', 'users-chats.user2_id')
-      .select('users-chats.id', 'user2_id', 'user_name')
-      .where('user1_id', user1_id)
-      .catch((err) => console.log(err));
-
-    return userChat;
-  }
-
   async getUserChatrooms(user_id) {
     let chatrooms = await knex('chatrooms-users')
       .innerJoin('chatrooms', 'chatrooms.id', 'chatrooms-users.chatroom_id')
-      .select('chatrooms-users.id', 'chatrooms-users.chatroom_id', 'name')
+      .select('chatrooms-users.id', 'chatrooms-users.chatroom_id', 'name','chatrooms.created_at')
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
@@ -98,46 +87,41 @@ class UserService {
     return chatRecords;
   }
 
-  async compileUserDistsFavBlogsChatRooms(users) {
-    let usersDetailed = [];
-    for (let user of users) {
-      let districts = await this.getUserDistricts(user.id);
+  async compileUserLocsFavBlogsChatRooms(user) {
+      let locations = await this.getUserLocations(user.id);
       let chatrooms = await this.getUserChatrooms(user.id);
       let favBlogs = await this.getUserFavBlogs(user.id);
-      let userChat = await this.getUserChat(user.id);
-      user.districts = districts;
+      user.locations = locations;
       user.chatrooms = chatrooms;
       user.favBlogs = favBlogs;
-      user.userChat = userChat;
-      usersDetailed.push(user);
-    }
+    
 
-    return usersDetailed;
+    return user;
   }
 
-  async addUser(user) {
-    console.log(user);
+  // async addUser(user) {
+  //   console.log(user);
 
-    let hashedPwd = await bcrypt.hash(user.password.toString(), 10);
+  //   let hashedPwd = await bcrypt.hash(user.password.toString(), 10);
+  //   await knex.raw(
+  //     'SELECT setval(\'"users_id_seq"\', (SELECT MAX(id) from "users"));'
+  //   );
+  //   let results = await knex('users')
+  //     .insert({ ...user, password: hashedPwd })
+  //     .returning('*')
+  //     .catch((err) => console.log(err));
+
+  //   this.user = results;
+
+  //   return this.user;
+  // }
+
+  async adduserLocation(user_id, location_id) {
     await knex.raw(
-      'SELECT setval(\'"users_id_seq"\', (SELECT MAX(id) from "users"));'
+      'SELECT setval(\'"users-locations_id_seq"\', (SELECT MAX(id) from "users-locations"));'
     );
-    let results = await knex('users')
-      .insert({ ...user, password: hashedPwd })
-      .returning('*')
-      .catch((err) => console.log(err));
-
-    this.user = results;
-
-    return this.user;
-  }
-
-  async addUserDistrict(user_id, district_id) {
-    await knex.raw(
-      'SELECT setval(\'"users-districts_id_seq"\', (SELECT MAX(id) from "users-districts"));'
-    );
-    let results = await knex('users-districts')
-      .insert({ user_id: user_id, district_id: district_id })
+    let results = await knex('users-locations')
+      .insert({ user_id: user_id, location_id: location_id })
       .returning('*')
       .catch((err) => console.log(err));
 
