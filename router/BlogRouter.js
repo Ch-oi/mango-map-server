@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
 class BlogRouter {
-  constructor(blogService) {
+  constructor(passport,blogService) {
     this.blogService = blogService;
     this.router = router;
+    this.passport = passport
   }
 
   route() {
@@ -13,7 +14,7 @@ class BlogRouter {
     this.router.post('/images/:id', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
     this.router.post('/comment/:id', this.addBlogComment.bind(this));
-    this.router.post('/', this.addBlog.bind(this));
+    this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
 
     this.router.post('/categories', this.addCategories.bind(this));
 

@@ -1,5 +1,4 @@
 const knex = require('../database/config').knex;
-const bcrypt = require('bcrypt');
 
 class UserService {
   constructor() {
