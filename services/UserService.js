@@ -1,5 +1,4 @@
 const knex = require('../database/config').knex;
-const bcrypt = require('bcrypt');
 
 class UserService {
   constructor() {
@@ -34,24 +33,20 @@ class UserService {
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
-    let userLocationsBlogs = await this.getUserLocationsBlog(userLocations);
 
-    return userLocationsBlogs;
+    return userLocations;
   }
 
-  async getUserLocationsBlog(userLocations) {
-    let userLocationsBlogs = [];
+  async getUserLocationsBlog(user_id) {
 
-    for (let userLocation of userLocations) {
       let userBlogs = await knex('blogs')
-        .select('id', 'title', 'main_picture_URL','blogs.created_at')
-        .where('userLocation_id', userLocation.id)
+        .select('blogs.id', 'title', 'main_picture_URL','blogs.created_at')
+        .innerJoin('users-locations','users-locations.id','userLocation_id')
+        .where('user_id', user_id)
         .catch((err) => console.log(err));
 
-      userLocation.userBlogs = userBlogs;
-      userLocationsBlogs.push(userLocation);
-    }
-    return userLocationsBlogs;
+
+    return userBlogs;
   }
 
   async getUserFavBlogs(user_id) {
@@ -91,9 +86,11 @@ class UserService {
       let locations = await this.getUserLocations(user.id);
       let chatrooms = await this.getUserChatrooms(user.id);
       let favBlogs = await this.getUserFavBlogs(user.id);
+      let userBlogs = await this.getUserLocationsBlog(user.id)
       user.locations = locations;
       user.chatrooms = chatrooms;
       user.favBlogs = favBlogs;
+      user.userBlogs = userBlogs;
     
 
     return user;
