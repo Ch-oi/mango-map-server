@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('categories-blogs', (table) => {
+  return knex.schema.createTable('categories_blogs', (table) => {
     table.increments();
     table.integer('blog_id').unsigned();
     table.foreign('blog_id').references('blogs.id');
@@ -10,5 +10,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('categories-blogs');
+  return knex.schema.dropTable('categories_blogs');
 };

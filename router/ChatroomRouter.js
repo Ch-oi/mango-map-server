@@ -58,6 +58,7 @@ class ChatroomRouter {
       .then((chatRecord) => res.send(chatRecord))
       .catch((err) => console.log(err));
   }
+
   getRoomAllChatRecords(req, res) {
     let chatroom_id = req.params.id;
     return this.chatroomService

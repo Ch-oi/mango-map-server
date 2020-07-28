@@ -4,11 +4,11 @@ exports.up = function (knex) {
     table.string('title').notNullable();
     table.unique('title');
     table.text('body').notNullable();
-    table.text('main_picture_URL');
+    table.text('main_picture_url');
     table.boolean('modified');
     table.timestamps(true, true);
-    table.integer('userLocation_id').notNullable().unsigned();
-    table.foreign('userLocation_id').references('users-locations.id');
+    table.integer('user_location_id').notNullable().unsigned();
+    table.foreign('user_location_id').references('users_locations.id');
   });
 };
 

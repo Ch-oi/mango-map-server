@@ -5,33 +5,30 @@ exports.seed = function (knex) {
   return knex('blogs')
     .insert([
       {
-        id: 1,
         title: 'title1',
         body: 'body1',
-        main_picture_URL: 'https://picsum.photos/200/300',
+        main_picture_url: 'https://picsum.photos/200/300',
         modified: false,
-        userLocation_id: 1,
+        user_location_id: 1,
       },
       {
-        id: 2,
         title: 'title2',
         body: 'body2',
-        main_picture_URL: 'https://picsum.photos/200/300',
+        main_picture_url: 'https://picsum.photos/200/300',
         modified: false,
-        userLocation_id: 2,
+        user_location_id: 2,
       },
       {
-        id: 3,
         title: 'title3',
         body: 'body3',
-        main_picture_URL: 'https://picsum.photos/200/300',
+        main_picture_url: 'https://picsum.photos/200/300',
         modified: false,
-        userLocation_id: 3,
+        user_location_id: 3,
       },
     ])
     .then(function () {
       // Inserts seed entries
-      return knex('users-favBlogs').insert([
+      return knex('users_fav_blogs').insert([
         { id: 1, user_id: 1, blog_id: 1 },
         { id: 2, user_id: 1, blog_id: 2 },
         { id: 3, user_id: 1, blog_id: 3 },
@@ -47,7 +44,7 @@ exports.seed = function (knex) {
     })
     .then(function () {
       // Inserts seed entries
-      return knex('categories-blogs').insert([
+      return knex('categories_blogs').insert([
         { id: 1, blog_id: 1, category_id: 1 },
         { id: 2, blog_id: 1, category_id: 2 },
         { id: 3, blog_id: 1, category_id: 3 },
@@ -60,10 +57,10 @@ exports.seed = function (knex) {
   //       id: 1,
   //       blog_id: 1,
   //       url: 'https://picsum.photos/200/300',
-  //       userLocation_id: 1,
+  //       user_location_id: 1,
   //     },
-  //     { id: 2, url: 'https://picsum.photos/200/300', userLocation_id: 2 },
-  //     { id: 3, url: 'https://picsum.photos/200/300', userLocation_id: 3 },
+  //     { id: 2, url: 'https://picsum.photos/200/300', user_location_id: 2 },
+  //     { id: 3, url: 'https://picsum.photos/200/300', user_location_id: 3 },
   //   ]);
   // });
 };

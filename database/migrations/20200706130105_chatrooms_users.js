@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('chatrooms-users', (table) => {
+  return knex.schema.createTable('chatrooms_users', (table) => {
     table.increments().primary();
     table.integer('chatroom_id').unsigned();
     table.foreign('chatroom_id').references('chatrooms.id');
@@ -10,5 +10,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('chatrooms-users');
+  return knex.schema.dropTable('chatrooms_users');
 };

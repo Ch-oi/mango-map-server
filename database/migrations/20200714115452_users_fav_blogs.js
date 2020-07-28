@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('users-favBlogs', (table) => {
+  return knex.schema.createTable('users_fav_blogs', (table) => {
     table.increments();
     table.integer('user_id').unsigned();
     table.foreign('user_id').references('users.id');
@@ -10,5 +10,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('users-favBlogs');
+  return knex.schema.dropTable('users_fav_blogs');
 };

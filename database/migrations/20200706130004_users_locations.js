@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('users-locations', (table) => {
+  return knex.schema.createTable('users_locations', (table) => {
     table.increments('id').primary();
     table.integer('user_id').unsigned();
     table.foreign('user_id').references('users.id');
@@ -10,5 +10,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('users-locations');
+  return knex.schema.dropTable('users_locations');
 };

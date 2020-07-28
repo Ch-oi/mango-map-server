@@ -12,10 +12,6 @@ class ChatroomService {
       .select('*')
       .catch((err) => console.log(err));
 
-    // for (let chatroom of chatrooms) {
-    //     let chatroomUsers = await this.getRoomAllChatRecords(chatroom.id)
-    //     chatroom.chatroomUser = chatroomUsers
-    // }
     this.chatrooms = chatrooms;
     return this.chatrooms;
   }

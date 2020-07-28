@@ -6,9 +6,9 @@ exports.up = function (knex) {
     table.string('email').notNullable();
     table.unique('email');
     table.string('password');
-    table.string('gender').notNullable()
+    table.string('gender').notNullable();
     table.text('description');
-    table.text('profile_picture_URL');
+    table.text('profile_picture_url');
     table.string('facebook_ID');
     table.string('facebook_token');
     table.string('google_ID');

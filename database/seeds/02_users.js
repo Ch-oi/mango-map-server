@@ -12,8 +12,8 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
-        gender:'male',
-        profile_picture_URL: '',
+        gender: 'male',
+        profile_picture_url: '',
       },
       {
         id: 2,
@@ -22,8 +22,8 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
-        gender:'female',
-        profile_picture_URL: '',
+        gender: 'female',
+        profile_picture_url: '',
       },
       {
         id: 3,
@@ -32,25 +32,25 @@ exports.seed = function (knex) {
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: '',
-        gender:'male',
-        profile_picture_URL: '',
+        gender: 'male',
+        profile_picture_url: '',
       },
     ])
     .then(function () {
       // Inserts seed entries
-      return knex('users-locations').insert([
+      return knex('users_locations').insert([
         { id: 1, user_id: 1, location_id: 1 },
         { id: 2, user_id: 2, location_id: 2 },
         { id: 3, user_id: 3, location_id: 3 },
-        { id: 4,user_id: 1, location_id: 16 },
-        { id: 5,user_id: 1, location_id: 17 },
-        { id: 6,user_id: 1, location_id: 19 },
-        { id: 7,user_id: 1, location_id: 18 },
-        { id: 8,user_id: 1, location_id: 22 },
-        { id: 9,user_id: 1, location_id: 20 },
-        { id: 10,user_id: 1, location_id: 21 },
-        { id: 11,user_id: 1, location_id: 23 },
-        { id: 12,user_id: 1, location_id: 24 },
+        { id: 4, user_id: 1, location_id: 16 },
+        { id: 5, user_id: 1, location_id: 17 },
+        { id: 6, user_id: 1, location_id: 19 },
+        { id: 7, user_id: 1, location_id: 18 },
+        { id: 8, user_id: 1, location_id: 22 },
+        { id: 9, user_id: 1, location_id: 20 },
+        { id: 10, user_id: 1, location_id: 21 },
+        { id: 11, user_id: 1, location_id: 23 },
+        { id: 12, user_id: 1, location_id: 24 },
       ]);
     });
 };
