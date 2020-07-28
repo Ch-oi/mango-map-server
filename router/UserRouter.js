@@ -1,21 +1,23 @@
 const router = require('express').Router();
 
+
 class UserRouter {
-  constructor(userService) {
+  constructor(passport,userService) {
     this.userService = userService;
+    this.passport = passport
     this.router = router;
   }
   route() {
     this.router.get('/all', this.listUsers.bind(this));
-    this.router.get('/one/:id', this.getUser.bind(this));
-    this.router.get('/one/:id/districts', this.getUserDistricts.bind(this));
+    this.router.get('/one/:id', this.passport.authenticate('token', { session: false }),this.getUser.bind(this));
+    this.router.get('/one/:id/districts', this.getUserLocations.bind(this));
     this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
 
     this.router.get('/authorized/:id/chatrooms',this.getUserChatrooms.bind(this));
     this.router.get('/authorized/:uid/chatroom/:cid',this.getUserChatroomRecords.bind(this));
-    this.router.post('/signup', this.addUser.bind(this));
+    // this.router.post('/signup', this.addUser.bind(this));
     this.router.post('/authorized/:uid/blog/:bid',this.addUserFavBlog.bind(this));
-    this.router.post('/authorized/:uid/district/:did',this.addUserDistrict.bind(this));
+    this.router.post('/authorized/:uid/district/:did',this.addUserLocation.bind(this));
 
 
     return this.router;
@@ -43,12 +45,12 @@ class UserRouter {
       });
   }
 
-  getUserDistricts(req, res) {
+  getUserLocations(req, res) {
     let user_id = req.params.id;
     return this.userService
-      .getUserDistricts(user_id)
-      .then((userDistrictsBlogs) => {
-        res.send(userDistrictsBlogs);
+      .getUserLocations(user_id)
+      .then((userLocationsBlogs) => {
+        res.send(userLocationsBlogs);
       })
       .catch((err) => {
         console.log(err);
@@ -89,19 +91,19 @@ class UserRouter {
       });
   }
 
-  addUser(req, res) {
-    let new_user = {
-      ...req.body,
-    };
-    return this.userService
-      .addUser(new_user)
-      .then((newUser) => {
-        res.send(newUser);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // addUser(req, res) {
+  //   let new_user = {
+  //     ...req.body,
+  //   };
+  //   return this.userService
+  //     .addUser(new_user)
+  //     .then((newUser) => {
+  //       res.send(newUser);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   addUserFavBlog(req, res) {
     let user_id = req.params.uid;
@@ -115,11 +117,11 @@ class UserRouter {
         console.log(err);
       });
   }
-  addUserDistrict(req, res) {
+  addUserLocation(req, res) {
     let user_id = req.params.uid;
     let district_id = req.params.did;
     return this.userService
-      .addUserDistrict(user_id, district_id)
+      .addUserLocation(user_id, district_id)
       .then((results) => {
         res.send(results);
       })

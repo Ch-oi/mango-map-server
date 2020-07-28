@@ -49,18 +49,19 @@ function initializeLocal(passport) {
         try {
           let user = await knex('users').where({ email: email });
           if (user.length == 0) {
-            return done(null, false, { message: 'Incorrect email' });
+             done(null, false, { message: 'Incorrect email' });
           }
           console.log(user);
           let result = await bcrypt.compare(password, user[0].password);
-          console.log(result);
           if (result) {
-            return done(null, user[0]);
+            console.log(user[0])
+            
+             done(null, user[0]);
           } else {
-            return done(null, false, { message: 'Incorrect password' });
+             done(null, false, { message: 'Incorrect password' });
           }
         } catch (err) {
-          return done(err);
+           done(err);
         }
       }
     )

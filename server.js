@@ -64,7 +64,7 @@ const imageService = new ImageService();
 app.use('/image', new ImageRouter(imageService).route());
 
 app.use('/chatroom', new ChatroomRouter(chatroomService).route());
-app.use('/user', new UserRouter(userService).route());
+app.use('/user', new UserRouter(passport,userService).route());
 app.use('/blog', new BlogRouter(blogService).route());
 app.use('/map', new MapRouter(mapService).route());
 app.use('/auth', new AuthRouter().route());
