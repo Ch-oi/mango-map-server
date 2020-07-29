@@ -7,19 +7,19 @@ class ChatroomRouter {
   }
 
   route() {
-    this.router.get('/all', this.listChatrooms.bind(this));
+    this.router.get('/all/:userId', this.listChatrooms.bind(this));
     this.router.get('/:id', this.getChatroom.bind(this));
     this.router.post('/', this.addChatroom.bind(this));
     this.router.get('/:id/users', this.getChatroomUsers.bind(this));
     this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
-    this.router.post('/:id/record', this.addChatRecord.bind(this));
+    this.router.post('/record', this.addChatRecord.bind(this));
 
     return this.router;
   }
 
   listChatrooms(req, res) {
     return this.chatroomService
-      .listChatrooms()
+      .listChatrooms(req.params.userId)
       .then((chatrooms) => res.send(chatrooms))
       .catch((err) => console.log(err));
   }
@@ -50,12 +50,19 @@ class ChatroomRouter {
   }
 
   addChatRecord(req, res) {
-    let user_id = req.user.id;
-    let chatroom_id = req.params.id;
-    let new_chatRecord = { ...req.body.chatRecord };
+    let { roomId, roomUserId } = req.body;
+    let message = req.body.message[0];
+
+    // let user_id = req.user.id;
+    // let chatroom_id = req.params.id;
+    // let new_chatRecord = { ...req.body.chatRecord };
+
     return this.chatroomService
-      .addChatRecord(new_chatRecord, chatroom_id, user_id)
-      .then((chatRecord) => res.send(chatRecord))
+      .addChatRecord(message, roomId, roomUserId)
+      .then((chatRecord) => {
+        console.log(chatRecord);
+        res.send(chatRecord);
+      })
       .catch((err) => console.log(err));
   }
 
