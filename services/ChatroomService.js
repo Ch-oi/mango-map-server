@@ -7,9 +7,11 @@ class ChatroomService {
   }
 
   //list all chatrooms
-  async listChatrooms() {
+  async listChatrooms(userId) {
     let chatrooms = await knex('chatrooms')
+      .join('chatrooms_users', 'chatrooms.id', 'chatrooms_users.chatroom_id')
       .select('*')
+      .where({ user_id: userId })
       .catch((err) => console.log(err));
 
     this.chatrooms = chatrooms;
@@ -78,7 +80,7 @@ class ChatroomService {
       user_id: user_id,
     }));
 
-    let newChatroomDetailed = await knex('chatrooms-users')
+    let newChatroomDetailed = await knex('chatrooms_users')
       .insert(fieldToInsert)
       .returning('*')
       .catch((err) => console.log(err));
@@ -89,24 +91,27 @@ class ChatroomService {
   //add a new chat record
   //charRecord={body:"",images:""}
   async addChatRecord(chatRecord, chatroom_id, user_id) {
-    let chatroomUser = await knex('chatrooms-users')
+    let chatroomUser = await knex('chatrooms_users')
       .select('*')
       .where('chatroom_id', chatroom_id)
       .andWhere('user_id', user_id)
       .catch((err) => console.log(err));
 
+    console.log(chatroomUser);
+
     await knex.raw(
-      'SELECT setval(\'"chatRecords_id_seq"\', (SELECT MAX(id) from "chatRecords"));'
+      'SELECT setval(\'"chat_records_id_seq"\', (SELECT MAX(id) from "chat_records"));'
     );
-    let newChatRecord = await knex('chatRecords')
-      .insert({ ...chatRecord, chatroomUser_id: chatroomUser[0].id })
+
+    let newChatRecord = await knex('chat_records')
+      .insert({ body: chatRecord, chatroom_user_id: chatroomUser[0].id })
       .returning('*')
       .catch((err) => console.log(err));
 
     return newChatRecord;
   }
 
-  //delete one specfic chatroom by id
+  // delete one specfic chatroom by id
   async deleteChatroom(chatroom_id) {
     let chatroomUsers = await this.getChatroomUsers(chatroom_id);
 
@@ -131,33 +136,36 @@ class ChatroomService {
     return chatroom_id;
   }
 
-  //get all users id in a chatroom
+  // get all users id in a chatroom
   async getChatroomUsers(chatroom_id) {
-    let chatroomUsers = await knex('chatrooms-users')
-      .select('*')
-      .where('chatroom_id', chatroom_id)
+    let chatroomUsers = await knex('chatrooms_users')
+      .join('users', 'chatrooms_users.user_id', 'users.id')
+      .select()
+      .where('chatrooms_users.chatroom_id', chatroom_id)
       .catch((err) => console.log(err));
 
     return chatroomUsers;
   }
 
-  //get all chat records of a room
+  // get all chat records of a room
   async getRoomAllChatRecords(chatroom_id) {
     let chatroomUsers = await this.getChatroomUsers(chatroom_id);
 
     let chatRecords = [];
 
     for (let chatroomUser of chatroomUsers) {
-      chatRecords = await this.getChatroomUserRecords(chatroomUser);
+      chatRecords = await this.getChatroomUserRecords(chatroomUser.id);
+      // Not exporting user password for safety
+      delete chatroomUser.password;
       chatroomUser.chatRecords = chatRecords;
     }
     return chatroomUsers;
   }
 
-  async getChatroomUserRecords(chatroomUser) {
-    let chatRecords = await knex('chatRecords')
+  async getChatroomUserRecords(id) {
+    let chatRecords = await knex('chat_records')
       .select('*')
-      .where('chatroomUser_id', chatroomUser.id)
+      .where('chatroom_user_id', id)
       .catch((err) => console.log(err));
 
     return chatRecords;

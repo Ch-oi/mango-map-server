@@ -4,24 +4,33 @@ exports.seed = function (knex) {
   // Inserts seed entries
   return knex('chatrooms')
     .insert([
-      { id: 1, name: 'chat1', descriptions: 'des1' },
-      { id: 2, name: 'chat2', descriptions: 'des2' },
-      { id: 3, name: 'chat3', descriptions: 'des3' },
+      { room_name: 'Capstone Project', descriptions: 'des1' },
+      { room_name: 'Edwin', descriptions: 'des2' },
+      { room_name: 'Pullip', descriptions: 'des3' },
     ])
     .then(function () {
       // Inserts seed entries
       return knex('chatrooms_users').insert([
-        { id: 1, chatroom_id: 1, user_id: 1 },
-        { id: 2, chatroom_id: 1, user_id: 2 },
-        { id: 3, chatroom_id: 1, user_id: 3 },
+        { chatroom_id: 1, user_id: 1 },
+        { chatroom_id: 1, user_id: 2 },
+        { chatroom_id: 1, user_id: 3 },
+        { chatroom_id: 3, user_id: 1 },
+        { chatroom_id: 3, user_id: 2 },
+        { chatroom_id: 2, user_id: 3 },
+        { chatroom_id: 2, user_id: 2 },
       ]);
     })
     .then(function () {
       // Inserts seed entries
       return knex('chat_records').insert([
-        { id: 1, body: 'body1', chatroom_user_id: 1 },
-        { id: 2, body: 'body2', chatroom_user_id: 2 },
-        { id: 3, body: 'body3', chatroom_user_id: 3 },
+        { body: 'Hi, where are you!', chatroom_user_id: 1 },
+        { body: 'I am Five thank you', chatroom_user_id: 1 },
+        { body: 'Sipailuma', chatroom_user_id: 2 },
+        { body: 'Why are you speaking Korean?', chatroom_user_id: 2 },
+        { body: 'JINSDJASDIOAJDO', chatroom_user_id: 3 },
+        { body: 'HELLO', chatroom_user_id: 5 },
+        { body: 'YOYYO', chatroom_user_id: 4 },
+        { body: 'AJIDOAKS', chatroom_user_id: 5 },
       ]);
     });
 };
