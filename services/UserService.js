@@ -52,7 +52,6 @@ class UserService {
   async getUserFavBlogs(user_id) {
     let favBlogs = await knex('users-favBlogs')
       .innerJoin('blogs', 'blogs.id', 'users-favBlogs.blog_id')
-      .select('blogs.id', 'blogs.title')
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
