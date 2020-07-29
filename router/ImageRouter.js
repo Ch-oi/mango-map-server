@@ -23,7 +23,16 @@ class ImageRouter {
     // // Remove a particular image
     this.router.post('/', this.removeImage.bind(this));
 
+
+    this.router.get('/public', this.getAllImages.bind(this));
+
     return this.router;
+  }
+
+  getAllImages(req,res){
+    return this.imageService.getAllImages()
+    .then(result=>res.send(result))
+
   }
 
   uploadToChatroom(req, res) {
