@@ -4,7 +4,6 @@ exports.up = function (knex) {
     table.string('title').notNullable();
     table.unique('title');
     table.text('body').notNullable();
-    table.text('main_picture_url');
     table.boolean('modified');
     table.timestamps(true, true);
     table.integer('user_location_id').notNullable().unsigned();
