@@ -65,7 +65,7 @@ class ImageService {
 
   // Private images that have userId and chatroomId
   // Image parameter should be base64 string
-  async uploadToChatroom(img, userId, chatroomId) {
+  async uploadToChatroom(img, currentRoomId, chatroomUserId, userId) {
     console.log('uploadToChatroom method is invoked');
 
     let imgurURL = await axios
@@ -73,6 +73,7 @@ class ImageService {
         image: img,
       })
       .then((response) => {
+        console.log(response.data.data.link);
         return response.data.data.link;
       })
       .catch((err) => console.log(err));
@@ -81,17 +82,19 @@ class ImageService {
       .insert({
         user_id: userId,
         url: imgurURL,
-        chatrooms_id: chatroomId,
       })
-      .innerJoin('chatrooms-users', 'chatrooms-users.id', 'chatroomUser_id')
-      .then((data) => {
-        console.log('Insertion is finished');
+      .then(() => {
+        knex('chat_records')
+          .insert({ url: imgurURL, chatroom_user_id: 1 })
+          .then(() => {
+            console.log('image is inserted into chat_records');
+            return imgurURL;
+          });
       })
       // TODO: handle the error
       .catch((err) => console.log(err));
 
-    // TODO: return something meaningful
-    return 'Success';
+    return imgurURL;
   }
 
   // Loading images according to room id

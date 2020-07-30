@@ -8,8 +8,8 @@ exports.up = function (knex) {
     table.float('lat', 14, 10).notNullable();
     table.float('lng', 14, 10).notNullable();
     table.text('description');
-    table.integer('districts_id').unsigned();
-    table.foreign('districts_id').references('districts.id');
+    // table.integer('districts_id').unsigned();
+    // table.foreign('districts_id').references('districts.id');
     table.timestamps(true, true);
   });
 };
