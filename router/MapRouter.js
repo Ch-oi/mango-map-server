@@ -7,27 +7,28 @@ class MapRouter {
   }
 
   route() {
-    this.router.get('/area', this.listAreas.bind(this));
+    this.router.get('/area', this.listDistricts.bind(this));
     this.router.get('/districts', this.listDistricts.bind(this));
     this.router.get('/locations', this.listLocations.bind(this));
     this.router.get('/district/:id', this.getAreaDistricts.bind(this));
-    this.router.get('/districtUsers/:id', this.getDistrictUsers.bind(this));
-    this.router.post('/district', this.addDistrict.bind(this));
+    this.router.get('/districtUsers/:id', this.getLocationUsers.bind(this));
+    this.router.post('/district', this.addLocation.bind(this));
 
     return this.router;
   }
 
-  listAreas(req, res) {
-    return this.mapService
-      .listAreas()
-      .then((areas) => res.send(areas))
-      .catch((err) => console.log(err));
-  }
 
   listDistricts(req, res) {
     return this.mapService
       .listDistricts()
-      .then((districts) => res.send(districts))
+      .then((areas) => res.send(areas))
+      .catch((err) => console.log(err));
+  }
+
+  listLocations(req, res) {
+    return this.mapService
+      .listLocations()
+      .then((locations) => res.send(locations))
       .catch((err) => console.log(err));
   }
 
@@ -42,29 +43,29 @@ class MapRouter {
     let area_id = req.params.id;
 
     return this.mapService
-      .getAreaDistricts(area_id)
-      .then((districts) => res.send(districts))
+      .getDistrictLocations(area_id)
+      .then((locations) => res.send(locations))
       .catch((err) => console.log(err));
   }
 
-  getDistrictUsers(req, res) {
-    let district_id = req.params.id;
+  getLocationUsers(req, res) {
+    let location_id = req.params.id;
 
     return this.mapService
-      .getDistrictUsers(district_id)
-      .then((districtUsers) => {
-        this.mapService.getDistrictUserBlogs(districtUsers);
+      .getLocationUsers(location_id)
+      .then((locationUsers) => {
+        this.mapService.getLocationUserBlogs(locationUsers);
       })
-      .then((districtUsersBlogs) => res.send(districtUsersBlogs))
+      .then((locationUsersBlogs) => res.send(locationUsersBlogs))
       .catch((err) => console.log(err));
   }
 
-  addDistrict(req, res) {
-    let new_district = { ...req.body };
+  addLocation(req, res) {
+    let new_location = { ...req.body };
 
     return this.mapService
-      .addDistrict(new_district)
-      .then((newDistrict) => res.send(newDistrict))
+      .addLocation(new_location)
+      .then((newLocation) => res.send(newLocation))
       .catch((err) => console.log(err));
   }
 }
