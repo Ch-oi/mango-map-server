@@ -28,12 +28,12 @@ class BlogService {
     return this.blogs;
   }
 
-  async getBlogUserLocation(UserLocation_id) {
-    let results = await knex('users-districts')
+  async getBlogUserLocation(user_location_id) {
+    let results = await knex('users_locations')
       .innerJoin('users', 'user_id', 'users.id')
-      .innerJoin('districts', 'districts.id', 'district_id')
+      .innerJoin('locations', 'locations.id', 'location_id')
       .select('user_name', 'en')
-      .where('users-districts.id', UserLocation_id)
+      .where('users_locations.id', user_location_id)
       .catch((err) => console.log(err));
 
     return results;
@@ -49,9 +49,9 @@ class BlogService {
   }
 
   async getBlogCategories(blog_id) {
-    let cates = await knex('categories-blogs')
+    let cates = await knex('categories_blogs')
       .select('category')
-      .innerJoin('categories', 'categories.id', 'categories-blogs.category_id')
+      .innerJoin('categories', 'categories.id', 'categories_blogs.category_id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
 
@@ -82,12 +82,12 @@ class BlogService {
       let images = await this.getBlogImages(blog.id);
       let categories = await this.getBlogCategories(blog.id);
       let comments = await this.getBlogComments(blog.id);
-      let UserLocation = await this.getBlogUserLocation(blog.UserLocation_id);
+      let UserLocation = await this.getBlogUserLocation(blog.user_location_id);
       blog.images = images;
       blog.categories = categories;
       blog.comments = comments;
       blog.userName = UserLocation[0].user_name;
-      blog.districtName = UserLocation[0].en;
+      blog.locationName = UserLocation[0].en;
       blogsDetailed.push(blog);
     }
     return blogsDetailed;
@@ -103,8 +103,8 @@ class BlogService {
     );
 
     let newBlog = await knex('blogs')
-      .insert({title,body,userLocation_id:userLocation.id})
-      .innerJoin('users-locations','userLocation_id','users-locations.id')
+      .insert({title,body,user_location_id:userLocation.id})
+      .innerJoin('users_locations','user_location_id','users_locations.id')
       .returning('*')
       .catch((err) => console.log(err));
 
@@ -117,7 +117,7 @@ class BlogService {
 
 
   async getUserLocation(location_id,user_id){
-    let res = await knex('users-locations')
+    let res = await knex('users_locations')
     .where({location_id:location_id,user_id:user_id})
 
     return res[0]
@@ -129,11 +129,11 @@ class BlogService {
     let res = [];
 
     await knex.raw(
-      'SELECT setval(\'"categories-blogs_id_seq"\', (SELECT MAX(id) from "categories-blogs"));'
+      'SELECT setval(\'"categories_blogs_id_seq"\', (SELECT MAX(id) from "categories_blogs"));'
     );
     for (let cate of categories) {
       
-      let res = await knex('categories-blogs')
+      let res = await knex('categories_blogs')
         .insert({ blog_id: blog_id ,category_id:cate.id})
         .returning('*')
         .catch((err) => console.log(err));
@@ -169,12 +169,12 @@ class BlogService {
   //urls=[url,url]
   async addBlogImages(urls, blog_id) {
     let results = await knex('blogs')
-      .innerJoin('users-districts', 'UserLocation_id', 'users-districts.id')
-      .select('district_id')
+      .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
+      .select('location_id')
       .where('blogs.id', blog_id)
       .catch((err) => console.log(err));
 
-    let district_id = results[0].district_id;
+    let location_id = results[0].location_id;
     await knex.raw(
       'SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));'
     );
@@ -182,7 +182,7 @@ class BlogService {
 
     for (let url of urls) {
       let img = await knex('images')
-        .insert({ url: url, blog_id: blog_id, district_id: district_id })
+        .insert({ url: url, blog_id: blog_id, location_id: location_id })
         .returning('*')
         .catch((err) => console.log(err));
 
@@ -218,7 +218,7 @@ class BlogService {
   }
 
   async deleteBlogs(blog_id) {
-    await knex('categories-blogs')
+    await knex('categories_blogs')
       .del()
       .where('blog_id', blog_id)
       .returning('*')
@@ -236,7 +236,7 @@ class BlogService {
       .returning('*')
       .catch((err) => console.log(err));
 
-    await knex('users-favBlogs')
+    await knex('users_fav_blogs')
       .del()
       .where('blog_id', blog_id)
       .returning('*')

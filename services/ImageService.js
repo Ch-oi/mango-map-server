@@ -10,6 +10,59 @@ class ImageService {
     ] = `Client-ID ${process.env.IMGUR_CLIENT_ID}`;
   }
 
+  async getAllImages() {
+    let images = await knex('images')
+      .innerJoin('users_locations', 'users_locations.id', 'images.user_location_id')
+      .where('private', false)
+      .catch((err) => console.log(err));
+      
+    let imagesDetailed = await this.compileLocBlog(images)
+
+    return imagesDetailed
+
+  }
+
+  async compileLocBlog(images) {
+    let imagesDetailed = [];
+
+    for (let img of images) {
+      let UserLocation = []
+      if (img.blog_id) {
+        let blog = await this.getBlog(img.blog_id)
+        img.blog = blog
+        UserLocation = await this.getUserLocation(img.blog.user_location_id);
+      } else {
+        UserLocation = await this.getUserLocation(img.user_location_id)
+      }
+
+      img.userName = UserLocation[0].user_name;
+      img.locationName = UserLocation[0].en;
+      imagesDetailed.push(img);
+    }
+    return imagesDetailed;
+  }
+
+  async getBlog(blog_id) {
+    let res = await knex('blogs')
+      .select('title','user_location_id')
+      .where('id', blog_id)
+      .catch((err) => console.log(err));
+
+    return res[0];
+  }
+
+  async getUserLocation(user_location_id) {
+    let results = await knex('users_locations')
+      .innerJoin('users', 'user_id', 'users.id')
+      .innerJoin('locations', 'locations.id', 'location_id')
+      .select('user_name', 'en')
+      .where('users_locations.id', user_location_id)
+      .catch((err) => console.log(err));
+
+    return results;
+  }
+
+
   // Private images that have userId and chatroomId
   // Image parameter should be base64 string
   async uploadToChatroom(img, currentRoomId, chatroomUserId, userId) {

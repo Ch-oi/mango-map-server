@@ -21,6 +21,20 @@ class BlogRouter {
     return this.router;
   }
 
+//get the weeklyblog id, get blog
+//  getWeeklyBlog(req, res) {
+//    console.log(req)
+//   return this.blogService
+//     .getBlog(getWeeklyBlog())
+//     .then((blog) => {
+//       res.send(blog);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// }
+
+
   listBlogs(req, res) {
     return this.blogService
       .listBlogs()
@@ -116,6 +130,8 @@ class BlogRouter {
         console.log(err);
       });
   }
+
 }
+
 
 module.exports = BlogRouter;

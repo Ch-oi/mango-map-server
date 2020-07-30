@@ -8,6 +8,7 @@ module.exports = {
       user: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       port: 5433,
+      // port: 5432,
     },
     migrations: {
       directory: `${__dirname}/database/migrations`,
