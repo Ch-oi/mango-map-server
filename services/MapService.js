@@ -17,6 +17,14 @@ class MapService {
     return districts;
   }
 
+  async listLocations() {
+    let districts = await knex('locations')
+      .select('*')
+      .catch((err) => console.log(err));
+
+    return districts;
+  }
+
   async getAreaDistricts(area_id) {
     let districts = await knex('districts')
       .select('*')

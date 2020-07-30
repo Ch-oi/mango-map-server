@@ -64,8 +64,8 @@ const imageService = new ImageService();
 app.use('/image', new ImageRouter(imageService).route());
 
 app.use('/chatroom', new ChatroomRouter(chatroomService).route());
-app.use('/user', new UserRouter(passport,userService).route());
-app.use('/blog', new BlogRouter(passport,blogService).route());
+app.use('/user', new UserRouter(passport, userService).route());
+app.use('/blog', new BlogRouter(passport, blogService).route());
 app.use('/map', new MapRouter(mapService).route());
 app.use('/auth', new AuthRouter().route());
 
@@ -111,6 +111,6 @@ app.get(
   }
 );
 
-server.listen(port, function () {
+app.listen(port, function () {
   console.log('listening on port ' + port);
 });

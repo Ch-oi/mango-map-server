@@ -27,13 +27,11 @@ class ImageRouter {
   }
 
   uploadToChatroom(req, res) {
-    const { img, userId, roomId } = req.body;
-    console.log('ImageRoute is invoked');
+    const { img, currentRoomId, chatroomUserId, userId } = req.body;
     return this.imageService
-      .uploadToChatroom(img, userId, roomId)
+      .uploadToChatroom(img, currentRoomId, chatroomUserId, userId)
       .then((data) => {
-        res.send('uploadToChatroom working');
-        console.log(data);
+        res.send(data);
       });
   }
 
