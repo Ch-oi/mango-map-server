@@ -5,20 +5,36 @@ exports.seed = function (knex) {
   return knex('blogs')
     .insert([
       {
-        title: 'title1',
-        body: 'body1',
+        title: 'Tung Chung Day Tour',
+        body: `
+        • Visit Tung Chung North Park
+        • Learn more about Chinese Medicine at Pok Oi Hospital Chinese Medicine Culture and Health Museum
+        • Lunch at Tai O
+        • Experience fisherfolk life in Tai O fishing village`,
         modified: false,
         user_location_id: 1,
       },
       {
-        title: 'title2',
-        body: 'body2',
+        title: 'Cruise Tour',
+        body: `
+        Pre-dinner Sunset Cruise
+        • Watch the world's greatest view turns into the world's greatest light show
+        
+        Harbour Night Cruise
+        • Relax and enjoy the world famous glittering harbour views by night
+        
+        Symphony of Lights Cruise
+        • The cruise climatises as the Symphony of Lights show brightens up the skyline`,
         modified: false,
         user_location_id: 2,
       },
       {
-        title: 'title3',
-        body: 'body3',
+        title: 'The Hidden Treasures of Central',
+        body: ` 
+        Treasure hunt at mom-and-pop stores and traditional roadside groceries stores
+        • Hear stories about Dr Sun Yat-sen along the historical trail
+        • Wander through renovated heritage buildings to discover the city’s art and culture
+        • Visit special stores featuring antiques, curios, homewares, niche parfume`,
         modified: false,
         user_location_id: 3,
       },
@@ -41,18 +57,25 @@ exports.seed = function (knex) {
         user_location_id: 4,
       },
       {
-        title: 'My First Trip',
-        body: 'Very nice first trip I had in Hong Kong',
+        title: 'Tung Lung Island',
+        body: 'Return to the primordial nature and zip through the jungle like a man in the wild. Embark on a special adventure combining beautiful nature and extreme sports. Get outfitted in top quality gears and embrace this once-in-a-lifetime adventure under the lead of professional guides',
         user_location_id: 5,
       },
       {
-        title: 'My Second Trip',
-        body: 'Very nice second trip I had in Hong Kong',
+        title: 'Back to Childhood',
+        body: 'At Hong Kong Disneyland, every moment is a magical one that brings you closer to your loved ones. From now to 31 August, 2020, guests can buy two 1-Day park tickets and receive an additional 1-Day ticket for free! It’s a wonderful way to share the Disney magic and happiness with all your loved ones!',
         user_location_id: 6,
       },
       {
-        title: 'My Third Trip',
-        body: 'Very nice third trip I had in Hong Kong',
+        title: 'Aggressive shopper',
+        body: `The biggest and best factory outlet center in Hong Kong is Citygate Outlets. Most of the shops here are clothes, shoe and accessory shops, including high-end retailers like Armani Outlet, Burberry, and Diane Von Furstenberg selling off catwalk classics and more moderately priced international brands such as Levi's, Nike, and Crocs.
+
+        The mall claims discounts of between 30% and 70% on items. You’ll actually get something around 30% off, but that's still a pretty hefty cut considering some of the premium names available. There is a food court inside, including McDonald's, and mediocre but kid-friendly restaurants like Pizza Express.
+        
+        As is traditional with outlet stores, this mall of eighty shops is inconveniently parked outside of the city center in Tung Chung on Lantau Island. Luckily it's only about 30 minutes on the metro from Central.
+        
+        Address: Citygate Outlets, Tung Chung
+        Nearest MTR: Tung Chung`,
         user_location_id: 7,
       },
     ])
@@ -67,9 +90,9 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex('categories').insert([
-        { id: 1, category: 'apply' },
-        { id: 2, category: 'pen' },
-        { id: 3, category: 'penapple' },
+        { id: 1, category: 'culture & art' },
+        { id: 2, category: 'outdoor & sports' },
+        { id: 3, category: 'food & drinks' },
       ]);
     })
     .then(function () {
