@@ -8,10 +8,11 @@ class MapRouter {
 
   route() {
     this.router.get('/area', this.listDistricts.bind(this));
+    this.router.get('/districts', this.listDistricts.bind(this));
     this.router.get('/locations', this.listLocations.bind(this));
-    this.router.get('/location/:id', this.getDistrictLocations.bind(this));
-    this.router.get('/locationUsers/:id', this.getLocationUsers.bind(this));
-    this.router.post('/location', this.addLocation.bind(this));
+    this.router.get('/district/:id', this.getAreaDistricts.bind(this));
+    this.router.get('/districtUsers/:id', this.getLocationUsers.bind(this));
+    this.router.post('/district', this.addLocation.bind(this));
 
     return this.router;
   }
@@ -31,7 +32,14 @@ class MapRouter {
       .catch((err) => console.log(err));
   }
 
-  getDistrictLocations(req, res) {
+  listLocations(req, res) {
+    return this.mapService
+      .listLocations()
+      .then((locations) => res.send(locations))
+      .catch((err) => console.log(err));
+  }
+
+  getAreaDistricts(req, res) {
     let area_id = req.params.id;
 
     return this.mapService
