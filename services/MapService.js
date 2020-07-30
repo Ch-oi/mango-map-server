@@ -1,14 +1,6 @@
 const knex = require('../database/config').knex;
 
 class MapService {
-  async listAreas() {
-    let areas = await knex('area')
-      .select('*')
-      .catch((err) => console.log(err));
-
-    return areas;
-  }
-
   async listDistricts() {
     let districts = await knex('districts')
       .select('*')
@@ -17,32 +9,41 @@ class MapService {
     return districts;
   }
 
-  async getAreaDistricts(area_id) {
-    let districts = await knex('districts')
+  async listLocations() {
+    let locations = await knex('locations')
       .select('*')
-      .where('area_id', area_id)
       .catch((err) => console.log(err));
 
-    return districts;
+    return locations;
   }
 
-  async getDistrictUsers(district_id) {
-    let districtUsers = await knex('users-districts')
-      .innerJoin('users', 'users-districts.user_id', 'users.id')
-      .select('users-districts.id', 'user_id', 'user_name')
+
+  async getDistrictLocations(district_id) {
+    let locations = await knex('locations')
+      .select('*')
+      .where('district_id', district_id)
+      .catch((err) => console.log(err));
+
+    return locations;
+  }
+
+  async getLocationUsers(district_id) {
+    let districtUsers = await knex('users_locations')
+      .innerJoin('users', 'users_locations.user_id', 'users.id')
+      .select('users_locations.id', 'user_id', 'user_name')
       .where('district_id', district_id);
 
     return districtUsers;
   }
 
   //work with above result
-  async getDistrictUserBlogs(districtUsers) {
+  async getLocationUserBlogs(districtUsers) {
     let districtUsersBlogs = [];
 
     for (let districtUser of districtUsers) {
       let userBlogs = await knex('blogs')
         .select('id', 'title', 'main_picture_URL')
-        .where('userDistrict_id', districtUser.id)
+        .where('user_location_id', districtUser.id)
         .catch((err) => console.log(err));
 
       districtUser.userBlogs = userBlogs;
@@ -51,27 +52,27 @@ class MapService {
     return districtUsersBlogs;
   }
 
-  async getDistrictImages(district_id) {
+  async getLocationImages(district_id) {
     let results = await knex('images')
-      .innerJoin('users-districts', 'userDistrict_id', 'users-districts.id')
+      .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
       .where('district_id', district_id)
       .catch((err) => console.log(err));
 
     return results;
   }
-  async addDistrict(district) {
+  async addLocation(district) {
     await knex.raw(
-      "SELECT setval('districts_id_seq', (SELECT MAX(id) from districts));"
+      "SELECT setval('locations_id_seq', (SELECT MAX(id) from locations));"
     );
-    let newDistrict = await knex('districts')
+    let newLocation = await knex('locations')
       .insert(district)
       .returning('*')
       .catch((err) => console.log(err));
 
-    return newDistrict;
+    return newLocation;
   }
 
-  async addDistrictImages(imageObject) {
+  async addLocationImages(imageObject) {
     await knex.raw(
       'SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));'
     );
@@ -79,7 +80,7 @@ class MapService {
 
     for (let url of imageObject.urls) {
       let img = await knex('images')
-        .innerJoin('users-districts', 'userDistrict_id', 'users-districts.id')
+        .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
         .insert({ ...imageObject, url: url })
         .returning('*')
         .catch((err) => console.log(err));
