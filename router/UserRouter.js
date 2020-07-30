@@ -12,6 +12,7 @@ class UserRouter {
     this.router.get('/one/:id', this.passport.authenticate('token', { session: false }),this.getUser.bind(this));
     this.router.get('/one/:id/districts', this.getUserLocations.bind(this));
     this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
+    this.router.get('/:uid/tripDetails/:lid', this.passport.authenticate('token', { session: false }),this.getUserLocation.bind(this));
 
     this.router.get('/authorized/:id/chatrooms',this.getUserChatrooms.bind(this));
     this.router.get('/authorized/:uid/chatroom/:cid',this.getUserChatroomRecords.bind(this));
@@ -22,6 +23,19 @@ class UserRouter {
 
     return this.router;
   }
+
+  getUserLocation(req, res) {
+    let payload = {
+      location_id: req.params.lid,
+      user_id : req.params.uid
+    }
+
+    return this.userService.getUserLocation(payload)
+    .then(result=>res.send(result))
+    .catch((err) => console.log(err));
+
+  }
+
 
   listUsers(req, res) {
     return this.userService
