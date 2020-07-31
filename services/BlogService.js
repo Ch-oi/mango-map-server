@@ -24,9 +24,9 @@ class BlogService {
       .where('id', blog_id)
       .catch((err) => console.log(err));
 
-    let blogs = await this.compileImgCatCmt(results);
-    this.blogs = blogs;
-    return this.blogs;
+    let blogsDetailed = await this.compileImgCatCmt(results);
+
+    return blogsDetailed;
   }
 
   async getBlogUserLocation(user_location_id) {
@@ -61,7 +61,8 @@ class BlogService {
 // get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
-      .select('body', 'ref_comment_id')
+      .select('body', 'ref_comment_id','user_name')
+      .innerJoin('users','user_id','users.id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
 
