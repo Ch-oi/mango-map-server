@@ -21,19 +21,6 @@ class BlogRouter {
     return this.router;
   }
 
-//get the weeklyblog id, get blog
-//  getWeeklyBlog(req, res) {
-//    console.log(req)
-//   return this.blogService
-//     .getBlog(getWeeklyBlog())
-//     .then((blog) => {
-//       res.send(blog);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// }
-
 
   listBlogs(req, res) {
     return this.blogService
@@ -56,6 +43,19 @@ class BlogRouter {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  // get comments individual blog post
+  getBlogComments(req,res){
+    let blog_id = req.params.id;
+    return this.blogService
+    .getBlogComments(blog_id)
+    .then((comments) => {
+      res.send(comments)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   addBlog(req, res) {

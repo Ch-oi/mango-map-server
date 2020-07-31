@@ -7,13 +7,6 @@ class BlogService {
     this.categories = [];
   }
 
-//get blog_id where the most user_id is, return the top blog_id
-  async getWeeklyBlog(){
-    let results = await knex('users-favBlogs')
-    .select('blog_id')
-    .orderBy('user_id')
-    return results[0];
-  }
 
   async listBlogs() {
     let results = await knex('blogs')
@@ -65,7 +58,7 @@ class BlogService {
 
     return cates;
   }
-
+// get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
       .select('body', 'ref_comment_id')
