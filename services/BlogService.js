@@ -19,6 +19,7 @@ class BlogService {
   }
 
   async getBlog(blog_id) {
+    
     let results = await knex('blogs')
       .select('*')
       .where('id', blog_id)
@@ -61,7 +62,7 @@ class BlogService {
 // get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
-      .select('body', 'ref_comment_id','user_name')
+      .select('user_id','body', 'ref_comment_id','user_name')
       .innerJoin('users','user_id','users.id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
@@ -165,6 +166,7 @@ class BlogService {
       .returning('*')
       .catch((err) => console.log(err));
 
+      console.log(results)
     return results[0];
   }
 
