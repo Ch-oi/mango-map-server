@@ -7,33 +7,33 @@ exports.seed = function (knex) {
     .insert([
       {
         id: 1,
-        user_name: 'Edwin',
+        user_name: 'Edwin123',
         email: 'e@e.com',
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
-        description: '',
+        description: 'Hong Kong Hiker',
         gender: 'male',
-        profile_picture_url: '',
+        profile_picture_url: 'https://pngimg.com/uploads/minions/minions_PNG86.png',
       },
       {
         id: 2,
-        user_name: 'Pulips',
+        user_name: 'Pullip123',
         email: 'p@p.com',
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
-        description: '',
+        description: 'Shopper holic',
         gender: 'female',
-        profile_picture_url: '',
+        profile_picture_url: 'https://i.pinimg.com/originals/ee/94/62/ee9462aafc151e9a57f4f32d4fd9e1dd.jpg',
       },
       {
         id: 3,
-        user_name: 'Jacky',
+        user_name: 'Jacky123',
         email: 'j@j.com',
         password:
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
-        description: '',
+        description: 'Exercism lover',
         gender: 'male',
-        profile_picture_url: '',
+        profile_picture_url: 'https://lh3.googleusercontent.com/proxy/lKRYVNnEIFMozU91wsJBsmRlXQYZqqr0zBig9QCZcO33GSgLBOHLlx4Tsu6oen2vvyN9uRebdzxCXeNjNL2TlgbvMSfQ9fuMPWvP7-EDn4QXOcrpUIzO8TK8NhEIdJcWMK0',
       },
     ])
     .then(function () {

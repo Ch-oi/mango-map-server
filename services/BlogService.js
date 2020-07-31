@@ -7,6 +7,7 @@ class BlogService {
     this.categories = [];
   }
 
+
   async listBlogs() {
     let results = await knex('blogs')
       .select('*')
@@ -57,7 +58,7 @@ class BlogService {
 
     return cates;
   }
-
+// get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
       .select('body', 'ref_comment_id')
