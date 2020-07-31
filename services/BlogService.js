@@ -115,9 +115,6 @@ class BlogService {
     return newBlog[0];
   }
 
-
-
-
   async getUserLocation(location_id,user_id){
     let res = await knex('users_locations')
     .where({location_id:location_id,user_id:user_id})

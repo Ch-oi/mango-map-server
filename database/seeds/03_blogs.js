@@ -90,9 +90,13 @@ exports.seed = function (knex) {
     .then(function () {
       // Inserts seed entries
       return knex('categories').insert([
-        { id: 1, category: 'culture & art' },
-        { id: 2, category: 'outdoor & sports' },
-        { id: 3, category: 'food & drinks' },
+        { id: 1, category: 'Art' },
+        { id: 2, category: 'Culture' },
+        { id: 3, category: 'Food' },
+        { id: 4, category: 'Outdoor'},
+        { id: 5, category: 'Sports'},
+        { id: 6, category: 'Shopping' },
+        { id: 7, category: 'Nature' },
       ]);
     })
     .then(function () {
@@ -101,6 +105,10 @@ exports.seed = function (knex) {
         { id: 1, blog_id: 1, category_id: 1 },
         { id: 2, blog_id: 1, category_id: 2 },
         { id: 3, blog_id: 1, category_id: 3 },
+        { id: 4, blog_id: 2, category_id: 4 },
+        { id: 5, blog_id: 2, category_id: 5 },
+        { id: 6, blog_id: 3, category_id: 6 },
+        { id: 7, blog_id: 3, category_id: 7 },
       ]);
     });
   // .then(function () {
