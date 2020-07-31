@@ -2,37 +2,51 @@ const router = require('express').Router();
 
 
 class UserRouter {
-  constructor(passport,userService) {
+  constructor(passport, userService) {
     this.userService = userService;
     this.passport = passport
     this.router = router;
   }
   route() {
     this.router.get('/all', this.listUsers.bind(this));
-    this.router.get('/one/:id', this.passport.authenticate('token', { session: false }),this.getUser.bind(this));
+    this.router.get('/one/:id', this.passport.authenticate('token', { session: false }), this.getUser.bind(this));
     this.router.get('/one/:id/districts', this.getUserLocations.bind(this));
     this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
-    this.router.get('/:uid/tripDetails/:lid', this.passport.authenticate('token', { session: false }),this.getUserLocation.bind(this));
+    this.router.get('/:uid/tripDetails/:lid', this.passport.authenticate('token', { session: false }), this.getUserLocation.bind(this));
 
-    this.router.get('/authorized/:id/chatrooms',this.getUserChatrooms.bind(this));
-    this.router.get('/authorized/:uid/chatroom/:cid',this.getUserChatroomRecords.bind(this));
+    this.router.put('/one/:id', this.updateUser.bind(this));
+
+    this.router.get('/authorized/:id/chatrooms', this.getUserChatrooms.bind(this));
+    this.router.get('/authorized/:uid/chatroom/:cid', this.getUserChatroomRecords.bind(this));
     // this.router.post('/signup', this.addUser.bind(this));
-    this.router.post('/authorized/:uid/blog/:bid',this.addUserFavBlog.bind(this));
-    this.router.post('/authorized/:uid/district/:did',this.addUserLocation.bind(this));
+    this.router.post('/authorized/:uid/blog/:bid', this.addUserFavBlog.bind(this));
+    this.router.post('/authorized/:uid/district/:did', this.addUserLocation.bind(this));
 
 
     return this.router;
   }
 
+
+  updateUser(req, res) {
+    let payload = {
+      userInfo:{...req.body},
+      user_id : req.params.id
+    }
+
+    return this.userService.updateUser(payload)
+      .then(result => res.send(result))
+      .catch((err) => console.log(err));
+  }
+
   getUserLocation(req, res) {
     let payload = {
       location_id: req.params.lid,
-      user_id : req.params.uid
+      user_id: req.params.uid
     }
 
     return this.userService.getUserLocation(payload)
-    .then(result=>res.send(result))
-    .catch((err) => console.log(err));
+      .then(result => res.send(result))
+      .catch((err) => console.log(err));
 
   }
 
@@ -143,9 +157,9 @@ class UserRouter {
         console.log(err);
       });
   }
-  
 
-  
+
+
 }
 
 module.exports = UserRouter;
