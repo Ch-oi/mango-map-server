@@ -111,6 +111,6 @@ app.get(
   }
 );
 
-app.listen(port, function () {
+server.listen(port, function () {
   console.log('listening on port ' + port);
 });
