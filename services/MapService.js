@@ -11,22 +11,21 @@ class MapService {
 
   async listLocations() {
     let locations = await knex('locations')
-      .select('id','en')
+      .select('*')
       .catch((err) => console.log(err));
 
     return locations;
   }
-
 
   async getLocation(location_id) {
     let location = await knex('locations')
       .where('locations.id', location_id)
       .catch((err) => console.log(err));
 
-    let images = await this.getLocationImages(location[0].id)
+    let images = await this.getLocationImages(location[0].id);
 
-    location[0].images = images
-    
+    location[0].images = images;
+
     return location;
   }
 
@@ -54,8 +53,6 @@ class MapService {
     }
     return districtUsersBlogs;
   }
-
-
 
   async addLocation(district) {
     await knex.raw(

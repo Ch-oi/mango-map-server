@@ -14,6 +14,9 @@ class ChatroomRouter {
     this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
     this.router.post('/record', this.addChatRecord.bind(this));
 
+    // Find user with username
+    this.router.post('/username', this.findUserWithUsername.bind(this));
+
     return this.router;
   }
 
@@ -41,6 +44,14 @@ class ChatroomRouter {
     return this.chatroomService
       .addChatroom(chatroomName, chatroomDescription, userIds)
       .then((chatroom) => res.send(chatroom))
+      .catch((err) => console.log(err));
+  }
+
+  findUserWithUsername(req, res) {
+    const username = req.body.username;
+    return this.chatroomService
+      .findUserWithUsername(username)
+      .then((username) => res.send(username))
       .catch((err) => console.log(err));
   }
 

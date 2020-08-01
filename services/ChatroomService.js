@@ -61,6 +61,22 @@ class ChatroomService {
     return newChatroomDetailed;
   }
 
+  // Find the user to add to chatroom
+
+  async findUserWithUsername(username) {
+    let user = await knex('users')
+      .select('id', 'user_name')
+      .where({ user_name: username });
+
+    if (user.length === 0) {
+      return 'No such user';
+    }
+    if (user.length === 1) {
+      return user;
+    }
+    return 'Error';
+  }
+
   async addChatroomUsers(chatroomId, newUsers) {
     const fieldToInsert = newUsers.map((userId) => ({
       chatroom_id: chatroomId,
