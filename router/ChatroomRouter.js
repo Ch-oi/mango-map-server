@@ -18,6 +18,7 @@ class ChatroomRouter {
   }
 
   listChatrooms(req, res) {
+    console.log(req.body);
     return this.chatroomService
       .listChatrooms(req.params.userId)
       .then((chatrooms) => res.send(chatrooms))
@@ -32,11 +33,22 @@ class ChatroomRouter {
       .catch((err) => console.log(err));
   }
 
+  // TODO- change the user_id to real one
   addChatroom(req, res) {
-    let chatroom = { ...req.body.chatroom };
-    let user_id = req.body.user_id;
+    const chatroomName = req.body.chatroomName;
+    const chatroomDescription = req.body.chatroomDescription;
+    const userIds = [1, 2, 3];
     return this.chatroomService
-      .getChatroom(chatroom, user_id)
+      .addChatroom(chatroomName, chatroomDescription, userIds)
+      .then((chatroom) => res.send(chatroom))
+      .catch((err) => console.log(err));
+  }
+
+  addChatroomUsers(req, res) {
+    const chatroomId = req.body.roomId;
+    const newUsers = req.body.newUsers;
+    return this.chatroomService
+      .addChatroomUsers(chatroomId, newUsers)
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }

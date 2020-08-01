@@ -10,6 +10,8 @@ exports.up = function (knex) {
     table.text('description');
     table.integer('districts_id').unsigned();
     table.foreign('districts_id').references('districts.id');
+    table.integer('chatrooms_id');
+    table.foreign('chatrooms_id').references('chatrooms.id');
     table.timestamps(true, true);
   });
 };

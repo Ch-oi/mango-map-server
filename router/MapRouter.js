@@ -17,7 +17,6 @@ class MapRouter {
     return this.router;
   }
 
-
   listDistricts(req, res) {
     return this.mapService
       .listDistricts()

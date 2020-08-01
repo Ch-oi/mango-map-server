@@ -12,27 +12,30 @@ class ImageService {
 
   async getAllImages() {
     let images = await knex('images')
-      .innerJoin('users_locations', 'users_locations.id', 'images.user_location_id')
+      .innerJoin(
+        'users_locations',
+        'users_locations.id',
+        'images.user_location_id'
+      )
       .where('private', false)
       .catch((err) => console.log(err));
-      
-    let imagesDetailed = await this.compileLocBlog(images)
 
-    return imagesDetailed
+    let imagesDetailed = await this.compileLocBlog(images);
 
+    return imagesDetailed;
   }
 
   async compileLocBlog(images) {
     let imagesDetailed = [];
 
     for (let img of images) {
-      let UserLocation = []
+      let UserLocation = [];
       if (img.blog_id) {
-        let blog = await this.getBlog(img.blog_id)
-        img.blog = blog
+        let blog = await this.getBlog(img.blog_id);
+        img.blog = blog;
         UserLocation = await this.getUserLocation(img.blog.user_location_id);
       } else {
-        UserLocation = await this.getUserLocation(img.user_location_id)
+        UserLocation = await this.getUserLocation(img.user_location_id);
       }
 
       img.userName = UserLocation[0].user_name;
@@ -44,7 +47,7 @@ class ImageService {
 
   async getBlog(blog_id) {
     let res = await knex('blogs')
-      .select('title','user_location_id')
+      .select('title', 'user_location_id')
       .where('id', blog_id)
       .catch((err) => console.log(err));
 
@@ -61,7 +64,6 @@ class ImageService {
 
     return results;
   }
-
 
   // Private images that have userId and chatroomId
   // Image parameter should be base64 string
@@ -138,7 +140,7 @@ class ImageService {
   // Loading images from a location
   loadLocationImages(locationId) {
     let query = knex('images')
-      .innerJoin('users-locations', 'users-locations.id', 'userLocation_id')
+      .innerJoin('users_locations', 'users_locations.id', 'user_location_id')
       .select()
       .where({ location_id: locationId });
     return query.then((data) => data).catch((err) => console.log(err));

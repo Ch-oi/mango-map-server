@@ -25,7 +25,7 @@ exports.seed = function (knex) {
       return knex('chat_records').insert([
         { body: 'Hi, where are you!', chatroom_user_id: 1 },
         { body: 'I am Five thank you', chatroom_user_id: 1 },
-        { body: 'Sipailuma', chatroom_user_id: 2 },
+        { body: 'asdasdqwdqwfqf', chatroom_user_id: 2 },
         { body: 'Why are you speaking Korean?', chatroom_user_id: 2 },
         { body: 'JINSDJASDIOAJDO', chatroom_user_id: 3 },
         { body: 'HELLO', chatroom_user_id: 5 },

@@ -34,29 +34,38 @@ class ChatroomService {
   //add new chatroom
   //chatroom = {name:'sdf',descriptions:'sdf'}
   //user_id = [...]
-  async addChatroom(chatroom, users_id) {
+  async addChatroom(chatroomName, chatroomDescription, usersId) {
     await knex.raw(
       "SELECT setval('chatrooms_id_seq', (SELECT MAX(id) from chatrooms));"
     );
     let newChatRoom = await knex('chatrooms')
-      .insert(chatroom)
+      .insert({ room_name: chatroomName, descriptions: chatroomDescription })
       .returning('*')
       .catch((err) => console.log(err));
 
-    const fieldToInsert = users_id.map((user_id) => ({
+    const fieldToInsert = usersId.map((userId) => ({
       chatroom_id: newChatRoom[0].id,
-      user_id: user_id,
+      user_id: userId,
     }));
 
+    console.log(fieldToInsert);
+
     await knex.raw(
-      'SELECT setval(\'"chatrooms-users_id_seq"\', (SELECT MAX(id) from "chatrooms-users"));'
+      'SELECT setval(\'"chatrooms_users_id_seq"\', (SELECT MAX(id) from "chatrooms_users"));'
     );
-    let newChatroomDetailed = await knex('chatrooms-users')
+    let newChatroomDetailed = await knex('chatrooms_users')
       .insert(fieldToInsert)
       .returning('*')
       .catch((err) => console.log(err));
 
     return newChatroomDetailed;
+  }
+
+  async addChatroomUsers(chatroomId, newUsers) {
+    const fieldToInsert = newUsers.map((userId) => ({
+      chatroom_id: chatroomId,
+      user_id: userId,
+    }));
   }
 
   async updateChatroom(chatroom, chatroom_id, users_id) {
