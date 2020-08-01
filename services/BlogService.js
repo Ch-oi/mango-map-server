@@ -7,6 +7,7 @@ class BlogService {
     this.categories = [];
   }
 
+
   async listBlogs() {
     let results = await knex('blogs')
       .select('*')
@@ -18,14 +19,15 @@ class BlogService {
   }
 
   async getBlog(blog_id) {
+    
     let results = await knex('blogs')
       .select('*')
       .where('id', blog_id)
       .catch((err) => console.log(err));
 
-    let blogs = await this.compileImgCatCmt(results);
-    this.blogs = blogs;
-    return this.blogs;
+    let blogsDetailed = await this.compileImgCatCmt(results);
+
+    return blogsDetailed;
   }
 
   async getBlogUserLocation(user_location_id) {
@@ -57,10 +59,11 @@ class BlogService {
 
     return cates;
   }
-
+// get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
-      .select('body', 'ref_comment_id')
+      .select('user_id','body', 'ref_comment_id','user_name')
+      .innerJoin('users','user_id','users.id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
 
@@ -113,9 +116,6 @@ class BlogService {
     return newBlog[0];
   }
 
-
-
-
   async getUserLocation(location_id,user_id){
     let res = await knex('users_locations')
     .where({location_id:location_id,user_id:user_id})
@@ -163,6 +163,7 @@ class BlogService {
       .returning('*')
       .catch((err) => console.log(err));
 
+      console.log(results)
     return results[0];
   }
 

@@ -1,4 +1,5 @@
 const knex = require('../database/config').knex;
+const bcrypt = require('bcrypt');
 
 class UserService {
   constructor() {
@@ -17,9 +18,7 @@ class UserService {
       .andWhere('location_id', payload.location_id)
       .catch((err) => console.log(err));
 
-    console.log(locationUser[0].id);
-
-    let images = await this.getUserLocationImages(locationUser[0].id);
+    locationUser[0].images = images;
 
     locationUser[0].images = images;
 
@@ -164,6 +163,28 @@ class UserService {
       .catch((err) => console.log(err));
 
     return results;
+  }
+
+  async updateUser(payload) {
+    let user = await this.getUser(payload.user_id);
+    let updateUser;
+    if (user.password == payload.userInfo.password) {
+      updateUser = await knex('users')
+        .update({ ...payload.userInfo })
+        .where('id', payload.user_id)
+        .returning('*')
+        .catch((err) => console.log(err));
+    } else {
+      let newpwd = await bcrypt.hash(payload.userInfo.password.toString(), 10);
+
+      updateUser = await knex('users')
+        .update({ ...payload.userInfo, password: newpwd })
+        .where('id', payload.user_id)
+        .returning('*')
+        .catch((err) => console.log(err));
+    }
+    console.log(updateUser);
+    return updateUser;
   }
 
   async deleteUser() {

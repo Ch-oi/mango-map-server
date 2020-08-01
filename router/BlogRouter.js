@@ -13,26 +13,13 @@ class BlogRouter {
     this.router.get('/:id', this.getBlog.bind(this));
     this.router.post('/images/:id', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
-    this.router.post('/comment/:id', this.addBlogComment.bind(this));
+    this.router.post('/comment/', this.addBlogComment.bind(this));
     this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
 
     this.router.post('/categories', this.addCategories.bind(this));
 
     return this.router;
   }
-
-//get the weeklyblog id, get blog
-//  getWeeklyBlog(req, res) {
-//    console.log(req)
-//   return this.blogService
-//     .getBlog(getWeeklyBlog())
-//     .then((blog) => {
-//       res.send(blog);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// }
 
 
   listBlogs(req, res) {
@@ -56,6 +43,19 @@ class BlogRouter {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  // get comments individual blog post
+  getBlogComments(req,res){
+    let blog_id = req.params.id;
+    return this.blogService
+    .getBlogComments(blog_id)
+    .then((comments) => {
+      res.send(comments)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   addBlog(req, res) {
