@@ -75,7 +75,6 @@ class ImageService {
         image: img,
       })
       .then((response) => {
-        console.log(response.data.data.link);
         return response.data.data.link;
       })
       .catch((err) => console.log(err));
