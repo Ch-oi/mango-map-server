@@ -11,7 +11,7 @@ class MapRouter {
     this.router.get('/districts', this.listDistricts.bind(this));
     this.router.get('/locations', this.listLocations.bind(this));
     this.router.get('/district/:id', this.getAreaDistricts.bind(this));
-    this.router.get('/districtUsers/:id', this.getLocationUsers.bind(this));
+    this.router.get('/location/:id', this.getLocation.bind(this));
     this.router.post('/district', this.addLocation.bind(this));
 
     return this.router;
@@ -47,15 +47,12 @@ class MapRouter {
       .catch((err) => console.log(err));
   }
 
-  getLocationUsers(req, res) {
+  getLocation(req, res) {
     let location_id = req.params.id;
 
     return this.mapService
-      .getLocationUsers(location_id)
-      .then((locationUsers) => {
-        this.mapService.getLocationUserBlogs(locationUsers);
-      })
-      .then((locationUsersBlogs) => res.send(locationUsersBlogs))
+      .getLocation(location_id)
+      .then((location) => res.send(location))
       .catch((err) => console.log(err));
   }
 
