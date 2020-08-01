@@ -22,12 +22,6 @@ exports.seed = function (knex) {
     { url: 'https://i.imgur.com/tGaJgJE', user_location_id: 7 ,private:false,},
     { url: 'https://i.imgur.com/8FsT7lE', user_location_id: 8 ,private:false,},
     { url: 'https://i.imgur.com/d5XnzPy', user_location_id: 8 ,private:false,},
-    { url: 'https://i.imgur.com/0k8n9xE', user_location_id: 9 ,private:false,},
-    { url: 'https://i.imgur.com/vCwSycv', user_location_id: 9 ,private:false,},
-    { url: 'https://i.imgur.com/7GO7lXQ', user_location_id: 10,private:false, },
-    { url: 'https://i.imgur.com/cleGBLC', user_location_id: 10,private:false, },
-    { url: 'https://i.imgur.com/mWTKbgp', user_location_id: 11,private:false, },
-    { url: 'https://i.imgur.com/LBIeKfa', user_location_id: 11,private:false, },
   ]);
 };
 
