@@ -7,6 +7,15 @@ class BlogService {
     this.categories = [];
   }
 
+  async updateComment(comment,comment_id){
+    let updated = await knex('comments')
+      .update(comment)
+      .where('id', comment_id)
+      .returning('*')
+      .catch((err) => console.log(err));
+
+    return updated;
+  }
 
   async listBlogs() {
     let results = await knex('blogs')
@@ -62,7 +71,7 @@ class BlogService {
 // get comments of individual blog post
   async getBlogComments(blog_id) {
     let comments = await knex('comments')
-      .select('user_id','body', 'ref_comment_id','user_name')
+      .select('comments.id','user_id','body', 'ref_comment_id','user_name','blog_id')
       .innerJoin('users','user_id','users.id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
@@ -72,7 +81,7 @@ class BlogService {
 
   async getComment(comment_id) {
     let comment = await knex('comments')
-      .select('body', 'ref_comment_id')
+      .select('id','body', 'ref_comment_id')
       .where('id', comment_id)
       .catch((err) => console.log(err));
     return comment;
@@ -208,6 +217,16 @@ class BlogService {
     }
     return cates;
   }
+
+  async deleteComment(comment_id){
+    let res = await knex('comments')
+    .del()
+    .where('id', comment_id)
+    .returning('*')
+    .catch((err) => console.log(err));
+    return res
+  }
+  
 
 
   async listCategories() {
