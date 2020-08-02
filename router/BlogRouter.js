@@ -11,7 +11,7 @@ class BlogRouter {
     this.router.get('/all', this.listBlogs.bind(this));
     this.router.get('/categories', this.listCategories.bind(this));
     this.router.get('/:id', this.getBlog.bind(this));
-    this.router.post('/images/:id', this.addBlogImages.bind(this));
+    this.router.post('/:id/images/', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
 
     this.router.post('/favBlog/:bid/:uid', this.addFavBlog.bind(this));
@@ -131,7 +131,7 @@ class BlogRouter {
       });
   }
   addBlogImages(req, res) {
-    let urls = [...req.body.urls];
+    let urls = [...req.body.images_url];
     let blog_id = req.params.id;
     return this.blogService
       .addBlogImages(urls, blog_id)
