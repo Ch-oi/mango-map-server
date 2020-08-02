@@ -34,29 +34,68 @@ class ChatroomService {
   //add new chatroom
   //chatroom = {name:'sdf',descriptions:'sdf'}
   //user_id = [...]
-  async addChatroom(chatroom, users_id) {
+  async addChatroom(chatroomName, chatroomDescription, usersId) {
     await knex.raw(
       "SELECT setval('chatrooms_id_seq', (SELECT MAX(id) from chatrooms));"
     );
     let newChatRoom = await knex('chatrooms')
-      .insert(chatroom)
+      .insert({ room_name: chatroomName, descriptions: chatroomDescription })
       .returning('*')
       .catch((err) => console.log(err));
 
-    const fieldToInsert = users_id.map((user_id) => ({
+    const fieldToInsert = usersId.map((userId) => ({
       chatroom_id: newChatRoom[0].id,
-      user_id: user_id,
+      user_id: userId,
     }));
 
+    console.log(fieldToInsert);
+
     await knex.raw(
-      'SELECT setval(\'"chatrooms-users_id_seq"\', (SELECT MAX(id) from "chatrooms-users"));'
+      'SELECT setval(\'"chatrooms_users_id_seq"\', (SELECT MAX(id) from "chatrooms_users"));'
     );
-    let newChatroomDetailed = await knex('chatrooms-users')
+    let newChatroomDetailed = await knex('chatrooms_users')
       .insert(fieldToInsert)
       .returning('*')
       .catch((err) => console.log(err));
 
     return newChatroomDetailed;
+  }
+
+  // Find the user to add to chatroom
+  async findUserWithUsername(username) {
+    let user = await knex('users')
+      .select('id', 'user_name', 'profile_picture_url')
+      .where({ user_name: username });
+
+    if (user.length === 0) {
+      return 'No such user';
+    }
+    if (user.length === 1) {
+      return user;
+    }
+    return 'Error';
+  }
+
+  // Check if the user is already in the chatroom
+  async checkIfChatroomHasUser(currentRoomId, userId) {
+    let check = await knex('users')
+      .join('chatrooms_users', 'users.id', 'chatrooms_users.user_id')
+      .where('chatrooms_users.chatroom_id', currentRoomId)
+      .andWhere('users.id', userId)
+      .select();
+
+    return check;
+  }
+
+  async addChatroomUser(chatroomId, userId) {
+    await knex('chatrooms_users').insert({
+      chatroom_id: chatroomId,
+      user_id: userId,
+    });
+
+    let query = await knex('users').select().where({ id: userId });
+
+    return query;
   }
 
   async updateChatroom(chatroom, chatroom_id, users_id) {
@@ -107,7 +146,6 @@ class ChatroomService {
       .insert({ body: chatRecord, chatroom_user_id: chatroomUser[0].id })
       .returning('*')
       .catch((err) => console.log(err));
-
     return newChatRecord;
   }
 
@@ -139,9 +177,15 @@ class ChatroomService {
   // get all users id in a chatroom
   async getChatroomUsers(chatroom_id) {
     let chatroomUsers = await knex('chatrooms_users')
-      .join('users', 'chatrooms_users.user_id', 'users.id')
-      .select()
+      .leftJoin('users', 'chatrooms_users.user_id', 'users.id')
+      .select(
+        'chatrooms_users.id',
+        'users.user_name',
+        'chatrooms_users.user_id'
+      )
+      // .select()
       .where('chatrooms_users.chatroom_id', chatroom_id)
+      // .where('chatroom_id', chatroom_id)
       .catch((err) => console.log(err));
 
     return chatroomUsers;

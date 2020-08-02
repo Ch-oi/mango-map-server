@@ -4,35 +4,34 @@ const bcrypt = require('bcrypt');
 class UserService {
   constructor() {
     this.user = [];
-    this.images = []
+    this.images = [];
   }
-
 
   async getUserLocation(payload) {
     let locationUser = await knex('locations')
-      .innerJoin('users_locations', 'locations.id', 'users_locations.location_id')
+      .innerJoin(
+        'users_locations',
+        'locations.id',
+        'users_locations.location_id'
+      )
       .where('user_id', payload.user_id)
       .andWhere('location_id', payload.location_id)
       .catch((err) => console.log(err));
 
+    locationUser[0].images = images;
 
-    let images = await this.getUserLocationImages(locationUser[0].id)
+    locationUser[0].images = images;
 
-    locationUser[0].images = images
-
-    return locationUser
+    return locationUser;
   }
 
   async getUserLocationImages(id) {
-
     let images = await knex('images')
       .where('user_location_id', id)
       .catch((err) => console.log(err));
-    console.log(images)
-    return images
-
+    console.log(images);
+    return images;
   }
-
 
   async listUsers() {
     let users = await knex('users')
@@ -62,18 +61,15 @@ class UserService {
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
-
     return userLocations;
   }
 
   async getUserLocationsBlog(user_id) {
-
     let userBlogs = await knex('blogs')
       .select('blogs.id', 'title', 'blogs.created_at')
       .innerJoin('users_locations', 'users_locations.id', 'user_location_id')
       .where('user_id', user_id)
       .catch((err) => console.log(err));
-
 
     return userBlogs;
   }
@@ -90,7 +86,12 @@ class UserService {
   async getUserChatrooms(user_id) {
     let chatrooms = await knex('chatrooms_users')
       .innerJoin('chatrooms', 'chatrooms.id', 'chatrooms_users.chatroom_id')
-      .select('chatrooms_users.id', 'chatrooms_users.chatroom_id', 'room_name', 'chatrooms.created_at')
+      .select(
+        'chatrooms_users.id',
+        'chatrooms_users.chatroom_id',
+        'room_name',
+        'chatrooms.created_at'
+      )
       .where('user_id', user_id)
       .catch((err) => console.log(err));
 
@@ -114,12 +115,11 @@ class UserService {
     let locations = await this.getUserLocations(user.id);
     let chatrooms = await this.getUserChatrooms(user.id);
     let favBlogs = await this.getUserFavBlogs(user.id);
-    let userBlogs = await this.getUserLocationsBlog(user.id)
+    let userBlogs = await this.getUserLocationsBlog(user.id);
     user.locations = locations;
     user.chatrooms = chatrooms;
     user.favBlogs = favBlogs;
     user.userBlogs = userBlogs;
-
 
     return user;
   }
@@ -166,15 +166,14 @@ class UserService {
   }
 
   async updateUser(payload) {
-    let user = await this.getUser(payload.user_id)
-    let updateUser
+    let user = await this.getUser(payload.user_id);
+    let updateUser;
     if (user.password == payload.userInfo.password) {
       updateUser = await knex('users')
         .update({ ...payload.userInfo })
         .where('id', payload.user_id)
         .returning('*')
         .catch((err) => console.log(err));
-
     } else {
       let newpwd = await bcrypt.hash(payload.userInfo.password.toString(), 10);
 
@@ -183,12 +182,10 @@ class UserService {
         .where('id', payload.user_id)
         .returning('*')
         .catch((err) => console.log(err));
-
     }
-    console.log(updateUser)
-    return updateUser
+    console.log(updateUser);
+    return updateUser;
   }
-
 
   async deleteUser() {
     let results = await knex('users').del();

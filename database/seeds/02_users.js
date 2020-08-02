@@ -13,7 +13,8 @@ exports.seed = function (knex) {
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: 'Hong Kong Hiker',
         gender: 'male',
-        profile_picture_url: 'https://pngimg.com/uploads/minions/minions_PNG86.png',
+        profile_picture_url:
+          'https://pngimg.com/uploads/minions/minions_PNG86.png',
       },
       {
         id: 2,
@@ -23,7 +24,8 @@ exports.seed = function (knex) {
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: 'Shopper holic',
         gender: 'female',
-        profile_picture_url: 'https://i.pinimg.com/originals/ee/94/62/ee9462aafc151e9a57f4f32d4fd9e1dd.jpg',
+        profile_picture_url:
+          'https://i.pinimg.com/originals/ee/94/62/ee9462aafc151e9a57f4f32d4fd9e1dd.jpg',
       },
       {
         id: 3,
@@ -33,7 +35,8 @@ exports.seed = function (knex) {
           '$2b$10$Es29aPU/0fGDU6B08pNDPOHL4wokeeMHs1W1Pwrsn6jUSFxVbMrhC',
         description: 'Exercism lover',
         gender: 'male',
-        profile_picture_url: 'https://lh3.googleusercontent.com/proxy/lKRYVNnEIFMozU91wsJBsmRlXQYZqqr0zBig9QCZcO33GSgLBOHLlx4Tsu6oen2vvyN9uRebdzxCXeNjNL2TlgbvMSfQ9fuMPWvP7-EDn4QXOcrpUIzO8TK8NhEIdJcWMK0',
+        profile_picture_url:
+          'https://lh3.googleusercontent.com/proxy/lKRYVNnEIFMozU91wsJBsmRlXQYZqqr0zBig9QCZcO33GSgLBOHLlx4Tsu6oen2vvyN9uRebdzxCXeNjNL2TlgbvMSfQ9fuMPWvP7-EDn4QXOcrpUIzO8TK8NhEIdJcWMK0',
       },
     ])
     .then(function () {
@@ -48,9 +51,8 @@ exports.seed = function (knex) {
         { id: 7, user_id: 1, location_id: 7 },
         { id: 8, user_id: 1, location_id: 8 },
         { id: 9, user_id: 1, location_id: 9 },
-        { id: 10, user_id: 1, location_id: 7 },
-        { id: 11, user_id: 1, location_id: 8 },
-        { id: 12, user_id: 1, location_id: 9 },
+        { id: 10, user_id: 2, location_id: 9 },
+        { id: 11, user_id: 3, location_id: 9 },
       ]);
     });
 };

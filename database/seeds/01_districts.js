@@ -181,6 +181,46 @@ exports.seed = function (knex) {
           lng: 113.9755385,
           description: 'Lion Rock',
         },
+        {
+          en: 'Kung Wo Soy Bean Factory',
+          cn: '公和荳品廠',
+          lat: 22.329399,
+          lng: 114.1870296,
+          description:
+            'A very generic Hong Kong local factory where you can enjoy soy bean products',
+        },
+        {
+          en: 'Kowloon Walled City Park',
+          cn: '九龍寨城公園',
+          lat: 22.3315752,
+          lng: 114.1885783,
+          description:
+            'This place was formerly known as Kowloon Walled City, and a signature location of Hong Kong',
+        },
+        {
+          en: 'Hau Wong Temple',
+          cn: '侯王廟',
+          lat: 22.3349687,
+          lng: 114.1862671,
+          description:
+            'A traditional Hong Kong temple that locates in Kowloon City, one of the many well-preserved heritage building',
+        },
+        {
+          en: 'Stone Houses Family Garden',
+          cn: '石屋家園',
+          lat: 22.333092,
+          lng: 114.1847532,
+          description:
+            'A few remaining residential stone buildings in Kowloon City in last century.',
+        },
+        {
+          en: 'Sung Wong Toi',
+          cn: '宋王台臺',
+          lat: 22.3234115,
+          lng: 114.1913538,
+          description:
+            'A historic relic where it is said that the last Song emperor temporarily lived in',
+        },
       ]);
     });
 };
