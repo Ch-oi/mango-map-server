@@ -88,12 +88,14 @@ class ChatroomService {
   }
 
   async addChatroomUser(chatroomId, userId) {
-    let insertion = await knex('chatrooms_users').insert({
+    await knex('chatrooms_users').insert({
       chatroom_id: chatroomId,
       user_id: userId,
     });
 
-    return insertion;
+    let query = await knex('users').select().where({ id: userId });
+
+    return query;
   }
 
   async updateChatroom(chatroom, chatroom_id, users_id) {

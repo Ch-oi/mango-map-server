@@ -87,6 +87,10 @@ io.on('connection', (socket) => {
     cb();
   });
 
+  socket.on('add-chatroom-user', (data) => {
+    console.log(data.username);
+  });
+
   socket.on('disconnect', () => {
     // socket.broadcast.emit('user-disconnected', user[socket.id]);
     // delete users[socket.id];
