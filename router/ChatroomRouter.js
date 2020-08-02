@@ -14,8 +14,12 @@ class ChatroomRouter {
     this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
     this.router.post('/record', this.addChatRecord.bind(this));
 
+    // TODO - change to get request
     // Find user with username
     this.router.post('/username', this.findUserWithUsername.bind(this));
+    this.router.post('/username/check', this.checkIfChatroomHasUser.bind(this));
+
+    this.router.post('/user', this.addChatroomUser.bind(this));
 
     return this.router;
   }
@@ -55,12 +59,25 @@ class ChatroomRouter {
       .catch((err) => console.log(err));
   }
 
-  addChatroomUsers(req, res) {
-    const chatroomId = req.body.roomId;
-    const newUsers = req.body.newUsers;
+  checkIfChatroomHasUser(req, res) {
+    const userId = req.body.userId;
+    const currentRoomId = req.body.currentRoomId;
+
+    console.log(userId, currentRoomId);
     return this.chatroomService
-      .addChatroomUsers(chatroomId, newUsers)
-      .then((chatroom) => res.send(chatroom))
+      .checkIfChatroomHasUser(currentRoomId, userId)
+      .then((response) => {
+        res.send(response);
+      });
+  }
+
+  addChatroomUser(req, res) {
+    const chatroomId = req.body.chatroomId;
+    const userId = req.body.userId;
+
+    return this.chatroomService
+      .addChatroomUser(chatroomId, userId)
+      .then((response) => res.send(response))
       .catch((err) => console.log(err));
   }
 
@@ -77,7 +94,7 @@ class ChatroomRouter {
     let message = req.body.message[0];
 
     // let user_id = req.user.id;
-    // let chatroom_id = req.params.id;
+    // let chatroom_id = req.body.id;
     // let new_chatRecord = { ...req.body.chatRecord };
 
     return this.chatroomService
