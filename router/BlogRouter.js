@@ -13,6 +13,10 @@ class BlogRouter {
     this.router.get('/:id', this.getBlog.bind(this));
     this.router.post('/images/:id', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
+
+    this.router.post('/favBlog/:bid/:uid', this.addFavBlog.bind(this));
+    this.router.delete('/favBlog/:bid/:uid', this.deleteFavBlog.bind(this));
+
     this.router.post('/comment/', this.addBlogComment.bind(this));
     this.router.put('/comment/:id', this.updateComment.bind(this));
     this.router.delete('/comment/:id', this.deleteComment.bind(this));
@@ -21,6 +25,34 @@ class BlogRouter {
     this.router.post('/categories', this.addCategories.bind(this));
 
     return this.router;
+  }
+
+  addFavBlog(req,res){
+    let blog_id = req.params.bid
+    let user_id = req.params.uid
+
+    return this.blogService
+      .addFavBlog(blog_id,user_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  deleteFavBlog(req,res){
+    let blog_id = req.params.bid
+    let user_id = req.params.uid
+
+    return this.blogService
+      .deleteFavBlog(blog_id,user_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   updateComment(req, res) {
