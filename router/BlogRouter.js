@@ -14,6 +14,8 @@ class BlogRouter {
     this.router.post('/images/:id', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
     this.router.post('/comment/', this.addBlogComment.bind(this));
+    this.router.put('/comment/:id', this.updateComment.bind(this));
+    this.router.delete('/comment/:id', this.deleteComment.bind(this));
     this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
 
     this.router.post('/categories', this.addCategories.bind(this));
@@ -21,6 +23,33 @@ class BlogRouter {
     return this.router;
   }
 
+  updateComment(req, res) {
+    let comment_id = req.params.id
+    let comment = req.body
+
+    return this.blogService
+      .updateComment(comment,comment_id)
+      .then((comment) => {
+        res.send(comment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  deleteComment(req, res) {
+    let comment_id = req.params.id
+
+    return this.blogService
+      .deleteComment(comment_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   listBlogs(req, res) {
     return this.blogService
