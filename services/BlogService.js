@@ -16,7 +16,7 @@ class BlogService {
 
     for (let url of urls) {
       let img = await knex('images')
-        .insert({ url: url, blog_id: blog_id})
+        .insert({ url: url, blog_id: blog_id })
         .returning('*')
         .catch((err) => console.log(err));
 
@@ -26,27 +26,27 @@ class BlogService {
     return imgs;
   }
 
-  async addFavBlog(blog_id,user_id){
-    
+  async addFavBlog(blog_id, user_id) {
+
     await knex.raw(
       'SELECT setval(\'"users_fav_blogs_id_seq"\', (SELECT MAX(id) from "users_fav_blogs"));'
     );
 
     let resu = await knex('users_fav_blogs')
-    .insert({blog_id:blog_id,user_id:user_id})
-    .returning('*')
-    .catch((err) => console.log(err));
+      .insert({ blog_id: blog_id, user_id: user_id })
+      .returning('*')
+      .catch((err) => console.log(err));
 
     return resu
   }
 
-  async deleteFavBlog(blog_id,user_id){
+  async deleteFavBlog(blog_id, user_id) {
 
     let resu = await knex('users_fav_blogs')
-    .del()
-    .where({blog_id:blog_id,user_id:user_id})
-    .returning('*')
-    .catch((err) => console.log(err));
+      .del()
+      .where({ blog_id: blog_id, user_id: user_id })
+      .returning('*')
+      .catch((err) => console.log(err));
 
     return resu
   }
@@ -134,11 +134,11 @@ class BlogService {
 
   async getBlogFavUser(blog_id) {
     let users = await knex('users_fav_blogs')
-      .select('id','user_id')
+      .select('id', 'user_id')
       .where('blog_id', blog_id)
       .catch((err) => console.log(err));
 
-      return users
+    return users
   }
 
   async compileImgCatCmt(blogs) {
@@ -165,6 +165,8 @@ class BlogService {
 
   async addBlog(blog) {
 
+    console.log(blog)
+    
     let { title, body } = blog
     let userLocation = await this.getUserLocation(blog.location_id, blog.user_id)
 
@@ -172,16 +174,17 @@ class BlogService {
       'SELECT setval(\'"blogs_id_seq"\', (SELECT MAX(id) from "blogs"));'
     );
 
+
     let newBlog = await knex('blogs')
       .insert({ title, body, user_location_id: userLocation.id })
       .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
       .returning('*')
       .catch((err) => console.log(err));
 
-      console.log(blog)
+    console.log(blog)
     let cates = await this.addBlogCategories(blog.category, newBlog[0].id)
 
-      newBlog[0].cates = cates
+    newBlog[0].cates = cates
 
     return newBlog[0];
   }
