@@ -9,13 +9,19 @@ class ChatroomService {
   //list all chatrooms
   async listChatrooms(userId) {
     let chatrooms = await knex('chatrooms')
-      .join('chatrooms_users', 'chatrooms.id', 'chatrooms_users.chatroom_id')
+      .innerJoin(
+        'chatrooms_users',
+        'chatrooms.id',
+        'chatrooms_users.chatroom_id'
+      )
       .select('*')
       .where({ user_id: userId })
       .catch((err) => console.log(err));
 
-    this.chatrooms = chatrooms;
-    return this.chatrooms;
+    // console.log(chatrooms);
+
+    // this.chatrooms = chatrooms;
+    return chatrooms;
   }
 
   //get one specfic chatroom by id
@@ -130,13 +136,13 @@ class ChatroomService {
   //add a new chat record
   //charRecord={body:"",images:""}
   async addChatRecord(chatRecord, chatroom_id, user_id) {
+    console.log('[ChatrromService]', chatroom_id, user_id);
+
     let chatroomUser = await knex('chatrooms_users')
       .select('*')
       .where('chatroom_id', chatroom_id)
       .andWhere('user_id', user_id)
       .catch((err) => console.log(err));
-
-    console.log(chatroomUser);
 
     await knex.raw(
       'SELECT setval(\'"chat_records_id_seq"\', (SELECT MAX(id) from "chat_records"));'

@@ -11,9 +11,15 @@ class BlogRouter {
     this.router.get('/all', this.listBlogs.bind(this));
     this.router.get('/categories', this.listCategories.bind(this));
     this.router.get('/:id', this.getBlog.bind(this));
-    this.router.post('/images/:id', this.addBlogImages.bind(this));
+    this.router.post('/:id/images/', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
+
+    this.router.post('/favBlog/:bid/:uid', this.addFavBlog.bind(this));
+    this.router.delete('/favBlog/:bid/:uid', this.deleteFavBlog.bind(this));
+
     this.router.post('/comment/', this.addBlogComment.bind(this));
+    this.router.put('/comment/:id', this.updateComment.bind(this));
+    this.router.delete('/comment/:id', this.deleteComment.bind(this));
     this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
 
     this.router.post('/categories', this.addCategories.bind(this));
@@ -21,6 +27,61 @@ class BlogRouter {
     return this.router;
   }
 
+  addFavBlog(req,res){
+    let blog_id = req.params.bid
+    let user_id = req.params.uid
+
+    return this.blogService
+      .addFavBlog(blog_id,user_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  deleteFavBlog(req,res){
+    let blog_id = req.params.bid
+    let user_id = req.params.uid
+
+    return this.blogService
+      .deleteFavBlog(blog_id,user_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  updateComment(req, res) {
+    let comment_id = req.params.id
+    let comment = req.body
+
+    return this.blogService
+      .updateComment(comment,comment_id)
+      .then((comment) => {
+        res.send(comment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  deleteComment(req, res) {
+    let comment_id = req.params.id
+
+    return this.blogService
+      .deleteComment(comment_id)
+      .then((resu) => {
+        res.send(resu);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   listBlogs(req, res) {
     return this.blogService
@@ -70,7 +131,7 @@ class BlogRouter {
       });
   }
   addBlogImages(req, res) {
-    let urls = [...req.body.urls];
+    let urls = [...req.body.images_url];
     let blog_id = req.params.id;
     return this.blogService
       .addBlogImages(urls, blog_id)
