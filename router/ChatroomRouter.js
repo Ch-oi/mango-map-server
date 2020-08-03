@@ -77,7 +77,10 @@ class ChatroomRouter {
 
     return this.chatroomService
       .addChatroomUser(chatroomId, userId)
-      .then((response) => res.send(response))
+      .then((response) => {
+        delete response[0].password;
+        res.send(response);
+      })
       .catch((err) => console.log(err));
   }
 

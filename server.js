@@ -22,6 +22,10 @@ const server = https.createServer({ key: key, cert: cert }, app);
 const socketio = require('socket.io');
 const io = socketio(server);
 
+// Finish the Socket io configuration
+module.exports = io;
+require('./socketio')();
+
 // const axios = require('axios');
 app.use(cors());
 app.use(express.json());
@@ -68,35 +72,6 @@ app.use('/user', new UserRouter(passport, userService).route());
 app.use('/blog', new BlogRouter(passport, blogService).route());
 app.use('/map', new MapRouter(mapService).route());
 app.use('/auth', new AuthRouter().route());
-
-io.on('connection', (socket) => {
-  console.log('New user connected to server');
-
-  socket.on('new-user', ({ name }) => {
-    console.log(name);
-    // users[socket.id] = name;
-    socket.broadcast.emit('user-connected', name);
-  });
-
-  socket.on('send-chat-message', (message, cb) => {
-    console.log(message);
-    socket.broadcast.emit('chat-message', {
-      message,
-      // TODO This should return the username as well
-    });
-    cb();
-  });
-
-  socket.on('add-chatroom-user', (data) => {
-    console.log(data.username);
-  });
-
-  socket.on('disconnect', () => {
-    // socket.broadcast.emit('user-disconnected', user[socket.id]);
-    // delete users[socket.id];
-    console.log('A user has disconnected from the server');
-  });
-});
 
 app.get('/', (req, res) => {
   res.json({
