@@ -53,6 +53,8 @@ exports.seed = function (knex) {
         { id: 9, user_id: 1, location_id: 9 },
         { id: 10, user_id: 2, location_id: 9 },
         { id: 11, user_id: 3, location_id: 9 },
+        { id: 12, user_id: 2, location_id: 1 },
+        { id: 13, user_id: 3, location_id: 1 },
       ]);
     });
 };

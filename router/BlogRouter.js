@@ -121,6 +121,7 @@ class BlogRouter {
 
   addBlog(req, res) {
     let new_blog = { ...req.body };
+    console.log(new_blog)
     return this.blogService
       .addBlog(new_blog)
       .then((newBlog) => {
