@@ -20,7 +20,7 @@ class ChatroomService {
 
     // console.log(chatrooms);
 
-    // this.chatrooms = chatrooms;
+    this.chatrooms = chatrooms;
     return chatrooms;
   }
 

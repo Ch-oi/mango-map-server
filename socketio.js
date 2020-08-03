@@ -3,6 +3,7 @@ const io = require('./server');
 const startSocketIO = () => {
   io.on('connection', (socket) => {
     socket.on('new-user', ({ name, roomList }) => {
+      console.log(name, roomList);
       socket.broadcast.emit('user-connected', name);
       roomList.forEach((roomId) => {
         socket
