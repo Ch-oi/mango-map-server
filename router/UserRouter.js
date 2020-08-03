@@ -19,8 +19,7 @@ class UserRouter {
     this.router.get('/authorized/:id/chatrooms', this.getUserChatrooms.bind(this));
     this.router.get('/authorized/:uid/chatroom/:cid', this.getUserChatroomRecords.bind(this));
     // this.router.post('/signup', this.addUser.bind(this));
-    this.router.post('/authorized/:uid/blog/:bid', this.addUserFavBlog.bind(this));
-    this.router.post('/authorized/:uid/district/:did', this.addUserLocation.bind(this));
+    this.router.post('/:uid/district/:lid', this.addUserLocation.bind(this));
 
 
     return this.router;
@@ -145,11 +144,12 @@ class UserRouter {
         console.log(err);
       });
   }
+  
   addUserLocation(req, res) {
     let user_id = req.params.uid;
-    let district_id = req.params.did;
+    let location_id = req.params.did;
     return this.userService
-      .addUserLocation(user_id, district_id)
+      .addUserLocation(user_id, location_id)
       .then((results) => {
         res.send(results);
       })
