@@ -141,7 +141,7 @@ class UserService {
   //   return this.user;
   // }
 
-  async adduserLocation(user_id, location_id) {
+  async addUserLocation(user_id, location_id) {
     await knex.raw(
       'SELECT setval(\'"users_locations_id_seq"\', (SELECT MAX(id) from "users_locations"));'
     );
