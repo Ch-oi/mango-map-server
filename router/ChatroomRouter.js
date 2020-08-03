@@ -44,9 +44,9 @@ class ChatroomRouter {
   addChatroom(req, res) {
     const chatroomName = req.body.chatroomName;
     const chatroomDescription = req.body.chatroomDescription;
-    const userIds = [1, 2, 3];
+    const userId = req.body.userId;
     return this.chatroomService
-      .addChatroom(chatroomName, chatroomDescription, userIds)
+      .addChatroom(chatroomName, chatroomDescription, userId)
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }
