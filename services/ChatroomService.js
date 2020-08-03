@@ -20,7 +20,7 @@ class ChatroomService {
 
     // console.log(chatrooms);
 
-    // this.chatrooms = chatrooms;
+    this.chatrooms = chatrooms;
     return chatrooms;
   }
 
@@ -135,7 +135,7 @@ class ChatroomService {
 
   //add a new chat record
   //charRecord={body:"",images:""}
-  async addChatRecord(chatRecord, chatroom_id, user_id) {
+  async addChatRecord(chatRecord, chatroom_id, user_id, username) {
     console.log('[ChatrromService]', chatroom_id, user_id);
 
     let chatroomUser = await knex('chatrooms_users')
@@ -152,6 +152,9 @@ class ChatroomService {
       .insert({ body: chatRecord, chatroom_user_id: chatroomUser[0].id })
       .returning('*')
       .catch((err) => console.log(err));
+
+    newChatRecord[0].user_name = username;
+
     return newChatRecord;
   }
 
