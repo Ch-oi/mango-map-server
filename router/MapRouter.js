@@ -13,8 +13,21 @@ class MapRouter {
     this.router.get('/district/:id', this.getAreaDistricts.bind(this));
     this.router.get('/location/:id', this.getLocation.bind(this));
     this.router.post('/district', this.addLocation.bind(this));
+    this.router.post('/location/:uid/:lid/images', this.addLocationImages.bind(this));
 
     return this.router;
+  }
+
+
+
+  addLocationImages(req, res) {
+    let user_id = req.params.uid
+    let location_id = req.params.lid
+    let urls = req.body.images_url
+    return this.mapService
+      .addLocationImages(urls,user_id,location_id)
+      .then((images) => res.send(images))
+      .catch((err) => console.log(err));
   }
 
   listDistricts(req, res) {

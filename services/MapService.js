@@ -66,23 +66,48 @@ class MapService {
     return newLocation;
   }
 
-  async addLocationImages(imageObject) {
+  async addLocationImages(urls, user_id, location_id) {
+
+    let userLocation = await knex('users_locations')
+      .where('user_id', user_id)
+      .andWhere('location_id', location_id)
+      .catch((err) => console.log(err));
+
     await knex.raw(
       'SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));'
     );
     let imgs = [];
 
-    for (let url of imageObject.urls) {
+    for (let url of urls) {
       let img = await knex('images')
         .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
-        .insert({ ...imageObject, url: url })
+        .insert({ url: url,user_location_id:userLocation[0].id })
         .returning('*')
         .catch((err) => console.log(err));
 
       imgs.push(img[0]);
     }
+
     return imgs;
   }
+
+  // async addLocationImages(imageObject) {
+  //   await knex.raw(
+  //     'SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));'
+  //   );
+  //   let imgs = [];
+
+  //   for (let url of imageObject.urls) {
+  //     let img = await knex('images')
+  //       .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
+  //       .insert({ ...imageObject, url: url })
+  //       .returning('*')
+  //       .catch((err) => console.log(err));
+
+  //     imgs.push(img[0]);
+  //   }
+  //   return imgs;
+  // }
 }
 
 module.exports = MapService;
