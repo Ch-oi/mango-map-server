@@ -137,9 +137,12 @@ class UserService {
   }
 
   async updateUser(payload) {
-    let user = await this.getUser(payload.user_id);
+    let user = await knex('users')
+    .where('id',payload.user_id);
+    console.log(user)
+
     let updateUser;
-    if (user.password == payload.userInfo.password) {
+    if (user[0].password == payload.userInfo.password) {
       updateUser = await knex('users')
         .update({ ...payload.userInfo })
         .where('id', payload.user_id)
