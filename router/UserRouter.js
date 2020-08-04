@@ -10,16 +10,12 @@ class UserRouter {
   route() {
     this.router.get('/all', this.listUsers.bind(this));
     this.router.get('/one/:id', this.passport.authenticate('token', { session: false }), this.getUser.bind(this));
-    this.router.get('/one/:id/districts', this.getUserLocations.bind(this));
-    this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
     this.router.get('/:uid/tripDetails/:lid', this.passport.authenticate('token', { session: false }), this.getUserLocation.bind(this));
-
-    this.router.put('/one/:id', this.updateUser.bind(this));
-
-    this.router.get('/authorized/:id/chatrooms', this.getUserChatrooms.bind(this));
-    this.router.get('/authorized/:uid/chatroom/:cid', this.getUserChatroomRecords.bind(this));
-    // this.router.post('/signup', this.addUser.bind(this));
-    this.router.post('/:uid/location/:lid', this.addUserLocation.bind(this));
+    
+    this.router.put('/one/:id', this.passport.authenticate('token', { session: false }),this.updateUser.bind(this));
+    
+    // this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
+    // this.router.post('/:uid/location/:lid', this.addUserLocation.bind(this));
 
 
     return this.router;
@@ -60,6 +56,7 @@ class UserRouter {
         console.log(err);
       });
   }
+
   getUser(req, res) {
     let user_id = req.params.id;
     return this.userService
@@ -71,66 +68,6 @@ class UserRouter {
         console.log(err);
       });
   }
-
-  getUserLocations(req, res) {
-    let user_id = req.params.id;
-    return this.userService
-      .getUserLocations(user_id)
-      .then((userLocationsBlogs) => {
-        res.send(userLocationsBlogs);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  getUserFavBlogs(req, res) {
-    let user_id = req.params.id;
-    return this.userService
-      .getUserFavBlogs(user_id)
-      .then((favBlogs) => {
-        res.send(favBlogs);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  getUserChatrooms(req, res) {
-    let user_id = req.params.id;
-    return this.userService
-      .getUserChatrooms(user_id)
-      .then((chatrooms) => {
-        res.send(chatrooms);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  getUserChatroomRecords(req, res) {
-    let user_id = req.params.uid;
-    let chatroom_id = req.params.cid;
-    return this.userService
-      .getUserChatroomRecords(user_id, chatroom_id)
-      .then((chatRecords) => {
-        res.send(chatRecords);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  // addUser(req, res) {
-  //   let new_user = {
-  //     ...req.body,
-  //   };
-  //   return this.userService
-  //     .addUser(new_user)
-  //     .then((newUser) => {
-  //       res.send(newUser);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
 
   addUserFavBlog(req, res) {
     let user_id = req.params.uid;

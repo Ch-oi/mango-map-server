@@ -2,8 +2,6 @@ const knex = require('../database/config').knex;
 
 class ChatroomService {
   constructor() {
-    this.chatrooms = [];
-    this.chatroom = {};
   }
 
   //list all chatrooms
@@ -19,8 +17,6 @@ class ChatroomService {
       .catch((err) => console.log(err));
 
     // console.log(chatrooms);
-
-    this.chatrooms = chatrooms;
     return chatrooms;
   }
 
@@ -121,35 +117,6 @@ class ChatroomService {
     return query;
   }
 
-  async updateChatroom(chatroom, chatroom_id, users_id) {
-    let updateChatRoom = await knex('chatrooms')
-      .update(chatroom)
-      .where('id', chatroom_id)
-      .returning('*')
-      .catch((err) => console.log(err));
-
-    await knex('chatrooms-users')
-      .del()
-      .where('chatroom_id', updateChatRoom[0].id)
-      .catch((err) => console.log(err));
-
-    await knex.raw(
-      'SELECT setval(\'"chatrooms-users_id_seq"\', (SELECT MAX(id) from "chatrooms-users"));'
-    );
-
-    const fieldToInsert = users_id.map((user_id) => ({
-      chatroom_id: updateChatRoom[0].id,
-      user_id: user_id,
-    }));
-
-    let newChatroomDetailed = await knex('chatrooms_users')
-      .insert(fieldToInsert)
-      .returning('*')
-      .catch((err) => console.log(err));
-
-    return newChatroomDetailed;
-  }
-
   //add a new chat record
   //charRecord={body:"",images:""}
   async addChatRecord(chatRecord, chatroom_id, user_id, username) {
@@ -239,6 +206,35 @@ class ChatroomService {
       .catch((err) => console.log(err));
 
     return chatRecords;
+  }
+
+  async updateChatroom(chatroom, chatroom_id, users_id) {
+    let updateChatRoom = await knex('chatrooms')
+      .update(chatroom)
+      .where('id', chatroom_id)
+      .returning('*')
+      .catch((err) => console.log(err));
+
+    await knex('chatrooms-users')
+      .del()
+      .where('chatroom_id', updateChatRoom[0].id)
+      .catch((err) => console.log(err));
+
+    await knex.raw(
+      'SELECT setval(\'"chatrooms-users_id_seq"\', (SELECT MAX(id) from "chatrooms-users"));'
+    );
+
+    const fieldToInsert = users_id.map((user_id) => ({
+      chatroom_id: updateChatRoom[0].id,
+      user_id: user_id,
+    }));
+
+    let newChatroomDetailed = await knex('chatrooms_users')
+      .insert(fieldToInsert)
+      .returning('*')
+      .catch((err) => console.log(err));
+
+    return newChatroomDetailed;
   }
 }
 

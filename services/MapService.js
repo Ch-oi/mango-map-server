@@ -74,6 +74,9 @@ class MapService {
       .catch((err) => console.log(err));
 
     if (typeof userLocation[0] == 'undefined') {
+      await knex.raw(
+        'SELECT setval(\'"users_locations_id_seq"\', (SELECT MAX(id) from "users_locations"));'
+      );
       userLocation = await knex('users_locations')
         .insert({ user_id: user_id, location_id: location_id })
         .returning('*')
