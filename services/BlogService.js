@@ -32,7 +32,7 @@ class BlogService {
 
     return blogsDetailed;
   }
-
+//hello
   async compileImgCatCmt(blogs) {
     let blogsDetailed = [];
 
@@ -107,6 +107,8 @@ class BlogService {
   // blog=={location_id:,user_id:,title:,body:,category:[]}
   async addBlog(blog) {
 
+    console.log(blog)
+    
     let { title, body } = blog
     let userLocation = await this.getUserLocation(blog.location_id, blog.user_id)
 
