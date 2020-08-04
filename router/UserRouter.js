@@ -11,11 +11,11 @@ class UserRouter {
     this.router.get('/all', this.listUsers.bind(this));
     this.router.get('/one/:id', this.passport.authenticate('token', { session: false }), this.getUser.bind(this));
     this.router.get('/:uid/tripDetails/:lid', this.passport.authenticate('token', { session: false }), this.getUserLocation.bind(this));
+    this.router.post('/:uid/location/:lid', this.addUserLocation.bind(this));
     
     this.router.put('/one/:id', this.passport.authenticate('token', { session: false }),this.updateUser.bind(this));
     
     // this.router.get('/one/:id/favoriteBlogs', this.getUserFavBlogs.bind(this));
-    // this.router.post('/:uid/location/:lid', this.addUserLocation.bind(this));
 
 
     return this.router;

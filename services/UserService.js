@@ -96,59 +96,71 @@ class UserService {
     return favBlogs;
   }
 
-  
+  async getUserChatrooms(user_id) {
+    let chatrooms = await knex('chatrooms_users')
+      .innerJoin('chatrooms', 'chatrooms.id', 'chatrooms_users.chatroom_id')
+      .select(
+        'chatrooms_users.id',
+        'chatrooms_users.chatroom_id',
+        'room_name',
+        'chatrooms.created_at'
+      )
+      .where('user_id', user_id)
+      .catch((err) => console.log(err));
+
+    return chatrooms;
+  }
+
+
+  async addUserLocation(user_id, location_id) {
+    await knex.raw(
+      'SELECT setval(\'"users_locations_id_seq"\', (SELECT MAX(id) from "users_locations"));'
+    );
+    let results = await knex('users_locations')
+      .insert({ user_id: user_id, location_id: location_id })
+      .returning('*')
+      .catch((err) => console.log(err));
+
+    return results;
+  }
+
   async addUserFavBlog(user_id, blog_id) {
     await knex.raw(
       'SELECT setval(\'"users_fav_blogs_id_seq"\', (SELECT MAX(id) from "users_fav_blogs"));'
-      );
-      let results = await knex('users_fav_blogs')
+    );
+    let results = await knex('users_fav_blogs')
       .insert({ user_id: user_id, blog_id: blog_id })
       .returning('*')
       .catch((err) => console.log(err));
-      
-      return results;
-    }
-    
-    async updateUser(payload) {
-      let user = await this.getUser(payload.user_id);
-      let updateUser;
-      if (user.password == payload.userInfo.password) {
-        updateUser = await knex('users')
+
+    return results;
+  }
+
+  async updateUser(payload) {
+    let user = await this.getUser(payload.user_id);
+    let updateUser;
+    if (user.password == payload.userInfo.password) {
+      updateUser = await knex('users')
         .update({ ...payload.userInfo })
         .where('id', payload.user_id)
         .returning('*')
         .catch((err) => console.log(err));
-      } else {
-        let newpwd = await bcrypt.hash(payload.userInfo.password.toString(), 10);
-        
-        updateUser = await knex('users')
+    } else {
+      let newpwd = await bcrypt.hash(payload.userInfo.password.toString(), 10);
+
+      updateUser = await knex('users')
         .update({ ...payload.userInfo, password: newpwd })
         .where('id', payload.user_id)
         .returning('*')
         .catch((err) => console.log(err));
-      }
-      console.log(updateUser);
-      return updateUser;
     }
-    
-    async getUserChatrooms(user_id) {
-      let chatrooms = await knex('chatrooms_users')
-        .innerJoin('chatrooms', 'chatrooms.id', 'chatrooms_users.chatroom_id')
-        .select(
-          'chatrooms_users.id',
-          'chatrooms_users.chatroom_id',
-          'room_name',
-          'chatrooms.created_at'
-        )
-        .where('user_id', user_id)
-        .catch((err) => console.log(err));
-  
-      return chatrooms;
-    }
-    
-    
-    
- 
+    console.log(updateUser);
+    return updateUser;
+  }
+
+
+
+
 }
 
 module.exports = UserService;
