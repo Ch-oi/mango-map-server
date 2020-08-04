@@ -11,18 +11,18 @@ class BlogRouter {
     this.router.get('/all', this.listBlogs.bind(this));
     this.router.get('/categories', this.listCategories.bind(this));
     this.router.get('/:id', this.getBlog.bind(this));
+    this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
     this.router.post('/:id/images/', this.addBlogImages.bind(this));
     this.router.post('/categories/:id', this.addBlogCategories.bind(this));
-
+    
     this.router.post('/favBlog/:bid/:uid', this.addFavBlog.bind(this));
     this.router.delete('/favBlog/:bid/:uid', this.deleteFavBlog.bind(this));
-
+    
     this.router.post('/comment/', this.addBlogComment.bind(this));
     this.router.put('/comment/:id', this.updateComment.bind(this));
     this.router.delete('/comment/:id', this.deleteComment.bind(this));
-    this.router.post('/', this.passport.authenticate('token', { session: false }),this.addBlog.bind(this));
-
-    this.router.post('/categories', this.addCategories.bind(this));
+    
+    // this.router.post('/categories', this.addCategories.bind(this));
 
     return this.router;
   }

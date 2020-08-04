@@ -3,36 +3,8 @@ const bcrypt = require('bcrypt');
 
 class UserService {
   constructor() {
-    this.user = [];
-    this.images = [];
+
   }
-
-  async getUserLocation(payload) {
-    let locationUser = await knex('locations')
-      .innerJoin(
-        'users_locations',
-        'locations.id',
-        'users_locations.location_id'
-      )
-      .where('user_id', payload.user_id)
-      .andWhere('location_id', payload.location_id)
-      .catch((err) => console.log(err));
-
-    locationUser[0].images = images;
-
-    locationUser[0].images = images;
-
-    return locationUser;
-  }
-
-  async getUserLocationImages(id) {
-    let images = await knex('images')
-      .where('user_location_id', id)
-      .catch((err) => console.log(err));
-    console.log(images);
-    return images;
-  }
-
   async listUsers() {
     let users = await knex('users')
       .select('*')
@@ -53,7 +25,31 @@ class UserService {
     return userDetailed;
   }
 
-  //all location that a user marked
+  async compileUserLocsFavBlogsChatRooms(user) {
+    let locations = await this.getUserLocations(user.id);
+    let chatrooms = await this.getUserChatrooms(user.id);
+    let favBlogs = await this.getUserFavBlogs(user.id);
+    let userBlogs = await this.getUserLocationsBlog(user.id);
+    user.locations = locations;
+    user.chatrooms = chatrooms;
+    user.favBlogs = favBlogs;
+    user.userBlogs = userBlogs;
+
+    return user;
+  }
+
+  
+
+  //work with getUserLocation
+  async getUserLocationImages(id) {
+    let images = await knex('images')
+      .where('user_location_id', id)
+      .catch((err) => console.log(err));
+    console.log(images);
+    return images;
+  }
+
+  //all location that a user have been (write a post , upload images, create that location)
   async getUserLocations(user_id) {
     let userLocations = await knex('users_locations')
       .innerJoin('locations', 'users_locations.location_id', 'locations.id')
@@ -63,7 +59,7 @@ class UserService {
 
     return userLocations;
   }
-
+  
   async getUserLocationsBlog(user_id) {
     let userBlogs = await knex('blogs')
       .select('blogs.id', 'title', 'blogs.created_at')
@@ -72,6 +68,23 @@ class UserService {
       .catch((err) => console.log(err));
 
     return userBlogs;
+  }
+  //one userlocation and it's images
+  async getUserLocation(payload) {
+    let locationUser = await knex('locations')
+      .innerJoin(
+        'users_locations',
+        'locations.id',
+        'users_locations.location_id'
+      )
+      .where('user_id', payload.user_id)
+      .andWhere('location_id', payload.location_id)
+      .catch((err) => console.log(err));
+
+    let images = await this.getUserLocationImages(locationUser[0].id)
+    locationUser[0].images = images;
+
+    return locationUser;
   }
 
   async getUserFavBlogs(user_id) {
@@ -98,48 +111,6 @@ class UserService {
     return chatrooms;
   }
 
-  //accepting chatroomUser object  returning particular user's records
-
-  async getUserChatroomRecords(chatroom_id, user_id) {
-    let chatRecords = await knex('chatrooms_users')
-      .select('*')
-      .innerJoin('chatRecords', 'chatroom_user_id', 'chatrooms_users.id')
-      .where('chatroom_id', chatroom_id)
-      .andWhere('user_id', user_id)
-      .catch((err) => console.log(err));
-
-    return chatRecords;
-  }
-
-  async compileUserLocsFavBlogsChatRooms(user) {
-    let locations = await this.getUserLocations(user.id);
-    let chatrooms = await this.getUserChatrooms(user.id);
-    let favBlogs = await this.getUserFavBlogs(user.id);
-    let userBlogs = await this.getUserLocationsBlog(user.id);
-    user.locations = locations;
-    user.chatrooms = chatrooms;
-    user.favBlogs = favBlogs;
-    user.userBlogs = userBlogs;
-
-    return user;
-  }
-
-  // async addUser(user) {
-  //   console.log(user);
-
-  //   let hashedPwd = await bcrypt.hash(user.password.toString(), 10);
-  //   await knex.raw(
-  //     'SELECT setval(\'"users_id_seq"\', (SELECT MAX(id) from "users"));'
-  //   );
-  //   let results = await knex('users')
-  //     .insert({ ...user, password: hashedPwd })
-  //     .returning('*')
-  //     .catch((err) => console.log(err));
-
-  //   this.user = results;
-
-  //   return this.user;
-  // }
 
   async addUserLocation(user_id, location_id) {
     await knex.raw(
@@ -166,9 +137,12 @@ class UserService {
   }
 
   async updateUser(payload) {
-    let user = await this.getUser(payload.user_id);
+    let user = await knex('users')
+    .where('id',payload.user_id);
+    console.log(user)
+
     let updateUser;
-    if (user.password == payload.userInfo.password) {
+    if (user[0].password == payload.userInfo.password) {
       updateUser = await knex('users')
         .update({ ...payload.userInfo })
         .where('id', payload.user_id)
@@ -187,9 +161,9 @@ class UserService {
     return updateUser;
   }
 
-  async deleteUser() {
-    let results = await knex('users').del();
-  }
+
+
+
 }
 
 module.exports = UserService;

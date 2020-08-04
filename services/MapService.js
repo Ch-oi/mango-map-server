@@ -73,6 +73,18 @@ class MapService {
       .andWhere('location_id', location_id)
       .catch((err) => console.log(err));
 
+    if (typeof userLocation[0] == 'undefined') {
+      await knex.raw(
+        'SELECT setval(\'"users_locations_id_seq"\', (SELECT MAX(id) from "users_locations"));'
+      );
+      userLocation = await knex('users_locations')
+        .insert({ user_id: user_id, location_id: location_id })
+        .returning('*')
+        .catch((err) => console.log(err));
+    }
+
+    console.log(userLocation)
+
     await knex.raw(
       'SELECT setval(\'"images_id_seq"\', (SELECT MAX(id) from "images"));'
     );
@@ -81,7 +93,7 @@ class MapService {
     for (let url of urls) {
       let img = await knex('images')
         .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
-        .insert({ url: url,user_location_id:userLocation[0].id })
+        .insert({ url: url, user_location_id: userLocation[0].id })
         .returning('*')
         .catch((err) => console.log(err));
 
