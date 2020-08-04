@@ -168,6 +168,15 @@ class BlogService {
     let { title, body } = blog
     let userLocation = await this.getUserLocation(blog.location_id, blog.user_id)
 
+    console.log( userLocation)
+    if(typeof userLocation == 'undefined'){
+      userLocation = await knex('users_locations')
+      .insert({user_id:blog.user_id,location_id:blog.location_id})
+      .returning('*')
+      .catch((err) => console.log(err));
+
+      console.log(userLocation)
+   }
     await knex.raw(
       'SELECT setval(\'"blogs_id_seq"\', (SELECT MAX(id) from "blogs"));'
     );
@@ -178,7 +187,7 @@ class BlogService {
       .returning('*')
       .catch((err) => console.log(err));
 
-      console.log(blog)
+      console.log(newBlog)
     let cates = await this.addBlogCategories(blog.category, newBlog[0].id)
 
       newBlog[0].cates = cates
@@ -193,7 +202,7 @@ class BlogService {
       .where({ location_id: location_id, user_id: user_id })
       .catch((err) => console.log(err));
 
-    return res[0]
+    return res
   }
 
   async addBlogCategories(categories, blog_id) {

@@ -18,8 +18,7 @@ class UserService {
       .andWhere('location_id', payload.location_id)
       .catch((err) => console.log(err));
 
-    locationUser[0].images = images;
-
+        let images = await this.getUserLocationImages(locationUser[0].id)
     locationUser[0].images = images;
 
     return locationUser;
