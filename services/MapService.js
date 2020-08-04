@@ -54,12 +54,12 @@ class MapService {
     return districtUsersBlogs;
   }
 
-  async addLocation(district) {
+  async addLocation(location) {
     await knex.raw(
       "SELECT setval('locations_id_seq', (SELECT MAX(id) from locations));"
     );
     let newLocation = await knex('locations')
-      .insert(district)
+      .insert(location)
       .returning('*')
       .catch((err) => console.log(err));
 
