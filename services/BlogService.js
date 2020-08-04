@@ -168,8 +168,9 @@ class BlogService {
     let { title, body } = blog
     let userLocation = await this.getUserLocation(blog.location_id, blog.user_id)
 
-    console.log( userLocation)
-    if(typeof userLocation == 'undefined'){
+    console.log(typeof userLocation[0])
+
+    if(typeof userLocation[0] == 'undefined'){
       userLocation = await knex('users_locations')
       .insert({user_id:blog.user_id,location_id:blog.location_id})
       .returning('*')
@@ -182,7 +183,7 @@ class BlogService {
     );
 
     let newBlog = await knex('blogs')
-      .insert({ title, body, user_location_id: userLocation.id })
+      .insert({ title, body, user_location_id: userLocation[0].id })
       .innerJoin('users_locations', 'user_location_id', 'users_locations.id')
       .returning('*')
       .catch((err) => console.log(err));
