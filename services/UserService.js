@@ -18,8 +18,7 @@ class UserService {
       .andWhere('location_id', payload.location_id)
       .catch((err) => console.log(err));
 
-    locationUser[0].images = images;
-
+        let images = await this.getUserLocationImages(locationUser[0].id)
     locationUser[0].images = images;
 
     return locationUser;
@@ -141,7 +140,7 @@ class UserService {
   //   return this.user;
   // }
 
-  async adduserLocation(user_id, location_id) {
+  async addUserLocation(user_id, location_id) {
     await knex.raw(
       'SELECT setval(\'"users_locations_id_seq"\', (SELECT MAX(id) from "users_locations"));'
     );

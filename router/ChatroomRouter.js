@@ -9,6 +9,7 @@ class ChatroomRouter {
   route() {
     this.router.get('/all/:userId', this.listChatrooms.bind(this));
     this.router.get('/:id', this.getChatroom.bind(this));
+    this.router.get('/info/:id', this.getChatroomInfo.bind(this));
     this.router.post('/', this.addChatroom.bind(this));
     this.router.get('/:id/users', this.getChatroomUsers.bind(this));
     this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
@@ -40,13 +41,21 @@ class ChatroomRouter {
       .catch((err) => console.log(err));
   }
 
+  getChatroomInfo(req, res) {
+    let chatroom_id = req.params.id;
+    return this.chatroomService
+      .getChatroomInfo(chatroom_id)
+      .then((chatroom) => res.send(chatroom))
+      .catch((err) => console.log(err));
+  }
+
   // TODO- change the user_id to real one
   addChatroom(req, res) {
     const chatroomName = req.body.chatroomName;
     const chatroomDescription = req.body.chatroomDescription;
-    const userIds = [1, 2, 3];
+    const userId = req.body.userId;
     return this.chatroomService
-      .addChatroom(chatroomName, chatroomDescription, userIds)
+      .addChatroom(chatroomName, chatroomDescription, userId)
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
   }

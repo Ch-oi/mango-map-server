@@ -24,7 +24,7 @@ class ChatroomService {
     return chatrooms;
   }
 
-  //get one specfic chatroom by id
+  //get one specfic chatroom by chatroom id
   async getChatroom(chatroom_id) {
     let chatroom = await knex('chatrooms')
       .select('*')
@@ -37,30 +37,47 @@ class ChatroomService {
     return this.chatroom;
   }
 
+  //get one specfic chatroom information by chatroom id
+  async getChatroomInfo(chatroom_id) {
+    console.log(chatroom_id);
+    let chatroom = await knex('chatrooms_users')
+      .leftJoin('users', 'chatrooms_users.user_id', 'users.id')
+      .leftJoin('chatrooms', 'chatrooms.id', 'chatrooms_users.chatroom_id')
+      .select(
+        'users.user_name',
+        'chatrooms.descriptions',
+        'chatrooms.created_at'
+      )
+      .select()
+      .where('chatrooms_users.chatroom_id', chatroom_id)
+      .catch((err) => console.log(err));
+
+    return chatroom;
+  }
+
   //add new chatroom
   //chatroom = {name:'sdf',descriptions:'sdf'}
   //user_id = [...]
-  async addChatroom(chatroomName, chatroomDescription, usersId) {
+  async addChatroom(chatroomName, chatroomDescription, userId) {
     await knex.raw(
       "SELECT setval('chatrooms_id_seq', (SELECT MAX(id) from chatrooms));"
     );
+
     let newChatRoom = await knex('chatrooms')
       .insert({ room_name: chatroomName, descriptions: chatroomDescription })
       .returning('*')
       .catch((err) => console.log(err));
 
-    const fieldToInsert = usersId.map((userId) => ({
-      chatroom_id: newChatRoom[0].id,
-      user_id: userId,
-    }));
-
-    console.log(fieldToInsert);
+    // const fieldToInsert = usersId.map((userId) => ({
+    //   chatroom_id: newChatRoom[0].id,
+    //   user_id: userId,
+    // }));
 
     await knex.raw(
       'SELECT setval(\'"chatrooms_users_id_seq"\', (SELECT MAX(id) from "chatrooms_users"));'
     );
     let newChatroomDetailed = await knex('chatrooms_users')
-      .insert(fieldToInsert)
+      .insert({ chatroom_id: newChatRoom[0].id, user_id: userId })
       .returning('*')
       .catch((err) => console.log(err));
 

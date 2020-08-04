@@ -19,7 +19,7 @@ class UserRouter {
     this.router.get('/authorized/:id/chatrooms', this.getUserChatrooms.bind(this));
     this.router.get('/authorized/:uid/chatroom/:cid', this.getUserChatroomRecords.bind(this));
     // this.router.post('/signup', this.addUser.bind(this));
-    this.router.post('/:uid/district/:lid', this.addUserLocation.bind(this));
+    this.router.post('/:uid/location/:lid', this.addUserLocation.bind(this));
 
 
     return this.router;

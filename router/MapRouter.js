@@ -12,7 +12,7 @@ class MapRouter {
     this.router.get('/locations', this.listLocations.bind(this));
     this.router.get('/district/:id', this.getAreaDistricts.bind(this));
     this.router.get('/location/:id', this.getLocation.bind(this));
-    this.router.post('/district', this.addLocation.bind(this));
+    this.router.post('/location', this.addLocation.bind(this));
     this.router.post('/location/:uid/:lid/images', this.addLocationImages.bind(this));
 
     return this.router;
@@ -70,7 +70,7 @@ class MapRouter {
   }
 
   addLocation(req, res) {
-    let new_location = { ...req.body };
+    let new_location = req.body ;
 
     return this.mapService
       .addLocation(new_location)
