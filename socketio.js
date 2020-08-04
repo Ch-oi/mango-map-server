@@ -12,9 +12,11 @@ const startSocketIO = () => {
       });
     });
 
-    socket.on('chat-message', (message) => {
-      console.log('[socketio.js]', message);
-      socket.to(message.roomId).emit('chat-message', message);
+    socket.on('chat-message', ({ message, roomId, userId, username }) => {
+      console.log('[socketio.js]', message, roomId);
+      socket
+        .to(roomId)
+        .emit('chat-message', { message, roomId, userId, username });
     });
 
     socket.on('add-chatroom-user', (data) => {
