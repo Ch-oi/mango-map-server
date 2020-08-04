@@ -24,7 +24,7 @@ class ChatroomService {
     return chatrooms;
   }
 
-  //get one specfic chatroom by id
+  //get one specfic chatroom by chatroom id
   async getChatroom(chatroom_id) {
     let chatroom = await knex('chatrooms')
       .select('*')
@@ -35,6 +35,24 @@ class ChatroomService {
     chatroom[0].chatroomUser = chatroomUser;
     this.chatroom = chatroom[0];
     return this.chatroom;
+  }
+
+  //get one specfic chatroom information by chatroom id
+  async getChatroomInfo(chatroom_id) {
+    console.log(chatroom_id);
+    let chatroom = await knex('chatrooms_users')
+      .leftJoin('users', 'chatrooms_users.user_id', 'users.id')
+      .leftJoin('chatrooms', 'chatrooms.id', 'chatrooms_users.chatroom_id')
+      .select(
+        'users.user_name',
+        'chatrooms.descriptions',
+        'chatrooms.created_at'
+      )
+      .select()
+      .where('chatrooms_users.chatroom_id', chatroom_id)
+      .catch((err) => console.log(err));
+
+    return chatroom;
   }
 
   //add new chatroom
