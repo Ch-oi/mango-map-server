@@ -1,6 +1,6 @@
 // const { read } = require('fs/promises');
 
-const router = require('express').Router();
+const router = require("express").Router();
 
 class ImageRouter {
   constructor(imageService) {
@@ -12,20 +12,20 @@ class ImageRouter {
   route() {
     // Images that associate with chatroom id
     // Not public to outsiders
-    this.router.post('/private', this.uploadToChatroom.bind(this));
-    this.router.get('/private/:id', this.loadChatroomImages.bind(this));
+    this.router.post("/private", this.uploadToChatroom.bind(this));
+    this.router.get("/private/:id", this.loadChatroomImages.bind(this));
 
     // // Images that associate with a district
     // // Could be in a blog or just the location
-    this.router.post('/public', this.uploadToLocation.bind(this));
-    this.router.get('/public/:id', this.loadLocationImages.bind(this));
+    this.router.post("/public", this.uploadToLocation.bind(this));
+    this.router.get("/public/:id", this.loadLocationImages.bind(this));
 
-    this.router.get('/');
+    this.router.get("/");
 
     // // Remove a particular image
-    this.router.post('/', this.removeImage.bind(this));
+    this.router.post("/", this.removeImage.bind(this));
 
-    this.router.get('/public', this.getAllImages.bind(this));
+    this.router.get("/public", this.getAllImages.bind(this));
 
     return this.router;
   }
@@ -50,7 +50,7 @@ class ImageRouter {
   }
 
   uploadToLocation(req, res) {
-    return this.imageService.uploadToLocation('hi', 1, 1).then((data) => {
+    return this.imageService.uploadToLocation("hi", 1, 1).then((data) => {
       res.send(data);
     });
   }
