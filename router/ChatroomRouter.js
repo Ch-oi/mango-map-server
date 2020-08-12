@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
 class ChatroomRouter {
   constructor(chatroomService) {
@@ -7,26 +7,26 @@ class ChatroomRouter {
   }
 
   route() {
-    this.router.get('/all/:userId', this.listChatrooms.bind(this));
-    this.router.get('/:id', this.getChatroom.bind(this));
-    this.router.get('/info/:id', this.getChatroomInfo.bind(this));
-    this.router.post('/', this.addChatroom.bind(this));
-    this.router.get('/:id/users', this.getChatroomUsers.bind(this));
-    this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
-    this.router.post('/record', this.addChatRecord.bind(this));
+    this.router.get("/all/:userId", this.listChatrooms.bind(this));
+    this.router.get("/:id", this.getChatroom.bind(this));
+    this.router.get("/info/:id", this.getChatroomInfo.bind(this));
+    this.router.post("/", this.addChatroom.bind(this));
+    this.router.get("/:id/users", this.getChatroomUsers.bind(this));
+    this.router.get("/:id/records", this.getRoomAllChatRecords.bind(this));
+    this.router.post("/record", this.addChatRecord.bind(this));
 
     // TODO - change to get request
     // Find user with username
-    this.router.post('/username', this.findUserWithUsername.bind(this));
-    this.router.post('/username/check', this.checkIfChatroomHasUser.bind(this));
+    this.router.post("/username", this.findUserWithUsername.bind(this));
+    this.router.post("/username/check", this.checkIfChatroomHasUser.bind(this));
 
-    this.router.post('/user', this.addChatroomUser.bind(this));
+    this.router.post("/user", this.addChatroomUser.bind(this));
 
     return this.router;
   }
 
   listChatrooms(req, res) {
-    console.log(req.body);
+    console.log(req.params.userId);
     return this.chatroomService
       .listChatrooms(req.params.userId)
       .then((chatrooms) => res.send(chatrooms))
@@ -107,7 +107,7 @@ class ChatroomRouter {
     let userId = req.body.userId;
     let username = req.body.username;
 
-    console.log('[ChatroomRouter]', req.body);
+    console.log("[ChatroomRouter]", req.body);
 
     if (req.body.message.message) {
       message = req.body.message.message[0];
