@@ -35,7 +35,6 @@ class ChatroomService {
 
   //get one specfic chatroom information by chatroom id
   async getChatroomInfo(chatroom_id) {
-    console.log(chatroom_id);
     let chatroom = await knex("chatrooms_users")
       .leftJoin("users", "chatrooms_users.user_id", "users.id")
       .leftJoin("chatrooms", "chatrooms.id", "chatrooms_users.chatroom_id")
@@ -44,11 +43,36 @@ class ChatroomService {
         "chatrooms.descriptions",
         "chatrooms.created_at"
       )
-      .select()
       .where("chatrooms_users.chatroom_id", chatroom_id)
       .catch((err) => console.log(err));
 
     return chatroom;
+  }
+
+  async listTrips(chatroom_id) {
+    let trips = await knex("chatrooms_locations")
+      // .leftJoin("chatrooms", "chatrooms_locations.chatroom_id", "chatrooms.id")
+      .leftJoin("locations", "locations.id", "chatrooms_locations.location_id")
+      .select(
+        "chatrooms_locations.id",
+        "locations.en",
+        "locations.cn",
+        "location_id",
+        "trip_date"
+      )
+      .where("chatrooms_locations.chatroom_id", chatroom_id)
+      .catch((err) => console.log(err));
+
+    for (let trip of trips) {
+      let images = await knex("images")
+        .where("chatroom_location_id", trip.id)
+        .select("id", "url", "private")
+        .catch((err) => console.log(err));
+      trip.images = images;
+    }
+
+    console.log(trips);
+    return trips;
   }
 
   //add new chatroom

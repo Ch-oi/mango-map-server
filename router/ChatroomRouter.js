@@ -15,6 +15,7 @@ class ChatroomRouter {
     this.router.get("/:id/records", this.getRoomAllChatRecords.bind(this));
     this.router.post("/record", this.addChatRecord.bind(this));
 
+    this.router.get("/trips/:id", this.listTrips.bind(this));
     // TODO - change to get request
     // Find user with username
     this.router.post("/username", this.findUserWithUsername.bind(this));
@@ -25,8 +26,14 @@ class ChatroomRouter {
     return this.router;
   }
 
+  listTrips(req, res) {
+    return this.chatroomService
+      .listTrips(req.params.id)
+      .then((trips) => res.send(trips))
+      .catch((err) => console.log(err));
+  }
+
   listChatrooms(req, res) {
-    console.log(req.params.userId);
     return this.chatroomService
       .listChatrooms(req.params.userId)
       .then((chatrooms) => res.send(chatrooms))

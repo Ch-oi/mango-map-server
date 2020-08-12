@@ -2,81 +2,81 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
 
   // Inserts seed entries
-  return knex('images').insert([
+  return knex("images").insert([
     {
       blog_id: 1,
-      url: 'https://picsum.photos/200/300',
+      url: "https://picsum.photos/200/300",
       user_location_id: 1,
       private: false,
     },
     {
-      url: 'https://picsum.photos/200/300',
+      url: "https://picsum.photos/200/300",
       user_location_id: 2,
       private: false,
     },
     {
-      url: 'https://picsum.photos/200/300',
+      url: "https://picsum.photos/200/300",
       user_location_id: 2,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/JvVSFBd.jpg',
+      url: "https://i.imgur.com/JvVSFBd.jpg",
       user_location_id: 3,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/sJozf2d.jpg',
+      url: "https://i.imgur.com/sJozf2d.jpg",
       user_location_id: 3,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/jOyOc61.jpg',
+      url: "https://i.imgur.com/jOyOc61.jpg",
       user_location_id: 4,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/AfmJJXG.jpg',
+      url: "https://i.imgur.com/AfmJJXG.jpg",
       user_location_id: 4,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/PGbKjQe.jpg',
+      url: "https://i.imgur.com/PGbKjQe.jpg",
       user_location_id: 5,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/9cSJRtc.jpg',
+      url: "https://i.imgur.com/9cSJRtc.jpg",
       user_location_id: 5,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/ecsOfjy.jpg',
+      url: "https://i.imgur.com/ecsOfjy.jpg",
       user_location_id: 6,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/JJi9KTZ.jpg',
+      url: "https://i.imgur.com/JJi9KTZ.jpg",
       user_location_id: 6,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/UAJvJSY.jpg',
-      user_location_id: 7,
+      url: "https://i.imgur.com/UAJvJSY.jpg",
+      chatroom_location_id: 1,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/tGaJgJE.jpg',
-      user_location_id: 7,
+      url: "https://i.imgur.com/tGaJgJE.jpg",
+      chatroom_location_id: 1,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/8FsT7lE.jpg',
-      user_location_id: 8,
+      url: "https://i.imgur.com/8FsT7lE.jpg",
+      chatroom_location_id: 2,
       private: false,
     },
     {
-      url: 'https://i.imgur.com/d5XnzPy.jpg',
-      user_location_id: 8,
+      url: "https://i.imgur.com/d5XnzPy.jpg",
+      chatroom_location_id: 3,
       private: false,
     },
   ]);
