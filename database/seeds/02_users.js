@@ -14,7 +14,7 @@ exports.seed = function (knex) {
         description: 'Hong Kong Hiker',
         gender: 'male',
         profile_picture_url:
-          'https://pngimg.com/uploads/minions/minions_PNG86.png',
+          'https://i.imgur.com/8RcD034.png',
       },
       {
         id: 2,
@@ -25,7 +25,7 @@ exports.seed = function (knex) {
         description: 'Shopper holic',
         gender: 'female',
         profile_picture_url:
-          'https://i.pinimg.com/originals/ee/94/62/ee9462aafc151e9a57f4f32d4fd9e1dd.jpg',
+          'https://i.imgur.com/8RcD034.png',
       },
       {
         id: 3,
@@ -36,7 +36,7 @@ exports.seed = function (knex) {
         description: 'Exercism lover',
         gender: 'male',
         profile_picture_url:
-          'https://lh3.googleusercontent.com/proxy/lKRYVNnEIFMozU91wsJBsmRlXQYZqqr0zBig9QCZcO33GSgLBOHLlx4Tsu6oen2vvyN9uRebdzxCXeNjNL2TlgbvMSfQ9fuMPWvP7-EDn4QXOcrpUIzO8TK8NhEIdJcWMK0',
+          'https://i.imgur.com/8RcD034.png',
       },
     ])
     .then(function () {
