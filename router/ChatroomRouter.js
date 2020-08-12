@@ -102,18 +102,12 @@ class ChatroomRouter {
   }
 
   addChatRecord(req, res) {
-    let message = req.body.message[0];
+    let message = req.body.message;
     let roomId = req.body.roomId;
     let userId = req.body.userId;
     let username = req.body.username;
 
     console.log('[ChatroomRouter]', req.body);
-
-    if (req.body.message.message) {
-      message = req.body.message.message[0];
-      roomId = req.body.message.roomId;
-      userId = req.body.message.userId;
-    }
 
     return this.chatroomService
       .addChatRecord(message, roomId, userId, username)
