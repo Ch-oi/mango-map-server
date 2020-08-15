@@ -38,6 +38,14 @@ exports.seed = function (knex) {
       return knex.raw('ALTER SEQUENCE blogs_id_seq RESTART WITH 1');
     })
     .then(function () {
+      return knex('chatrooms_locations').del();
+    })
+    .then(function () {
+      return knex.raw(
+        'ALTER SEQUENCE chatrooms_locations_id_seq RESTART WITH 1'
+      );
+    })
+    .then(function () {
       return knex('users_locations').del();
     })
     .then(function () {

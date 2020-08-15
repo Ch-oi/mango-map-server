@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
 class ChatroomRouter {
   constructor(chatroomService) {
@@ -7,21 +7,22 @@ class ChatroomRouter {
   }
 
   route() {
-    this.router.get("/all/:userId", this.listChatrooms.bind(this));
-    this.router.get("/:id", this.getChatroom.bind(this));
-    this.router.get("/info/:id", this.getChatroomInfo.bind(this));
-    this.router.post("/", this.addChatroom.bind(this));
-    this.router.get("/:id/users", this.getChatroomUsers.bind(this));
-    this.router.get("/:id/records", this.getRoomAllChatRecords.bind(this));
-    this.router.post("/record", this.addChatRecord.bind(this));
+    this.router.get('/all/:userId', this.listChatrooms.bind(this));
+    this.router.get('/:id', this.getChatroom.bind(this));
+    this.router.get('/info/:id', this.getChatroomInfo.bind(this));
+    this.router.post('/', this.addChatroom.bind(this));
+    this.router.get('/:id/users', this.getChatroomUsers.bind(this));
+    this.router.get('/:id/records', this.getRoomAllChatRecords.bind(this));
+    this.router.post('/record', this.addChatRecord.bind(this));
 
-    this.router.get("/trips/:id", this.listTrips.bind(this));
+    this.router.get('/trips/:id', this.listTrips.bind(this));
+    this.router.post('/trips', this.addTrip.bind(this));
     // TODO - change to get request
     // Find user with username
-    this.router.post("/username", this.findUserWithUsername.bind(this));
-    this.router.post("/username/check", this.checkIfChatroomHasUser.bind(this));
+    this.router.post('/username', this.findUserWithUsername.bind(this));
+    this.router.post('/username/check', this.checkIfChatroomHasUser.bind(this));
 
-    this.router.post("/user", this.addChatroomUser.bind(this));
+    this.router.post('/user', this.addChatroomUser.bind(this));
 
     return this.router;
   }
@@ -56,7 +57,6 @@ class ChatroomRouter {
       .catch((err) => console.log(err));
   }
 
-  // TODO- change the user_id to real one
   addChatroom(req, res) {
     const chatroomName = req.body.chatroomName;
     const chatroomDescription = req.body.chatroomDescription;
@@ -65,6 +65,24 @@ class ChatroomRouter {
       .addChatroom(chatroomName, chatroomDescription, userId)
       .then((chatroom) => res.send(chatroom))
       .catch((err) => console.log(err));
+  }
+
+  addTrip(req, res) {
+    let locationId, lat, lng;
+    const { chatroomId, date, description } = req.body;
+
+    // 2 situations
+    // User selects a location to add trip
+    // User creates a marker to add trip
+    req.body.locationId
+      ? (locationId = req.body.locationId)
+      : ({ lat, lng } = req.body);
+
+    console.log(chatroomId, date, description, lat, lng);
+
+    return this.chatroomService
+      .addTrip(chatroomId, locationId, date, description, lat, lng)
+      .then((response) => res.send(response));
   }
 
   findUserWithUsername(req, res) {
@@ -114,7 +132,7 @@ class ChatroomRouter {
     let userId = req.body.userId;
     let username = req.body.username;
 
-    console.log("[ChatroomRouter]", req.body);
+    console.log('[ChatroomRouter]', req.body);
 
     return this.chatroomService
       .addChatRecord(message, roomId, userId, username)
