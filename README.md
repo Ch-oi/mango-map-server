@@ -11,12 +11,11 @@ The commands for the CLI are: 'knex migrate:latest'; 'knex seed:run'
 
 A .env file will also need to be added in the root directory and include the following information. Note that the variable names must be identical.
 
-DATABASE_NAME - Name of PostgreSQL database
-DATABASE_USERNAME - Username of PostgreSQL database
-DATABASE_PASSWORD - Password for specified username
-
-IMGUR_CLIENT_ID - Registered from Imgur, enable upload images 
-SECRET_KEY - used to encrypt the user password with jwt
+`DATABASE_NAME - Name of PostgreSQL database`
+`DATABASE_USERNAME - Username of PostgreSQL database`
+`DATABASE_PASSWORD - Password for specified username`
+`IMGUR_CLIENT_ID - Registered from Imgur, enable upload images`
+`SECRET_KEY - used to encrypt the user password with jwt`
 
 ## Running the application
 Ensure that all modules have been installed locally with 'yarn install'. Then the application can simply be run by using 'yarn start'.
