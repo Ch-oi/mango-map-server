@@ -20,3 +20,4 @@ A .env file will also need to be added in the root directory and include the fol
 ## Running the application
 Ensure that all modules have been installed locally with 'yarn install'. Then the application can simply be run by using 'yarn start'.
 
+Please make sure that the url is prefixed with "https://" before API calling the server.
