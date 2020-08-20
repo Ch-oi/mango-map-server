@@ -90,8 +90,8 @@ app.get(
   }
 );
 
+console.log('testing, you can remove this line');
+
 server.listen(port, function () {
   console.log('listening on port ' + port);
 });
-
-// A testing line for pushing to production
